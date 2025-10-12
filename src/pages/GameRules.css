@@ -1,0 +1,253 @@
+.game-rules-page {
+  padding-top: 80px;
+}
+
+.rules-hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 6rem 0 4rem;
+  text-align: center;
+}
+
+.rules-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.rules-hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.rules-overview {
+  background: white;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.overview-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.overview-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+}
+
+.overview-card svg {
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.overview-card h3 {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.overview-card p {
+  color: #666;
+  font-size: 1rem;
+}
+
+.rules-sections {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.rules-accordion {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.rules-item {
+  background: white;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.rules-header {
+  width: 100%;
+  padding: 1.5rem 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.rules-header:hover {
+  background-color: #f8f9fa;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  color: white;
+}
+
+.header-content h3 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin: 0;
+  font-weight: 600;
+}
+
+.rules-header svg {
+  color: #667eea;
+  transition: transform 0.3s ease;
+}
+
+.rules-content {
+  padding: 0 2rem 1.5rem;
+  color: #555;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.components-section {
+  color: white;
+}
+
+.components-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.component-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.component-item:hover {
+  transform: translateX(10px);
+}
+
+.component-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  text-align: center;
+}
+
+.component-item span {
+  font-size: 1rem;
+}
+
+.tips-section {
+  background: white;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.tip-card {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 4px solid #667eea;
+}
+
+.tip-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+}
+
+.tip-card h4 {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.tip-card p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .rules-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .overview-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .rules-header {
+    padding: 1rem 1.5rem;
+  }
+  
+  .rules-content {
+    padding: 0 1.5rem 1rem;
+  }
+  
+  .components-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .tips-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .rules-hero {
+    padding: 4rem 0 3rem;
+  }
+  
+  .header-content {
+    gap: 0.5rem;
+  }
+  
+  .header-content h3 {
+    font-size: 1rem;
+  }
+  
+  .component-item {
+    padding: 0.75rem;
+  }
+}
