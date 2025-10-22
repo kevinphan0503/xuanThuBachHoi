@@ -26,7 +26,7 @@ function App() {
           </Routes>
         </main>
         <Footer />
-        <BuyNowButton />
+       
         <PromoNotification />
       </div>
     </Router>

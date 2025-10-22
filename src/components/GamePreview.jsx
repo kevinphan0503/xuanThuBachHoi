@@ -75,20 +75,20 @@ const GamePreview = () => {
                 </div>
                 <div className="game-elements">
                   <div className="element element-1">
-                    <div className="element-icon">🏰</div>
-                    <span>Triều Lý</span>
+                    <div className="element-icon">🌸</div>
+                    <span>Xuân</span>
                   </div>
                   <div className="element element-2">
-                    <div className="element-icon">⚔️</div>
-                    <span>Triều Trần</span>
+                    <div className="element-icon">☀️</div>
+                    <span>Hạ</span>
                   </div>
                   <div className="element element-3">
-                    <div className="element-icon">📜</div>
-                    <span>Triều Lê</span>
+                    <div className="element-icon">🍂</div>
+                    <span>Thu</span>
                   </div>
                   <div className="element element-4">
-                    <div className="element-icon">👑</div>
-                    <span>Triều Nguyễn</span>
+                    <div className="element-icon">❄️</div>
+                    <span>Đông</span>
                   </div>
                 </div>
               </div>

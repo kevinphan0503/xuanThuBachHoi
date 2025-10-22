@@ -28,9 +28,9 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%);
   border-radius: 15px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid var(--color-primary);
 }
 
 .game-info-icon {
@@ -39,7 +39,7 @@
   justify-content: center;
   width: 50px;
   height: 50px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
   border-radius: 50%;
   color: white;
   flex-shrink: 0;
@@ -54,7 +54,7 @@
 .game-info-value {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #667eea;
+  color: var(--color-primary);
   display: block;
   margin-bottom: 0.25rem;
 }
@@ -81,10 +81,10 @@
   width: 400px;
   height: 400px;
   position: relative;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
   border-radius: 25px;
   padding: 2rem;
-  box-shadow: 0 25px 50px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 25px 50px rgba(229,57,53,0.12);
   overflow: hidden;
 }
 

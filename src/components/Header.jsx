@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Gamepad2 } from 'lucide-react'
 import './Header.css'
+import BuyNowButton from './BuyNowButton'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -43,6 +44,10 @@ const Header = () => {
               ))}
             </ul>
           </nav>
+
+          <div className="header-actions">
+            <BuyNowButton variant="inline" />
+          </div>
 
           <button className="menu-toggle" onClick={toggleMenu}>
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}

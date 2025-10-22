@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { ShoppingCart, X, CreditCard, Package, Truck, CheckCircle } from 'lucide-react'
 import './BuyNowButton.css'
 
-const BuyNowButton = () => {
+const BuyNowButton = ({ variant = 'floating' }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
@@ -14,6 +15,17 @@ const BuyNowButton = () => {
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [showBadge, setShowBadge] = useState(true)
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.classList.add('modal-open')
+    } else {
+      document.body.classList.remove('modal-open')
+    }
+    return () => {
+      document.body.classList.remove('modal-open')
+    }
+  }, [isModalOpen])
 
   const handleInputChange = (e) => {
     setFormData({
@@ -52,25 +64,14 @@ const BuyNowButton = () => {
 
   return (
     <>
-      {/* Floating Buy Now Button */}
-      <div className="buy-now-button" onClick={() => setIsModalOpen(true)}>
-        {showBadge && (
-          <div className="discount-badge">
-            <span>-{productInfo.discount}%</span>
-          </div>
-        )}
-        <div className="button-content">
-          <ShoppingCart size={24} />
-          <span>Mua ngay</span>
-        </div>
-        <div className="price-tag">
-          {productInfo.price.toLocaleString('vi-VN')}đ
-        </div>
-        <div className="pulse-ring"></div>
-      </div>
+      {/* Inline variant for header only. Floating button removed. */}
+      <button className="buy-now-inline" onClick={() => setIsModalOpen(true)}>
+        <ShoppingCart size={18} />
+        <span>Mua ngay</span>
+      </button>
 
-      {/* Order Modal */}
-      {isModalOpen && (
+      {/* Order Modal rendered via portal so it escapes header stacking context */}
+      {isModalOpen && createPortal(
         <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={() => setIsModalOpen(false)}>
@@ -237,7 +238,8 @@ const BuyNowButton = () => {
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )

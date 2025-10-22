@@ -1,3 +1,6 @@
+
+
+
 import React, { useState } from 'react'
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from 'lucide-react'
 import './Contact.css'
@@ -22,11 +25,8 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Simulate form submission
     console.log('Form submitted:', formData)
     setIsSubmitted(true)
-    
-    // Reset form after 3 seconds
     setTimeout(() => {
       setIsSubmitted(false)
       setFormData({
@@ -43,7 +43,7 @@ const Contact = () => {
     {
       icon: <Mail size={24} />,
       title: 'Email',
-      content: 'quypnce180555@fpt.edu.vn',
+      content: 'xtbh@gmail.com',
       description: 'Gửi email cho chúng tôi'
     },
     {
@@ -81,12 +81,23 @@ const Contact = () => {
     },
     {
       question: 'Một ván chơi mất bao lâu?',
-      answer: 'Thông thường khoảng 45–60 phút tùy vào số người chơi và độ "máu lửa" trong mỗi lượt đi. Đây là khoảng thời gian lý tưởng cho một buổi tụ họp cuối tuần hoặc hoạt động team building.'
+      answer: 'Thông thường khoảng 45–60 phút tùy vào số người chơi và độ "máu lửa" trong mỗi lượt đi.'
     },
     {
       question: 'Làm sao để trở thành đối tác của Xuân Thu Bách Hội?',
       answer: 'Chúng tôi luôn chào đón những đối tác mang trong mình tình yêu lịch sử và khát khao lan tỏa bản sắc Việt! Bạn có thể gửi tin nhắn qua form liên hệ hoặc email trực tiếp.'
     }
+  ]
+
+  // 👇 Phần đội ngũ
+  const teamMembers = [
+    
+    { name: 'Nguyễn Thị Bảo Trân', image: '/assets/BT.jpg' },
+    { name: 'Lê Tuyết MInh', image: '/assets/TM.png' },
+    { name: 'Phùng Cẩm Thi', image: '/assets/CT3.png' },
+    { name: 'Phan Hữu Văn', image: '/assets/HV3.png' },
+    { name: 'Phan Nhật Quý', image: '/assets/NQ.jpg' },
+    { name: 'Nguyễn Hoàng Phúc', image: '/assets/HP.jpg' }
   ]
 
   return (
@@ -105,9 +116,7 @@ const Contact = () => {
           <div className="contact-info-grid">
             {contactInfo.map((info, index) => (
               <div key={index} className="contact-info-card">
-                <div className="info-icon">
-                  {info.icon}
-                </div>
+                <div className="info-icon">{info.icon}</div>
                 <div className="info-content">
                   <h3>{info.title}</h3>
                   <p className="info-main">{info.content}</p>
@@ -218,6 +227,25 @@ const Contact = () => {
                 <span>Văn phòng chính</span>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 👇 Thêm section đội ngũ ở đây */}
+      <section className="section team-section">
+        <div className="container">
+          <h2 className="section-title">Đội ngũ của chúng tôi</h2>
+          <div className="team-grid">
+            {teamMembers.map((member, index) => (
+              <div key={index} className="team-card">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="team-image"
+                />
+                <h4 className="team-name">{member.name}</h4>
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -1,6 +1,6 @@
 .footer {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  color: white;
+  background: linear-gradient(135deg, #1F2D3A 0%, #14222A 100%);
+  color: rgb(232, 209, 152);
   padding: 3rem 0 1rem;
   margin-top: auto;
 }
@@ -15,7 +15,7 @@
 .footer-section h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -49,7 +49,7 @@
 }
 
 .footer-section ul li a:hover {
-  color: #667eea;
+  color: var(--color-primary);
 }
 
 .social-links {
@@ -72,7 +72,7 @@
 }
 
 .social-links a:hover {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
   transform: translateY(-2px);
 }
 
@@ -90,7 +90,7 @@
 }
 
 .contact-item svg {
-  color: #667eea;
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
@@ -121,7 +121,7 @@
 }
 
 .footer-links a:hover {
-  color: #667eea;
+  color: var(--color-primary);
 }
 
 @media (max-width: 768px) {

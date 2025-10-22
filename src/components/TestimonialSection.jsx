@@ -6,12 +6,12 @@ const TestimonialSection = () => {
   const testimonials = [
     {
       name: 'Nguyễn Văn An',
-      role: 'Giáo viên Lịch sử',
+      role: 'Sinh Viên ',
       content: 'Xuân Thu Bách Hội là một cách tuyệt vời để học sinh tiếp cận lịch sử Việt Nam. Game giúp các em hiểu sâu hơn về các triều đại và sự kiện quan trọng.',
       rating: 5
     },
     {
-      name: 'Trần Thị Bình',
+      name: 'Trần Văn Linh',
       role: 'Phụ huynh',
       content: 'Cả gia đình tôi đều thích chơi game này. Không chỉ giải trí mà còn học được nhiều điều về lịch sử nước nhà. Rất bổ ích!',
       rating: 5
@@ -23,7 +23,7 @@ const TestimonialSection = () => {
       rating: 5
     },
     {
-      name: 'Phạm Thị Dung',
+      name: 'Kiều Văn Huy',
       role: 'Nhà sử học',
       content: 'Một sản phẩm giáo dục xuất sắc! Xuân Thu Bách Hội giúp người chơi hiểu rõ hơn về lịch sử Việt Nam một cách sinh động và hấp dẫn.',
       rating: 5

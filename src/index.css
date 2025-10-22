@@ -7,8 +7,14 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  color: #333;
-  background-color: #f8f9fa;
+  /* Rangro Vietnam palette */
+  --color-primary: #8f2e29; /* main red */
+  --color-accent: #e3d3a0; /* yellow accent */
+  --text-color: #457098; /* dark teal/blue for text */
+  --background: #d7af7d;
+
+  color: var(--text-color);
+  background-color: var(--background);
 }
 
 html {
@@ -24,8 +30,8 @@ html {
 .btn {
   display: inline-block;
   padding: 12px 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(90deg, var(--color-primary) 0%, #C62828 100%);
+  color: rgb(210, 185, 126);
   text-decoration: none;
   border-radius: 25px;
   transition: all 0.3s ease;
@@ -41,7 +47,7 @@ html {
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(90deg, var(--color-accent) 0%, #FFCA28 100%);
 }
 
 .btn-secondary:hover {
@@ -68,7 +74,7 @@ html {
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
   border-radius: 2px;
 }
 

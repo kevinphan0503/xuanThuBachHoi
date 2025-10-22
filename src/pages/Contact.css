@@ -3,7 +3,7 @@
 }
 
 .contact-hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
   color: white;
   padding: 6rem 0 4rem;
   text-align: center;
@@ -37,7 +37,7 @@
   align-items: center;
   gap: 1rem;
   padding: 2rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
@@ -45,7 +45,7 @@
 
 .contact-info-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+  box-shadow: 0 20px 40px rgba(229,57,53,0.08);
 }
 
 .info-icon {
@@ -54,7 +54,7 @@
   justify-content: center;
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
   border-radius: 50%;
   color: white;
   flex-shrink: 0;
@@ -69,7 +69,7 @@
 
 .info-main {
   font-size: 1.1rem;
-  color: #667eea;
+  color: var(--color-primary);
   font-weight: 500;
   margin-bottom: 0.25rem;
 }
@@ -81,7 +81,7 @@
 }
 
 .contact-form-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%);
 }
 
 .contact-content {
@@ -133,7 +133,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--color-primary);
 }
 
 .form-group textarea {
@@ -153,7 +153,7 @@
   gap: 1rem;
   margin-top: 1rem;
   padding: 1rem;
-  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  background: linear-gradient(135deg, #FFEBEE 0%, #FFF8E1 100%);
   color: white;
   border-radius: 10px;
   font-weight: 500;
@@ -182,8 +182,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #667eea;
-  border: 2px dashed #667eea;
+  color: var(--color-primary);
+  border: 2px dashed var(--color-primary);
 }
 
 .map-placeholder p {
@@ -279,4 +279,57 @@
   .faq-item {
     padding: 1.5rem;
   }
+}
+/* ===== TEAM SECTION (Hàng ngang) ===== */
+.team-section {
+  text-align: center;
+  padding: 60px 0;
+  background-color: #faf8f4;
+}
+
+.team-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap; /* giữ 1 hàng ngang, nếu muốn co lại thì dùng wrap */
+  gap: 30px;
+  overflow-x: auto; /* giúp cuộn ngang trên màn hình nhỏ */
+  padding-bottom: 10px;
+}
+
+.team-card {
+  flex: 0 0 180px; /* chiều rộng cố định cho từng thẻ */
+  background: #fff;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  min-width: 180px;
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+}
+
+.team-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+.team-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Ẩn thanh cuộn ngang nếu muốn mượt hơn */
+.team-grid::-webkit-scrollbar {
+  height: 6px;
+}
+.team-grid::-webkit-scrollbar-thumb {
+  background: #c8b69e;
+  border-radius: 4px;
 }

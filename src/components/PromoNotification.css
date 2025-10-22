@@ -13,6 +13,11 @@
   border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
+/* Hide promo when a modal is open to avoid overlapping UI */
+body.modal-open .promo-notification {
+  display: none !important;
+}
+
 @keyframes slideInRight {
   from {
     transform: translateX(100%);

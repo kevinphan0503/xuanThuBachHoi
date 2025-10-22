@@ -56,13 +56,13 @@ main {
 
 /* Gradient backgrounds */
 .gradient-bg {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
 }
 
 .gradient-bg-2 {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #ffd344 100%);
 }
 
 .gradient-bg-3 {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #FFEBEE 0%, #FFF8E1 100%);
 }
