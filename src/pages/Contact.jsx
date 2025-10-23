@@ -55,7 +55,7 @@ const Contact = () => {
     {
       icon: <MapPin size={24} />,
       title: 'Địa chỉ',
-      content: 'Cần Thơ, Việt Nam',
+      content: '144B CMT8,P.Cái Khế,Q.Ninh Kiều,Cần Thơ, Việt Nam',
       description: 'Văn phòng chính'
     },
     {
