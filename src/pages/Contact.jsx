@@ -5,6 +5,14 @@ import React, { useState } from 'react'
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from 'lucide-react'
 import './Contact.css'
 
+// images (imported so Vite bundles them during build)
+import BT from '../../assets/BT.jpg'
+import TM from '../../assets/TM.png'
+import CT3 from '../../assets/CT3.png'
+import HV3 from '../../assets/HV3.png'
+import NQ from '../../assets/NQ.jpg'
+import HP from '../../assets/HP.jpg'
+
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -92,12 +100,12 @@ const Contact = () => {
   // 👇 Phần đội ngũ
   const teamMembers = [
     
-    { name: 'Nguyễn Thị Bảo Trân', image: '/assets/BT.jpg' },
-    { name: 'Lê Tuyết MInh', image: '/assets/TM.png' },
-    { name: 'Phùng Cẩm Thi', image: '/assets/CT3.png' },
-    { name: 'Phan Hữu Văn', image: '/assets/HV3.png' },
-    { name: 'Phan Nhật Quý', image: '/assets/NQ.jpg' },
-    { name: 'Nguyễn Hoàng Phúc', image: '/assets/HP.jpg' }
+    { name: 'Nguyễn Thị Bảo Trân', image: BT },
+    { name: 'Lê Tuyết MInh', image: TM },
+    { name: 'Phùng Cẩm Thi', image: CT3 },
+    { name: 'Phan Hữu Văn', image: HV3 },
+    { name: 'Phan Nhật Quý', image: NQ },
+    { name: 'Nguyễn Hoàng Phúc', image: HP }
   ]
 
   return (

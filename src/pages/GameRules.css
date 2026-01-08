@@ -3,7 +3,7 @@
 }
 
 .rules-hero {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
   padding: 6rem 0 4rem;
   text-align: center;
@@ -22,6 +22,61 @@
   margin: 0 auto;
 }
 
+/* Image placeholders in hero */
+.hero-content {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  gap: 2rem;
+  align-items: center;
+}
+
+.hero-text {
+  text-align: left;
+}
+
+.hero-images {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.hero-image-main {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0,74,142,0.12);
+  object-fit: cover;
+}
+
+.hero-image-thumbs {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.hero-image-thumbs img {
+  width: 48%;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,74,142,0.08);
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .hero-content {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .hero-image-thumbs img {
+    width: 44%;
+  }
+}
+
 .rules-overview {
   background: white;
 }
@@ -33,17 +88,17 @@
 }
 
 .overview-card {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, rgba(233,175,78,0.06) 0%, rgba(243,224,70,0.03) 100%);
   padding: 2rem;
   border-radius: 20px;
   text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }
 
 .overview-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(229,57,53,0.12);
+  box-shadow: 0 20px 40px rgba(0,74,142,0.08);
 }
 
 .overview-card svg {
@@ -64,7 +119,7 @@
 }
 
 .rules-sections {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, rgba(233,175,78,0.04) 0%, rgba(243,224,70,0.02) 100%);
 }
 
 .rules-accordion {
@@ -93,7 +148,7 @@
 }
 
 .rules-header:hover {
-  background-color: #f8f9fa;
+  background-color: rgba(233,175,78,0.03);
 }
 
 .header-content {
@@ -108,7 +163,7 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-gold) 100%);
   border-radius: 50%;
   color: white;
 }
@@ -209,6 +264,19 @@
   .rules-hero h1 {
     font-size: 2rem;
   }
+}
+
+.cards-list {
+  margin-top: 1rem;
+  list-style: disc inside;
+  color: #3a3a3a;
+  line-height: 1.6;
+}
+
+.rules-sections h3 {
+  color: var(--color-primary);
+  margin-top: 1rem;
+}
   
   .overview-grid {
     grid-template-columns: 1fr;
@@ -232,7 +300,7 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-}
+
 
 @media (max-width: 480px) {
   .rules-hero {

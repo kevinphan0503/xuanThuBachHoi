@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, Gamepad2 } from 'lucide-react'
 import './Header.css'
 import BuyNowButton from './BuyNowButton'
+import logo from '../../assets/logo.png'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -16,7 +17,6 @@ const Header = () => {
     { path: '/', label: 'TRANG CHỦ' },
     { path: '/about', label: 'GIỚI THIỆU' },
     { path: '/rules', label: 'HƯỚNG DẪN CHƠI' },
-    { path: '/gallery', label: 'HÌNH ẢNH GAME' },
     { path: '/contact', label: 'LIÊN HỆ' }
   ]
 
@@ -25,9 +25,11 @@ const Header = () => {
       <div className="container">
         <div className="header-content">
           <Link to="/" className="logo">
-            <Gamepad2 size={32} />
+            <img src={logo} alt="Logo Xuân Thu Bách Hội" className="logo-img" />
             <span>XUÂN THU BÁCH HỘI</span>
           </Link>
+       
+
 
           <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
             <ul className="nav-list">

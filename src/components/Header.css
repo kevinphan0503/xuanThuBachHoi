@@ -14,7 +14,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  padding: 0.05rem 0;
 }
 
 .logo {
@@ -33,6 +33,12 @@
 
 .logo svg {
   color: var(--color-primary);
+}
+
+.logo-img {
+  width: 48px;
+  height: auto;
+  display: block;
 }
 
 .nav-list {
@@ -60,7 +66,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-gold) 100%);
   transition: width 0.3s ease;
 }
 
@@ -95,7 +101,7 @@
 
 .buy-now-inline {
   padding: 8px 14px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-gold) 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -162,10 +168,13 @@
   .logo span {
     display: none;
   }
-}
+
+  .logo-img { width: 40px; }
+} 
 
 @media (max-width: 480px) {
   .logo {
     font-size: 1rem;
   }
+  .logo-img { width: 32px; }
 }

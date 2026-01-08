@@ -106,3 +106,12 @@ Gợi ý sản xuất & mở rộng
 Kết luận
 
 Cờ Lễ Hội Việt Nam là một dự án board game có tiềm năng giáo dục và thương mại: dễ làm quen, giàu bản sắc văn hoá, và có thể phát triển thành nhiều phiên bản, sản phẩm quà tặng hoặc trải nghiệm số hóa.
+
+---
+
+## Deployment notes ✅
+- A script (`scripts/copy-public-assets.js`) copies files from the project `assets/` folder into `public/assets/` and copies `favicon.png` to `public/favicon.png` before build.
+- This script runs automatically as a `prebuild` step, so running `npm run build` will ensure public assets are present for deploy.
+- Files imported in React components are still bundled by Vite (recommended). The `public/assets/` copies ensure assets referenced via absolute paths (e.g. in `index.html`) are available after deploy.
+
+If you prefer everything to be served from `/assets/` rather than bundled, I can convert all imports to absolute `/assets/...` references — but this removes Vite's bundling/hash benefits and is not recommended by default.

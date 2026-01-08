@@ -1,81 +1,27 @@
-import React, { useState } from 'react'
-import { ChevronDown, ChevronUp, Play, Users, Clock, Target } from 'lucide-react'
+import React from 'react'
 import './GameRules.css'
+import heroImg from '../../assets/placeholder-game-hero.svg'
+import thumb1 from '../../assets/placeholder-thumb-1.svg'
+import thumb2 from '../../assets/placeholder-thumb-2.svg'
 
 const GameRules = () => {
-  const [openSection, setOpenSection] = useState(0)
-
-  const sections = [
-    {
-      title: 'Giới thiệu game',
-      content: 'Cờ Lễ Hội Việt Nam là board game chiến thuật, kết hợp yếu tố mô phỏng, thẻ kiến thức và thử thách vui nhộn. Mỗi người chơi đóng vai một "nhà tổ chức lễ hội" và cạnh tranh để trở thành người có quy mô, thương hiệu và tài sản lớn nhất.',
-      icon: <Play size={24} />
-    },
-    {
-      title: 'Mục tiêu game',
-      content: 'Mục tiêu là trở thành nhà tổ chức lễ hội có quy mô, thương hiệu và tài sản lớn nhất khi ván chơi kết thúc. Người chơi tích lũy tài sản thông qua việc mua quyền tổ chức lễ hội, nâng cấp lễ hội và thu phí tham quan.',
-      icon: <Target size={24} />
-    },
-    {
-      title: 'Thiết lập game',
-      content: 'Mỗi người chơi nhận 1500 Xu Hội ban đầu. Lần lượt gieo xúc xắc, người có điểm cao nhất đi trước; di chuyển theo chiều kim đồng hồ. Bàn cờ có 40 ô bao gồm ô Lễ hội, ô Lộc Xuân, ô Gieo Quẻ và các ô đặc biệt.',
-      icon: <Users size={24} />
-    },
-    {
-      title: 'Luật chơi cơ bản',
-      content: 'Dừng ở ô Lễ hội: có thể mua quyền tổ chức nếu chưa có chủ, hoặc trả phí tham quan nếu đã có chủ. Dừng ở ô Lộc Xuân: rút thẻ nhận kiến thức và cơ hội. Dừng ở ô Gieo Quẻ: thực hiện thử thách hoặc chịu phạt.',
-      icon: <Clock size={24} />
-    },
-    {
-      title: 'Nâng cấp lễ hội',
-      content: 'Mỗi lễ hội có 4 cấp độ nâng cấp: 1) Bánh – Mứt, 2) Trang trí, 3) Trang phục, 4) Tổ chức Đại Lễ Hội. Cấp càng cao thì phí tham quan càng lớn. Có thể mua lại ô đã bị người khác sở hữu nếu chủ hiện tại chưa nâng cấp lên mức cao nhất.',
-      icon: <Target size={24} />
-    },
-    {
-      title: 'Kết thúc game',
-      content: 'Game kết thúc khi một người chơi phá sản (không còn tiền để tiếp tục) hoặc khi đạt điều kiện thời gian/vòng chơi đã thống nhất trước. Người chiến thắng là người có tổng tài sản (tiền + giá trị lễ hội + nâng cấp) và quy mô lễ hội lớn nhất.',
-      icon: <Play size={24} />
-    }
-  ]
-
-  const gameComponents = [
-    'Bàn cờ 40 ô với các lễ hội Việt Nam',
-    'Quân cờ đại diện cho nhà tổ chức lễ hội',
-    '30 thẻ Lộc Xuân (kiến thức + cơ hội)',
-    '30 thẻ Gieo Quẻ (thử thách + bất lợi)',
-    'Con xúc xắc và Xu Hội',
-    'Vật phẩm nâng cấp: Bánh, Mứt, Trang trí, Hoạt động',
-    'Sách hướng dẫn chi tiết'
-  ]
-
   return (
     <div className="game-rules-page">
       <section className="rules-hero">
         <div className="container">
           <div className="hero-content">
-            <h1>Hướng dẫn chơi Cờ Lễ Hội Việt Nam</h1>
-            <p>Học cách chơi và trở thành nhà tổ chức lễ hội giỏi nhất</p>
-          </div>
-        </div>
-      </section>
+            <div className="hero-text">
+              <h1>🎯 HƯỚNG DẪN CÁCH CHƠI – CỜ LỄ HỘI VIỆT NAM</h1>
+              <p>Người chơi thu thập vật phẩm lễ hội, xây dựng – nâng cấp lễ hội và kiếm xu qua việc tham gia, tổ chức và trao đổi trong suốt hành trình du xuân.</p>
+            </div>
 
-      <section className="section rules-overview">
-        <div className="container">
-          <div className="overview-grid">
-            <div className="overview-card">
-              <Users size={48} />
-              <h3>2-6 người chơi</h3>
-              <p>Mỗi người đóng vai nhà tổ chức lễ hội</p>
-            </div>
-            <div className="overview-card">
-              <Clock size={48} />
-              <h3>40-60 phút</h3>
-              <p>Thời gian chơi lý tưởng</p>
-            </div>
-            <div className="overview-card">
-              <Target size={48} />
-              <h3>Độ khó: Dễ</h3>
-              <p>Dễ học, phù hợp mọi lứa tuổi</p>
+            {/* Image placeholders — you can replace these SVGs in /assets when ready */}
+            <div className="hero-images">
+              <img src={heroImg} alt="Hero placeholder" className="hero-image-main" />
+              <div className="hero-image-thumbs">
+                <img src={thumb1} alt="Thumb 1 placeholder" />
+                <img src={thumb2} alt="Thumb 2 placeholder" />
+              </div>
             </div>
           </div>
         </div>
@@ -83,68 +29,140 @@ const GameRules = () => {
 
       <section className="section rules-sections">
         <div className="container">
-          <h2 className="section-title">Luật chơi chi tiết</h2>
-          <div className="rules-accordion">
-            {sections.map((section, index) => (
-              <div key={index} className="rules-item">
-                <button
-                  className="rules-header"
-                  onClick={() => setOpenSection(openSection === index ? -1 : index)}
-                >
-                  <div className="header-content">
-                    <div className="header-icon">{section.icon}</div>
-                    <h3>{section.title}</h3>
-                  </div>
-                  {openSection === index ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-                </button>
-                {openSection === index && (
-                  <div className="rules-content">
-                    <p>{section.content}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          <h2 className="section-title">1. Mục tiêu & Cấu trúc</h2>
+
+          <h3>1.1 Mục tiêu trò chơi</h3>
+          <p>Người chơi thu thập các vật phẩm lễ hội, xây dựng – nâng cấp lễ hội, và kiếm thật nhiều xu thông qua việc tham gia, tổ chức và trao đổi trong suốt hành trình du xuân.</p>
+
+          <h3>1.2 Cấu trúc bàn cờ</h3>
+          <p>Bàn cờ gồm <strong>36 ô</strong>, tượng trưng cho hành trình du xuân trải dài khắp đất nước:</p>
+          <ul>
+            <li><strong>16 ô Lễ hội</strong> – nơi người chơi có thể xây dựng và nâng cấp lễ hội.</li>
+            <li><strong>6 ô Trống Đồng Tri Thức</strong> – thử thách trả lời câu hỏi văn hóa để nhận xu.</li>
+            <li><strong>2 ô Gieo Quẻ</strong> và <strong>2 ô Lộc Xuân</strong> – rút thẻ ngẫu nhiên để nhận thưởng, vật phẩm hoặc hiệu ứng đặc biệt.</li>
+            <li><strong>1 ô Cửa hàng</strong> – mua vật phẩm cần thiết.</li>
+            <li><strong>1 ô Tết Nguyên Đán</strong> – nhận thưởng đầu năm.</li>
+            <li><strong>1 ô Lỡ Hội</strong> – lỡ hội, phải đứng hóng đến khi cơ hội tiếp theo đến.</li>
+            <li><strong>1 ô Xem Hội</strong> – ô nghỉ ngơi.</li>
+            <li><strong>4 ô Cực Việt Nam</strong> (Bắc, Đông, Tây, Nam) – biểu trưng tinh thần và văn hóa.</li>
+            <li><strong>1 ô Thuế Hội</strong> – người có lễ hội trả nhiều, chưa có trả ít.</li>
+            <li><strong>1 ô Quỹ Hội</strong> – bước vào phải bỏ 150 xu vào quỹ chung; nếu bốc thẻ “Lộc Hội Chung” nhận toàn bộ quỹ.</li>
+          </ul>
+
+          <hr />
+
+          <h2 className="section-title">2. Cách tổ chức & Sở hữu</h2>
+
+          <h3>2.1 Cách tổ chức lễ hội</h3>
+          <p>Để tổ chức (xây) lễ hội, người chơi phải đạt đủ 3 vật phẩm mà lễ hội đó yêu cầu (ví dụ: Bánh – Trang trí – Lá cờ lễ hội). Khi đủ điều kiện, người chơi được xây lễ hội và đặt thẻ sở hữu lên ô tương ứng.</p>
+
+          <h3>2.2 Cách sở hữu vật phẩm</h3>
+          <ul>
+            <li><strong>Mua tại ô “Cửa hàng”</strong>: khi dừng đúng ô, người chơi được phép mua vật phẩm mình cần.</li>
+            <li><strong>Mua của nhà nước</strong>: 1 năm 1 lần (mô phỏng sự hỗ trợ lễ hội).</li>
+            <li><strong>Thẻ “Đặc quyền”</strong>: nếu bốc được thẻ này, được quyền lấy 1 vật phẩm bất kỳ từ người chơi khác mà họ không được từ chối.</li>
+            <li><strong>Bốc từ “Lộc Xuân” / “Gieo Quẻ”</strong>: khi vào ô này, người chơi bốc thẻ ngẫu nhiên (có thể nhận vật phẩm hoặc thẻ cho phép chọn vật phẩm).</li>
+          </ul>
+
+          <hr />
+
+          <h2 className="section-title">3. Kiếm xu & Nâng cấp</h2>
+
+          <h3>3.1 Cách kiếm tiền</h3>
+          <ul>
+            <li><strong>Bước qua ô “Tết”</strong>: nhận thưởng xu đầu năm.</li>
+            <li><strong>Trả lời tại “Trống Đồng Tri Thức”</strong>: trả lời đúng nhận xu.</li>
+            <li><strong>Bốc thẻ “Gieo Quẻ” / “Lộc Xuân”</strong>: có thể nhận tiền, vật phẩm, hoặc hiệu ứng đặc biệt (trao đổi, miễn phí tham quan, v.v.).</li>
+          </ul>
+
+          <h3>3.2 Cách nâng cấp lễ hội</h3>
+          <p>Sau khi xây lễ hội, người chơi có thể nâng cấp (ví dụ: bỏ ra <strong>1200 xu</strong> cho 1 lần nâng cấp). Khi nâng cấp, phí tham quan tăng lên (ví dụ: lễ hội cơ bản 150 xu → nâng cấp 400 xu).</p>
+
+          <h3>3.3 Lợi ích khi nâng cấp</h3>
+          <ul>
+            <li>Sinh lời nhiều hơn: người khác phải trả phí cao hơn khi vào lễ hội bạn sở hữu.</li>
+            <li>Tăng cơ hội thắng: lễ hội cấp cao giúp tăng tổng tài sản cuối game.</li>
+          </ul>
+
+          <hr />
+
+          <h2 className="section-title">Chi tiết ô trên bàn cờ</h2>
+          <p><strong>Số ô trên bàn cờ:</strong> 36 ô</p>
+          <p><strong>Số ô Gieo quẻ:</strong> 2 ô (20 thẻ)</p>
+          <p><strong>Số ô Lộc xuân:</strong> 2 ô (20 thẻ)</p>
+          <p><strong>Số ô Lễ Hội:</strong> 16 ô</p>
+          <p><strong>Số ô Cửa Hàng:</strong> 1 ô</p>
+          <p><strong>Số ô Trống Đồng Tri Thức (câu hỏi):</strong> 6 ô</p>
+          <p><strong>Số ô Lỡ Hội:</strong> 1 ô</p>
+          <p><strong>Số ô Tết Nguyên Đán:</strong> 1 ô</p>
+          <p><strong>Số ô Xem Hội:</strong> 1 ô</p>
+          <p><strong>Số ô Cực:</strong> 4 ô</p>
+          <p><strong>Số ô Thuế Hội:</strong> 1 ô</p>
+          <p><strong>Số ô Quỹ Hội:</strong> 1 ô</p>
+
+          <h3>Ghi chú “Cực”</h3>
+          <ul>
+            <li><strong>Cực Bắc (Lũng Cú)</strong> → Biểu trưng cho tinh thần tự hào, kiên cường.</li>
+            <li><strong>Cực Đông (Mũi Đôi)</strong> → Biểu trưng cho khởi đầu, ánh sáng, hy vọng.</li>
+            <li><strong>Cực Tây (A Pa Chải)</strong> → Biểu trưng cho đoàn kết, giao lưu biên giới.</li>
+            <li><strong>Cực Nam (Mũi Cà Mau)</strong> → Biểu trưng cho phát triển, vươn ra biển lớn.</li>
+          </ul>
+
+          <hr />
+
+          <h2 className="section-title">20 Thẻ LỘC XUÂN</h2>
+          <ul className="cards-list">
+            <li>Bạn giúp người khác gói bánh chưng – được tặng 1 bánh mứt 🍘.</li>
+            <li>Nhặt được bao lì xì rơi – bên trong có 200 xu.</li>
+            <li>Trên đường đi lễ hội, ngã xe làm rơi mâm lễ vật. - mất 1 vật phẩm ngẫu nhiên (vật phẩm gần nhất mới có được)</li>
+            <li>Bạn tham gia trò chơi dân gian ở hội làng và thắng. Nhận 100 xu.</li>
+            <li>Thẻ giảm giá 50%, giữ lại để sử dụng tại Cửa Hàng.</li>
+            <li>Bạn được rút thêm 1 thẻ Lộc Xuân, cơ hội tăng gấp đôi!</li>
+            <li>Vé miễn phí tham quan tại lễ hội. (sài 1 lần)</li>
+            <li>Lộc Xuân đến, ngay lập tức nhận toàn bộ quỹ tiền trong ô Quỹ Hội.</li>
+            <li>Bạn hỗ trợ dọn rác sau hội – nhận 1 thẻ Gieo Quẻ.</li>
+            <li>Lì xì may mắn: nhân đôi tiền thưởng ở lượt sau.</li>
+            <li>Bạn góp công tổ chức hội làng, được giảm 50% phí ở ô lễ hội kế tiếp.</li>
+            <li>Người chơi khác chúc bạn “phát tài”! Nhận 100 xu từ mỗi người chơi.</li>
+            <li>Bạn bị kẹt xe trước cổng hội! Di chuyển thẳng đến ô Lỡ Hội.</li>
+            <li>“Vé Thông Hành” – giữ lại: vào hội mà không bị dừng lượt.</li>
+            <li>Trang trí cổng hội gãy, bạn bỏ -100 xu thuê người sửa giúp.</li>
+            <li>Đoàn múa lân gặp sự cố, mọi người cùng góp 80 xu để thuê nhóm khác.</li>
+            <li>Bạn bị trượt chân khi múa lân, lùi lại 2 ô.</li>
+            <li>Nghe tiếng trống hội rộn ràng, bạn đi tới 3 ô để nhập vui cùng mọi người.</li>
+            <li>Bạn trúng giải bốc thăm may mắn ở hội chợ xuân → Nhận phiếu quà tặng, được chọn 1 vật phẩm bất kỳ từ cửa hàng.</li>
+            <li>Thẻ Đặc Quyền - chọn 1 vật phẩm bất kỳ từ người chơi khác mà họ không thể từ chối.</li>
+          </ul>
+
+          <hr />
+
+          <h2 className="section-title">20 THẺ GIEO QUẺ</h2>
+          <ul className="cards-list">
+            <li>Quẻ Đại Cát 🎋 – Phúc khí tràn đầy, nhận 400 xu.</li>
+            <li>Quẻ Tiểu Cát 🍀 – Vận lành ghé thăm, nhận 200 xu.</li>
+            <li>Quẻ Hung Nhẹ 😅 – Bị rơi ví khi đi lễ, mất 150 xu.</li>
+            <li>Quẻ Mất Lộc 😢 – Trả lại 1 vật phẩm bất kỳ cho cửa hàng.</li>
+            <li>Quẻ Tụ Tài 💰 – Nhận 100 xu từ mỗi người chơi khác.</li>
+            <li>Quẻ An Nhiên 🕊️ – Không có gì xảy ra.</li>
+            <li>Quẻ Tán Lộc 🎁 – Tặng 50 xu cho mỗi người chơi khác.</li>
+            <li>Quẻ Phước Lành ✨ – Nhận 1 vật phẩm bất kỳ từ cửa hàng.</li>
+            <li>Quẻ Bế Vận 🚫 – Phải quay lại 3 ô phía sau.</li>
+            <li>Quẻ Cầu Tài Đắc Lộc 💫 – Nhận 300 xu và 1 vật phẩm bất kỳ.</li>
+            <li>Quẻ Đổi Duyên 🔁 – Chọn 1 người chơi, đổi vị trí trên bàn cờ.</li>
+            <li>Quẻ Hạn Nhẹ – Bỏ qua 1 lượt chơi kế tiếp.</li>
+            <li>Quẻ Khai Hội 🎐 – Di chuyển đến ô Lễ Hội gần nhất phía trước; nếu ô đó chưa có chủ, bạn được xây miễn phí.</li>
+            <li>Quẻ Trở Vận 🔮 – Bạn được tung xúc xắc thêm 1 lần ngay lập tức (đi thêm lượt).</li>
+            <li>Quẻ Lộc Từ Trời Rơi 🌧️ – Một lễ hội của bạn được nâng cấp miễn phí; nếu chưa có lễ hội, nhận 200 xu.</li>
+            <li>Quẻ Hữu Duyên Thiên Lý – Chọn 1 người chơi bất kỳ – cả hai cùng nhận 150 xu.</li>
+            <li>Quẻ Thần Tài Viếng Thăm 🧧 – Mọi lễ hội bạn sở hữu tăng 100 xu phí tham quan cho 3 lượt kế tiếp.</li>
+            <li>Quẻ Chuyển Họa Thành Phúc 🔥 – Chọn 1 người chơi: họ mất 100 xu, bạn nhận 100 xu.</li>
+            <li>Quẻ Vượt Sóng Gió 🚤 – Di chuyển đến ô kế tiếp sau “Trống Đồng Tri Thức” gần nhất; nếu trả lời đúng → nhận gấp đôi phần thưởng.</li>
+            <li>Quẻ Buôn May Bán Đắt 🛍️ – Nếu bạn đang sở hữu 1 lễ hội, nhận 100 xu/lễ hội; nếu chưa có, nhận 150 xu an ủi.</li>
+          </ul>
+
         </div>
       </section>
 
-      <section className="section components-section gradient-bg">
-        <div className="container">
-          <h2 className="section-title" style={{ color: 'white' }}>Thành phần game</h2>
-          <div className="components-grid">
-            {gameComponents.map((component, index) => (
-              <div key={index} className="component-item">
-                <div className="component-icon">📦</div>
-                <span>{component}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section tips-section">
-        <div className="container">
-          <h2 className="section-title">Mẹo chơi hay</h2>
-          <div className="tips-grid">
-            <div className="tip-card">
-              <h4>🎯 Chiến thuật mua lễ hội</h4>
-              <p>Ưu tiên mua các lễ hội liền kề để tạo thành nhóm và tăng phí tham quan.</p>
-            </div>
-            <div className="tip-card">
-              <h4>🎭 Nâng cấp thông minh</h4>
-              <p>Nâng cấp lễ hội theo thứ tự: Bánh-Mứt → Trang trí → Trang phục → Đại Lễ Hội.</p>
-            </div>
-            <div className="tip-card">
-              <h4>📚 Học văn hóa</h4>
-              <p>Thẻ Lộc Xuân cung cấp kiến thức văn hóa và cơ hội kiếm tiền, hãy tận dụng!</p>
-            </div>
-            <div className="tip-card">
-              <h4>⚡ Xử lý thử thách</h4>
-              <p>Thẻ Gieo Quẻ có thể mang lại bất lợi, hãy chuẩn bị tinh thần và tiền bạc.</p>
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   )
 }

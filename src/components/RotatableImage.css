@@ -1,0 +1,57 @@
+.rotatable-wrap {
+  display: inline-block;
+  text-align: center;
+}
+
+.rotatable-container {
+  background: none;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible;
+  height: auto;
+}
+
+.rotatable-container:active {
+  cursor: grabbing;
+}
+
+.rotatable-inner {
+  transform-style: preserve-3d;
+
+}
+
+.rotatable-inner img {
+width: 100%; height: 100%; object-fit: cover; display: block;
+}
+
+.rotatable-controls {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.control-btn {
+  padding: 8px 12px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.06);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.control-btn.active {
+  background: linear-gradient(90deg, var(--color-gold) 0%, var(--color-yellow) 100%);
+  color: var(--color-primary);
+  border: none;
+}
+
+.rotatable-container.auto .rotatable-inner {
+  transition: transform 0.08s linear;
+}
+
+@media (max-width: 768px) {
+  .rotatable-container {
+    height: 240px;
+  }
+}

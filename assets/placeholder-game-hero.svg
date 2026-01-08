@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <rect width="100%" height="100%" fill="#F7F1E6"/>
+  <rect x="40" y="40" width="1120" height="520" rx="20" fill="#E9AF4E" opacity="0.08"/>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="Segoe UI, Tahoma, Geneva, Verdana, sans-serif" font-size="28" fill="#152149">HÌNH ẢNH THAY THẾ — Thay bằng ảnh của bạn</text>
+</svg>

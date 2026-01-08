@@ -65,7 +65,7 @@ const PromoNotification = () => {
         <div className="promo-stats">
           <div className="stat-item">
             <Users size={14} />
-            <span>127 người đang xem</span>
+            <span>37 người đang xem</span>
           </div>
           <div className="stock-info">
             <span>Chỉ còn 15 bộ</span>

@@ -1,6 +1,11 @@
 import React from 'react'
 import { BookOpen, Target, Users, Award, Clock, MapPin } from 'lucide-react'
 import './About.css'
+import f1 from '../../assets/festival-placeholder-1.svg'
+import f2 from '../../assets/festival-placeholder-2.svg'
+import f3 from '../../assets/festival-placeholder-3.svg'
+import f4 from '../../assets/festival-placeholder-4.svg'
+import f5 from '../../assets/festival-placeholder-5.svg'
 
 const About = () => {
   const features = [
@@ -18,11 +23,6 @@ const About = () => {
       icon: <Users size={48} />,
       title: 'Kết nối cộng đồng',
       description: 'Thử thách tương tác như hát dân ca, múa, nhảy dân gian tạo không khí vui vẻ.'
-    },
-    {
-      icon: <Award size={48} />,
-      title: 'Truyền cảm hứng',
-      description: 'Người chơi được tự do nâng cấp, trang trí và biến lễ hội của mình trở nên độc đáo.'
     }
   ]
 
@@ -195,6 +195,22 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      {/* Festival Gallery Section */}
+      <section className="section festival-gallery-section">
+        <div className="container">
+          <h2 className="section-title">Lễ hội tiêu biểu</h2>
+          <p className="gallery-intro">Một số lễ hội tiêu biểu được truyền cảm hứng trong trò chơi — bạn có thể thay bằng ảnh thật.</p>
+          <div className="festival-grid">
+            <div className="festival-item"><img src={f1} alt="Lễ hội 1"/></div>
+            <div className="festival-item"><img src={f2} alt="Lễ hội 2"/></div>
+            <div className="festival-item"><img src={f3} alt="Lễ hội 3"/></div>
+            <div className="festival-item"><img src={f4} alt="Lễ hội 4"/></div>
+            <div className="festival-item"><img src={f5} alt="Lễ hội 5"/></div>
+          </div>
+        </div>
+      </section>
+
     </div>
   )
 }

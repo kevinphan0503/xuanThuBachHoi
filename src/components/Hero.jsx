@@ -1,6 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowDown, Play } from 'lucide-react'
+import RotatableImage from './RotatableImage'
+import biaImg from '../../assets/bia.png'
 import './Hero.css'
 
 const Hero = () => {
@@ -9,39 +11,42 @@ const Hero = () => {
       <div className="hero-background">
         <div className="hero-overlay"></div>
       </div>
-      
+
       <div className="container">
         <div className="hero-content">
+          {/* TEXT */}
           <div className="hero-text">
             <h1 className="hero-title">
               <span className="hero-title-main">XUÂN THU</span>
               <span className="hero-title-sub">BÁCH HỘI</span>
             </h1>
+
             <p className="hero-subtitle">
-              Khám phá lịch sử Việt Nam qua từng nước đi
+              Khám phá văn hóa lễ hội Việt Nam qua từng nước đi
             </p>
+
             <p className="hero-description">
-              Trải nghiệm board game chiến thuật đầy thú vị, nơi bạn sẽ du hành qua 
-              các thời kỳ lịch sử và học hỏi về những sự kiện quan trọng của dân tộc Việt Nam.
+              Trải nghiệm board game chiến thuật đầy thú vị, nơi bạn sẽ du hành qua
+              các lễ hội đặc trưng ở khắp đất nước và học hỏi về những kiến thức văn hóa.
             </p>
-            
+
             <div className="hero-actions">
               <Link to="/about" className="btn btn-primary">
                 Khám phá ngay
               </Link>
               <Link to="/rules" className="btn btn-secondary">
-                <Play size={20} />
+                <Play size={18} />
                 Hướng dẫn chơi
               </Link>
             </div>
 
             <div className="hero-features">
               <div className="feature-item">
-                <span className="feature-number">2-6</span>
+                <span className="feature-number">2–6</span>
                 <span className="feature-label">người chơi</span>
               </div>
               <div className="feature-item">
-                <span className="feature-number">45-60</span>
+                <span className="feature-number">45–60</span>
                 <span className="feature-label">phút</span>
               </div>
               <div className="feature-item">
@@ -51,36 +56,20 @@ const Hero = () => {
             </div>
           </div>
 
+          {/* IMAGE */}
           <div className="hero-visual">
-            <div className="game-preview-card">
-              <div className="card-header">
-                <div className="card-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-              <div className="card-content">
-                <div className="game-board-mini">
-                  <div className="board-squares">
-                    {Array.from({ length: 16 }, (_, i) => (
-                      <div key={i} className={`square square-${i % 4}`}></div>
-                    ))}
-                  </div>
-                  <div className="game-pieces">
-                    <div className="piece piece-1"></div>
-                    <div className="piece piece-2"></div>
-                    <div className="piece piece-3"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <RotatableImage
+              src={biaImg}
+              alt="Bàn cờ Xuân Thu Bách Hội"
+              size="400%"
+            />
           </div>
         </div>
 
+        {/* Scroll */}
         <div className="scroll-indicator">
-          <ArrowDown size={24} />
-          <span>Cuộn xuống để khám phá</span>
+          <ArrowDown size={22} />
+          <span>Cuộn xuống</span>
         </div>
       </div>
     </section>

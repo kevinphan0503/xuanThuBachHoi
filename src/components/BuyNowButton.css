@@ -1,7 +1,7 @@
 /* Inline buy button (header) */
 .buy-now-inline {
   padding: 8px 14px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-gold) 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -112,7 +112,7 @@
 .image-placeholder {
   width: 48px; /* smaller */
   height: 48px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -228,7 +228,7 @@
 
 /* Order Summary */
 .order-summary {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, rgba(233,175,78,0.06) 0%, rgba(243,224,70,0.03) 100%);
   padding: 20px;
   border-radius: 15px;
   margin-bottom: 20px;
@@ -253,7 +253,7 @@
 .submit-order-btn {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   color: white;
   border: none;
   border-radius: 15px;
@@ -271,7 +271,7 @@
 
 .submit-order-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(198, 40, 40, 0.3);
+  box-shadow: 0 10px 20px rgba(0,74,142,0.12);
 }
 
 /* Success Message */

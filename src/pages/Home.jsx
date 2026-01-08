@@ -5,6 +5,7 @@ import Hero from '../components/Hero'
 import FeatureSection from '../components/FeatureSection'
 import GamePreview from '../components/GamePreview'
 import TestimonialSection from '../components/TestimonialSection'
+import RotatableImage from '../components/RotatableImage'
 import './Home.css'
 
 const Home = () => {
@@ -23,11 +24,6 @@ const Home = () => {
       icon: <BookOpen size={48} />,
       title: 'Học mà chơi',
       description: 'Tiếp thu kiến thức về lễ hội, trò chơi dân gian và nghi thức truyền thống'
-    },
-    {
-      icon: <Target size={48} />,
-      title: 'Chiến thuật',
-      description: 'Phát triển lễ hội bằng bánh mứt, trang trí và hoạt động để tăng thu nhập'
     }
   ]
 
@@ -67,26 +63,7 @@ const Home = () => {
                 </Link>
               </div>
             </div>
-            <div className="intro-image">
-              <div className="game-board-preview">
-                <div className="board-grid">
-                  {Array.from({ length: 8 }, (_, i) => (
-                    <div key={i} className="board-cell">
-                      <div className="cell-content">
-                        {i === 0 && <span className="festival-icon">🎭</span>}
-                        {i === 1 && <span className="festival-icon">🏮</span>}
-                        {i === 2 && <span className="festival-icon">🥁</span>}
-                        {i === 3 && <span className="festival-icon">🎪</span>}
-                        {i === 4 && <span className="festival-icon">🎨</span>}
-                        {i === 5 && <span className="festival-icon">🎊</span>}
-                        {i === 6 && <span className="festival-icon">🎵</span>}
-                        {i === 7 && <span className="festival-icon">🎉</span>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+           
           </div>
         </div>
       </section>
@@ -99,7 +76,7 @@ const Home = () => {
 
       <TestimonialSection />
 
-      <section className="section cta-section gradient-bg-2">
+      <section className="section cta-section cta-light">
         <div className="container">
           <div className="cta-content">
             <h2>Sẵn sàng trải nghiệm?</h2>

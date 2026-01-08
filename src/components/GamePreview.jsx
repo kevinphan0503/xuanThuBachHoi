@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Users, Clock, BookOpen } from 'lucide-react'
 import './GamePreview.css'
+import BC03 from '../../assets/BC03.png'
 
 const GamePreview = () => {
   const gameInfo = [
@@ -59,39 +60,17 @@ const GamePreview = () => {
                 Xem luật chơi
                 <ArrowRight size={20} />
               </Link>
-              <Link to="/gallery" className="btn btn-secondary">
-                Hình ảnh game
-              </Link>
+              
             </div>
           </div>
 
           <div className="game-preview-visual">
             <div className="game-board-large">
-              <div className="board-background">
-                <div className="board-grid-large">
-                  {Array.from({ length: 36 }, (_, i) => (
-                    <div key={i} className={`grid-cell cell-${i % 6}`}></div>
-                  ))}
-                </div>
-                <div className="game-elements">
-                  <div className="element element-1">
-                    <div className="element-icon">🌸</div>
-                    <span>Xuân</span>
-                  </div>
-                  <div className="element element-2">
-                    <div className="element-icon">☀️</div>
-                    <span>Hạ</span>
-                  </div>
-                  <div className="element element-3">
-                    <div className="element-icon">🍂</div>
-                    <span>Thu</span>
-                  </div>
-                  <div className="element element-4">
-                    <div className="element-icon">❄️</div>
-                    <span>Đông</span>
-                  </div>
-                </div>
-              </div>
+              <img
+      src={BC03}
+      alt="Bàn cờ Xuân Thu Bách Hội"
+      className="game-board-image"
+    />
             </div>
           </div>
         </div>

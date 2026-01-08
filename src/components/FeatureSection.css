@@ -1,5 +1,5 @@
 .features-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, rgba(233,175,78,0.06) 0%, rgba(243,224,70,0.03) 100%);
 }
 
 .features-grid {
@@ -46,7 +46,7 @@
   justify-content: center;
   width: 80px;
   height: 80px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   border-radius: 50%;
   color: white;
   margin-bottom: 1.5rem;

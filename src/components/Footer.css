@@ -1,6 +1,6 @@
 .footer {
-  background: linear-gradient(135deg, #1F2D3A 0%, #14222A 100%);
-  color: rgb(232, 209, 152);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  color: #ecf0f1;
   padding: 3rem 0 1rem;
   margin-top: auto;
 }
@@ -15,8 +15,7 @@
 .footer-section h3 {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
-  -webkit-background-clip: text;
+background: linear-gradient(90deg, #fff 0%, #f0f0f0 100%);  -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -24,6 +23,7 @@
 .footer-section h4 {
   font-size: 1.1rem;
   margin-bottom: 1rem;
+  
   color: #ecf0f1;
 }
 
@@ -72,7 +72,7 @@
 }
 
 .social-links a:hover {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #C62828 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   transform: translateY(-2px);
 }
 

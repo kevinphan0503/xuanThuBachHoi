@@ -38,7 +38,7 @@
 .game-board-preview {
   width: 300px;
   height: 300px;
-  background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 25%, #FF6B9D 50%, #C44569 75%, #F8B500 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 25%, var(--color-gold) 50%, var(--color-yellow) 100%);
   border-radius: 20px;
   padding: 2rem;
   box-shadow: 0 20px 40px rgba(255,107,107,0.25);
@@ -164,6 +164,10 @@
   gap: 1rem;
   justify-content: center;
   flex-wrap: wrap;
+}
+.cta-light {
+  background: #fffaf0; /* trắng ngà */
+  color: #1f2937;
 }
 
 @media (max-width: 768px) {
