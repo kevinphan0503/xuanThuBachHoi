@@ -1,5 +1,6 @@
 import React from 'react'
 import { BookOpen, Target, Users, Award, Clock, MapPin } from 'lucide-react'
+import useScrollReveal from '../hooks/useScrollReveal'
 import './About.css'
 import f1 from '../../assets/festival-placeholder-1.svg'
 import f2 from '../../assets/festival-placeholder-2.svg'
@@ -8,6 +9,11 @@ import f4 from '../../assets/festival-placeholder-4.svg'
 import f5 from '../../assets/festival-placeholder-5.svg'
 
 const About = () => {
+  const heroRef = useScrollReveal()
+  const introRef = useScrollReveal()
+  const featuresRef = useScrollReveal()
+  const missionRef = useScrollReveal()
+
   const features = [
     {
       icon: <BookOpen size={48} />,
@@ -38,7 +44,7 @@ const About = () => {
       {/* Hero Section */}
       <section className="about-hero">
         <div className="container">
-          <div className="hero-content">
+          <div className="hero-content" ref={heroRef}>
             <h1>Xuân Thu Bách Hội — Board game Văn hóa Truyền thống</h1>
             <p>
               Xuân Thu Bách Hội là board game chiến thuật, kết hợp yếu tố mô phỏng, thẻ kiến thức và thử thách vui nhộn. 
@@ -51,10 +57,10 @@ const About = () => {
       {/* Introduction Section */}
       <section className="section intro-section">
         <div className="container">
-          <div className="intro-content">
+          <div className="intro-content" ref={introRef}>
             <div className="intro-text">
-              <h2 className="section-title">Giới thiệu</h2>
-              <p className="intro-description">
+              <h2 className="section-title reveal-text">Giới thiệu</h2>
+              <p className="intro-description reveal-text reveal-delay-1">
                 XUÂN THU BÁCH HỘI không chỉ là trò chơi giải trí mà còn là phương tiện truyền tải giá trị văn hóa. 
                 Mỗi lượt đi là một hành trình khám phá văn hóa — vừa chiến thuật để phát triển lễ hội, vừa học hỏi về phong tục, ẩm thực và truyền thống.
               </p>
@@ -109,11 +115,11 @@ const About = () => {
 
       {/* Features Section */}
       <section className="section features-section">
-        <div className="container">
-          <h2 className="section-title">Tại sao chọn XUÂN THU BÁCH HỘI?</h2>
+        <div className="container" ref={featuresRef}>
+          <h2 className="section-title reveal-text">Tại sao chọn XUÂN THU BÁCH HỘI?</h2>
           <div className="features-grid">
             {features.map((feature, index) => (
-              <div key={index} className="feature-card">
+              <div key={index} className={`feature-card reveal-text reveal-delay-${index + 1}`}>
                 <div className="feature-icon">
                   {feature.icon}
                 </div>
@@ -147,10 +153,10 @@ const About = () => {
 
       {/* Mission Section */}
       <section className="section mission-section">
-        <div className="container">
+        <div className="container" ref={missionRef}>
           <div className="mission-content">
             <div className="mission-text">
-              <h2 className="section-title">Ý nghĩa của trò chơi</h2>
+              <h2 className="section-title reveal-text">Ý nghĩa của trò chơi</h2>
               <p>
                 XUÂN THU BÁCH HỘI không chỉ là trò chơi giải trí mà còn là phương tiện truyền tải giá trị văn hóa. 
                 Thông qua trò chơi, chúng tôi mong muốn:
@@ -196,20 +202,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Festival Gallery Section */}
-      <section className="section festival-gallery-section">
-        <div className="container">
-          <h2 className="section-title">Lễ hội tiêu biểu</h2>
-          <p className="gallery-intro">Một số lễ hội tiêu biểu được truyền cảm hứng trong trò chơi — bạn có thể thay bằng ảnh thật.</p>
-          <div className="festival-grid">
-            <div className="festival-item"><img src={f1} alt="Lễ hội 1"/></div>
-            <div className="festival-item"><img src={f2} alt="Lễ hội 2"/></div>
-            <div className="festival-item"><img src={f3} alt="Lễ hội 3"/></div>
-            <div className="festival-item"><img src={f4} alt="Lễ hội 4"/></div>
-            <div className="festival-item"><img src={f5} alt="Lễ hội 5"/></div>
-          </div>
-        </div>
-      </section>
+  
 
     </div>
   )

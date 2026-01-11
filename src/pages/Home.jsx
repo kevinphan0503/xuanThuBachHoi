@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Users, Clock, Target, BookOpen, Trophy, Star, Music, Camera, Gift, Heart } from 'lucide-react'
 import Hero from '../components/Hero'
@@ -6,9 +6,13 @@ import FeatureSection from '../components/FeatureSection'
 import GamePreview from '../components/GamePreview'
 import TestimonialSection from '../components/TestimonialSection'
 import RotatableImage from '../components/RotatableImage'
+import useScrollReveal from '../hooks/useScrollReveal'
 import './Home.css'
 
 const Home = () => {
+  const introRef = useScrollReveal()
+  const ctaRef = useScrollReveal()
+
   const features = [
     {
       icon: <Users size={48} />,
@@ -40,20 +44,20 @@ const Home = () => {
       
       <section className="section intro-section">
         <div className="container">
-          <div className="intro-content">
+          <div className="intro-content" ref={introRef}>
             <div className="intro-text">
-              <h2 className="section-title">Xuân Thu Bách Hội</h2>
-              <h3 className="intro-subtitle">Khám phá văn hóa - Kết nối cộng đồng</h3>
-              <p className="intro-description">
+              <h2 className="section-title reveal-text">Xuân Thu Bách Hội</h2>
+              <h3 className="intro-subtitle reveal-text reveal-delay-1">Khám phá văn hóa - Kết nối cộng đồng</h3>
+              <p className="intro-description reveal-text reveal-delay-2">
                Xuân Thu Bách Hội là một board game chiến thuật, kết hợp yếu tố mô phỏng, thẻ kiến thức và thử thách vui nhộn. 
                 Trò chơi lấy cảm hứng từ lễ hội truyền thống khắp ba miền, được thiết kế vui tươi, đậm chất dân gian và phù hợp với mọi lứa tuổi.
               </p>
-              <p className="intro-description">
+              <p className="intro-description reveal-text reveal-delay-3">
                 Trong trò chơi, bạn sẽ đi khắp các vùng miền để mua quyền tổ chức các lễ hội (Hội Lim, Chọi Trâu, Lễ hội Cà phê, Giỗ Tổ Hùng Vương...), 
                 nâng cấp lễ hội bằng bánh mứt, trang trí, hoạt động, rút thẻ Lộc Xuân để nhận kiến thức văn hóa và cơ hội, 
                 hoặc rút thẻ Gieo Quẻ để gặp những thử thách hài hước và kịch tính.
               </p>
-              <div className="intro-actions">
+              <div className="intro-actions reveal-text reveal-delay-4">
                 <Link to="/about" className="btn">
                   Tìm hiểu thêm
                   <ArrowRight size={20} />
@@ -78,10 +82,10 @@ const Home = () => {
 
       <section className="section cta-section cta-light">
         <div className="container">
-          <div className="cta-content">
-            <h2>Sẵn sàng trải nghiệm?</h2>
-            <p>Hãy bắt đầu hành trình khám phá lễ hội truyền thống Việt Nam ngay hôm nay!</p>
-            <div className="cta-actions">
+          <div className="cta-content" ref={ctaRef}>
+            <h2 className="reveal-text">Sẵn sàng trải nghiệm?</h2>
+            <p className="reveal-text reveal-delay-1">Hãy bắt đầu hành trình khám phá lễ hội truyền thống Việt Nam ngay hôm nay!</p>
+            <div className="cta-actions reveal-text reveal-delay-2">
               <Link to="/contact" className="btn">
                 Liên hệ mua game
               </Link>

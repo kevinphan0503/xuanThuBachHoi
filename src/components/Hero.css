@@ -37,20 +37,20 @@
 }
 
 .hero-title {
-  font-size: 3.5rem;
+  font-size: 5rem;
   line-height: 1.1;
   margin-bottom: 1rem;
 }
 
 .hero-title-main {
-  display: block;
+  display: inline;
   background: linear-gradient(90deg, #fff, #f0f0f0);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .hero-title-sub {
-  display: block;
+  display: inline-block;
   background: linear-gradient(90deg, var(--color-gold), var(--color-yellow));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

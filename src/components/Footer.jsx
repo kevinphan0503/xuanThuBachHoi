@@ -29,7 +29,7 @@ const Footer = () => {
             <ul>
               <li><Link to="/about">Giới thiệu</Link></li>
               <li><Link to="/rules">Hướng dẫn chơi</Link></li>
-              <li><Link to="/gallery">Hình ảnh game</Link></li>
+             
               <li><Link to="/contact">Liên hệ</Link></li>
             </ul>
           </div>
@@ -40,7 +40,7 @@ const Footer = () => {
               <li>Số người chơi: 2-6 người</li>
               <li>Thời gian: 45-60 phút</li>
               <li>Độ tuổi: 12+</li>
-              <li>Thể loại: Chiến thuật, Lịch sử</li>
+              <li>Thể loại: Chiến thuật</li>
             </ul>
           </div>
 
@@ -49,11 +49,11 @@ const Footer = () => {
             <div className="contact-info">
               <div className="contact-item">
                 <Mail size={16} />
-                <span>xtbh@gmail.com</span>
+                <span>xuanthubachhoi@gmail.com</span>
               </div>
               <div className="contact-item">
                 <Phone size={16} />
-                <span>+84 903781862</span>
+                <span>+84 931663455</span>
               </div>
               <div className="contact-item">
                 <MapPin size={16} />

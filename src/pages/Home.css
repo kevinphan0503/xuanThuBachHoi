@@ -1,3 +1,7 @@
+.home {
+  padding-top: 80px; /* account for fixed header */
+}
+
 .intro-section {
   background: linear-gradient(135deg, #ffffff 0%, #f6f6f6 100%);
 }

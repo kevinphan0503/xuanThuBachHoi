@@ -4,6 +4,7 @@ import './PromoNotification.css'
 
 const PromoNotification = () => {
   const [isVisible, setIsVisible] = useState(false)
+  const [isHiddenByModal, setIsHiddenByModal] = useState(false)
   const [timeLeft, setTimeLeft] = useState({
     hours: 23,
     minutes: 59,
@@ -36,6 +37,30 @@ const PromoNotification = () => {
     }
   }, [])
 
+  // Observe body class changes (e.g., modal-open) to avoid relying on global CSS rules
+  useEffect(() => {
+    const checkBody = () => {
+      const has = document.body && document.body.classList && document.body.classList.contains('modal-open')
+      setIsHiddenByModal(Boolean(has))
+    }
+
+    checkBody()
+
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === 'class') {
+          checkBody()
+        }
+      }
+    })
+
+    if (document.body) observer.observe(document.body, { attributes: true })
+
+    return () => {
+      if (observer) observer.disconnect()
+    }
+  }, [])
+
   const handleClose = () => {
     setIsVisible(false)
   }
@@ -43,7 +68,7 @@ const PromoNotification = () => {
   if (!isVisible) return null
 
   return (
-    <div className="promo-notification">
+    <div className={`promo-notification ${isHiddenByModal ? 'hidden' : ''}`}>
       <button className="promo-close" onClick={handleClose}>
         <X size={16} />
       </button>
@@ -56,10 +81,7 @@ const PromoNotification = () => {
         <div className="promo-text">
           <h4>🎉 Ưu đãi đặc biệt!</h4>
           <p>Giảm <strong>25%</strong> - Chỉ còn <strong>299.000đ</strong></p>
-          <div className="promo-timer">
-            <Clock size={14} />
-            <span>Còn lại: {String(timeLeft.hours).padStart(2, '0')}:{String(timeLeft.minutes).padStart(2, '0')}:{String(timeLeft.seconds).padStart(2, '0')}</span>
-          </div>
+          
         </div>
         
         <div className="promo-stats">

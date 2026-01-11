@@ -17,14 +17,13 @@ const Hero = () => {
           {/* TEXT */}
           <div className="hero-text">
             <h1 className="hero-title">
-              <span className="hero-title-main">XUÂN THU</span>
+              <span className="hero-title-main">XUÂN THU </span>
               <span className="hero-title-sub">BÁCH HỘI</span>
             </h1>
 
             <p className="hero-subtitle">
               Khám phá văn hóa lễ hội Việt Nam qua từng nước đi
             </p>
-
             <p className="hero-description">
               Trải nghiệm board game chiến thuật đầy thú vị, nơi bạn sẽ du hành qua
               các lễ hội đặc trưng ở khắp đất nước và học hỏi về những kiến thức văn hóa.

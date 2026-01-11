@@ -27,6 +27,17 @@ const BuyNowButton = ({ variant = 'floating' }) => {
     }
   }, [isModalOpen])
 
+  // Close modal on Escape key as a safety and ensure body class is cleaned
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        setIsModalOpen(false)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [isModalOpen])
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,

@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { ChevronLeft, ChevronRight, X, Download, Heart, Share2 } from 'lucide-react'
+import useScrollReveal from '../hooks/useScrollReveal'
 import './Gallery.css'
 
 const Gallery = () => {
@@ -93,11 +94,14 @@ const Gallery = () => {
     setSelectedImage(galleryImages[prevIndex])
   }
 
+  const heroRef = useScrollReveal()
+  const galleryRef = useScrollReveal()
+
   return (
     <div className="gallery-page">
       <section className="gallery-hero">
         <div className="container">
-          <div className="hero-content">
+          <div className="hero-content" ref={heroRef}>
             <h1>Hình ảnh game</h1>
             <p>Khám phá thiết kế đẹp mắt và chi tiết của Xuân Thu Bách Hội</p>
           </div>
@@ -105,10 +109,10 @@ const Gallery = () => {
       </section>
 
       <section className="section gallery-section">
-        <div className="container">
+        <div className="container" ref={galleryRef}>
           <div className="gallery-grid">
             {galleryImages.map((image, index) => (
-              <div key={image.id} className="gallery-item" onClick={() => openModal(image, index)}>
+              <div key={image.id} className={`gallery-item reveal-text reveal-delay-${(index % 3) + 1}`} onClick={() => openModal(image, index)}>
                 <div className="gallery-image">
                   <div className="image-placeholder">
                     <span>📸</span>

@@ -6,19 +6,32 @@
   background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   padding: 6rem 0 4rem;
   text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.about-hero .hero-content {
+  position: relative;
+  z-index: 10;
 }
 
 .about-hero h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
   font-weight: bold;
+  color: white !important;
+  opacity: 1 !important;
+  visibility: visible !important;
 }
 
 .about-hero p {
   font-size: 1.2rem;
-  opacity: 0.9;
+  opacity: 0.9 !important;
   max-width: 600px;
   margin: 0 auto;
+  color: white !important;
+  visibility: visible !important;
 }
 
 .intro-section {

@@ -3,11 +3,13 @@
 
 import React, { useState } from 'react'
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from 'lucide-react'
+import useScrollReveal from '../hooks/useScrollReveal'
 import './Contact.css'
 
 // images (imported so Vite bundles them during build)
 import BT from '../../assets/BT.jpg'
 import TM from '../../assets/TM.png'
+import CT from '../../assets/CT.jpg'
 import CT3 from '../../assets/CT3.png'
 import HV3 from '../../assets/HV3.png'
 import NQ from '../../assets/NQ.jpg'
@@ -51,13 +53,13 @@ const Contact = () => {
     {
       icon: <Mail size={24} />,
       title: 'Email',
-      content: 'xtbh@gmail.com',
+      content: 'xuanthubachhoi@gmail.com',
       description: 'Gửi email cho chúng tôi'
     },
     {
       icon: <Phone size={24} />,
       title: 'Điện thoại',
-      content: '+84 903781862',
+      content: '+84 931663455',
       description: 'Gọi điện trực tiếp Tina Phùng'
     },
     {
@@ -77,7 +79,7 @@ const Contact = () => {
   const faqs = [
     {
       question: 'Khi nào Xuân Thu Bách Hội sẽ chính thức ra mắt?',
-      answer: 'Xuân Thu Bách Hội đang hoàn tất những bước cuối cùng và sẽ ra mắt vào quý 2 năm 2024. Chúng tôi sẽ cập nhật thông tin chi tiết trên website và fanpage.'
+      answer: 'Xuân Thu Bách Hội đang hoàn tất những bước cuối cùng và sẽ ra mắt vào quý 1 năm 2026. Chúng tôi sẽ cập nhật thông tin chi tiết trên website và fanpage.'
     },
     {
       question: 'Board game dành cho đối tượng nào?',
@@ -99,20 +101,27 @@ const Contact = () => {
 
   // 👇 Phần đội ngũ
   const teamMembers = [
+    { name: 'Nguyễn Hoàng Phúc', image: HP },
     
     { name: 'Nguyễn Thị Bảo Trân', image: BT },
-    { name: 'Lê Tuyết MInh', image: TM },
-    { name: 'Phùng Cẩm Thi', image: CT3 },
+    { name: 'Lê Tuyết Minh', image: TM },
+    { name: 'Phùng Cẩm Thi', image: CT },
     { name: 'Phan Hữu Văn', image: HV3 },
-    { name: 'Phan Nhật Quý', image: NQ },
-    { name: 'Nguyễn Hoàng Phúc', image: HP }
+    { name: 'Phan Nhật Quý', image: NQ }
+   
   ]
+
+  const heroRef = useScrollReveal()
+  const infoRef = useScrollReveal()
+  const formRef = useScrollReveal()
+  const teamRef = useScrollReveal()
+  const faqRef = useScrollReveal()
 
   return (
     <div className="contact-page">
       <section className="contact-hero">
         <div className="container">
-          <div className="hero-content">
+          <div className="hero-content" ref={heroRef}>
             <h1>Liên hệ với chúng tôi</h1>
             <p>Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn</p>
           </div>
@@ -120,10 +129,10 @@ const Contact = () => {
       </section>
 
       <section className="section contact-info-section">
-        <div className="container">
+        <div className="container" ref={infoRef}>
           <div className="contact-info-grid">
             {contactInfo.map((info, index) => (
-              <div key={index} className="contact-info-card">
+              <div key={index} className={`contact-info-card reveal-text reveal-delay-${index + 1}`}>
                 <div className="info-icon">{info.icon}</div>
                 <div className="info-content">
                   <h3>{info.title}</h3>
@@ -137,10 +146,10 @@ const Contact = () => {
       </section>
 
       <section className="section contact-form-section">
-        <div className="container">
+        <div className="container" ref={formRef}>
           <div className="contact-content">
             <div className="contact-form-container">
-              <h2 className="section-title">Gửi tin nhắn cho chúng tôi</h2>
+              <h2 className="section-title reveal-text">Gửi tin nhắn cho chúng tôi</h2>
               <form className="contact-form" onSubmit={handleSubmit}>
                 <div className="form-row">
                   <div className="form-group">
@@ -241,15 +250,17 @@ const Contact = () => {
 
       {/* 👇 Thêm section đội ngũ ở đây */}
       <section className="section team-section">
-        <div className="container">
-          <h2 className="section-title">Đội ngũ của chúng tôi</h2>
+        <div className="container" ref={teamRef}>
+          <h2 className="section-title reveal-text">Đội ngũ của chúng tôi</h2>
           <div className="team-grid">
             {teamMembers.map((member, index) => (
-              <div key={index} className="team-card">
+              <div key={index} className={`team-card reveal-text reveal-delay-${(index % 3) + 1}`}>
                 <img
                   src={member.image}
                   alt={member.name}
                   className="team-image"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <h4 className="team-name">{member.name}</h4>
               </div>
@@ -259,11 +270,11 @@ const Contact = () => {
       </section>
 
       <section className="section faq-section">
-        <div className="container">
-          <h2 className="section-title">Câu hỏi thường gặp</h2>
+        <div className="container" ref={faqRef}>
+          <h2 className="section-title reveal-text">Câu hỏi thường gặp</h2>
           <div className="faq-list">
             {faqs.map((faq, index) => (
-              <div key={index} className="faq-item">
+              <div key={index} className={`faq-item reveal-text reveal-delay-${(index % 3) + 1}`}>
                 <h4 className="faq-question">{faq.question}</h4>
                 <p className="faq-answer">{faq.answer}</p>
               </div>

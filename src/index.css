@@ -1,3 +1,6 @@
+/* ===================== */
+/* RESET & BASE */
+/* ===================== */
 * {
   margin: 0;
   padding: 0;
@@ -7,14 +10,14 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  /* Brand palette */
-  --color-primary: #152149; /* navy */
-  --color-secondary: #004A8E; /* blue */
-  --color-gold: #E9AF4E; /* gold */
-  --color-yellow: #F3E046; /* bright yellow */
-  --color-red: #E62D32; /* red */
-  --text-color: #152149; /* use navy for primary text */
-  --background: #fffaf0; /* subtle warm background */
+
+  --color-primary: #152149;
+  --color-secondary: #004A8E;
+  --color-gold: #E9AF4E;
+  --color-yellow: #F3E046;
+  --color-red: #E62D32;
+  --text-color: #152149;
+  --background: #fffaf0;
 
   color: var(--text-color);
   background-color: var(--background);
@@ -24,12 +27,18 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ===================== */
+/* LAYOUT */
+/* ===================== */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
+/* ===================== */
+/* BUTTON */
+/* ===================== */
 .btn {
   display: inline-block;
   padding: 12px 24px;
@@ -44,6 +53,7 @@ html {
   font-weight: 500;
 }
 
+
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
@@ -52,15 +62,15 @@ html {
 .btn-secondary {
   background: linear-gradient(90deg, var(--color-gold) 0%, var(--color-yellow) 100%);
 }
-
 .btn-secondary:hover {
   box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
 }
-
 .section {
   padding: 80px 0;
 }
-
+/* ===================== */
+/* SECTION TITLE */
+/* ===================== */
 .section-title {
   text-align: center;
   font-size: 2.5rem;
@@ -77,19 +87,102 @@ html {
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   border-radius: 2px;
 }
 
+/* ===================== */
+/* 🔥 HERO – ALWAYS VISIBLE */
+/* ===================== */
+.hero *,
+.about-hero *,
+.contact-hero *,
+.gallery-hero *,
+.rules-hero * {
+  opacity: 1 !important;
+  
+  visibility: visible !important;
+
+}
+
+/* ===================== */
+/* 🎬 REVEAL ANIMATION */
+/* ÁP DỤNG CHỈ CHO .section */
+/* ===================== */
+.section .reveal-text {
+  transition: opacity 2s ease, transform 2s ease;
+}
+
+.section .reveal-text:not(.revealed) {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.section .reveal-text.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section .reveal-fade {
+  transition: opacity 1s ease;
+}
+
+.section .reveal-fade:not(.revealed) {
+  opacity: 0;
+}
+
+.section .reveal-fade.revealed {
+  opacity: 1;
+}
+
+.section .reveal-slide-left {
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section .reveal-slide-left:not(.revealed) {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.section .reveal-slide-left.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.section .reveal-slide-right {
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section .reveal-slide-right:not(.revealed) {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.section .reveal-slide-right.revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ===================== */
+/* SELECTION */
+/* ===================== */
+::selection {
+  background: var(--color-gold);
+  color: var(--color-primary);
+}
+
+/* ===================== */
+/* RESPONSIVE */
+/* ===================== */
 @media (max-width: 768px) {
   .container {
     padding: 0 15px;
   }
-  
+
   .section {
     padding: 60px 0;
   }
-  
+
   .section-title {
     font-size: 2rem;
   }
