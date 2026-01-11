@@ -28,52 +28,53 @@ const GameRules = () => {
 
   return (
     <div className="game-rules-page">
-      <section className="rules-hero">
-        <div className="hero-decoration hero-decoration-1">🏮</div>
-        <div className="hero-decoration hero-decoration-2">🎋</div>
-        <div className="hero-decoration hero-decoration-3">🎊</div>
-        <div className="container">
-          <div className={`hero-content ${isVisible ? 'fade-in' : ''}`}>
-            <div className="hero-text">
-              <h1 className="hero-title">
-                <span className="title-icon">🎯</span>
-                HƯỚNG DẪN CÁCH CHƠI – CỜ LỄ HỘI VIỆT NAM
-              </h1>
-              <p className="hero-subtitle">Người chơi thu thập vật phẩm lễ hội, xây dựng – nâng cấp lễ hội và kiếm xu qua việc tham gia, tổ chức và trao đổi trong suốt hành trình du xuân.</p>
-              <div className="hero-stats">
-                <div className="stat-item">
-                  <div className="stat-number">36</div>
-                  <div className="stat-label">Ô trên bàn cờ</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">2-6</div>
-                  <div className="stat-label">Người chơi</div>
-                </div>
-                <div className="stat-item">
-                  <div className="stat-number">40-60</div>
-                  <div className="stat-label">Phút/ván</div>
-                </div>
-              </div>
-            </div>
+     <section className="rules-hero">
+  {/* Decorations */}
+  
+  <span className="hero-decoration deco-2">🎋</span>
+  <span className="hero-decoration deco-3">🎊</span>
 
-            {/* Image placeholders — you can replace these SVGs in /assets when ready */}
-            <div className="hero-images">
-              <div className="image-wrapper">
-                <img src={heroImg} alt="Bàn cờ lễ hội" className="hero-image-main" />
-                <div className="image-overlay"></div>
-              </div>
-              <div className="hero-image-thumbs">
-                <div className="thumb-wrapper">
-                  <img src={thumb1} alt="Lễ hội truyền thống" />
-                </div>
-                <div className="thumb-wrapper">
-                  <img src={thumb2} alt="Văn hóa Việt Nam" />
-                </div>
-              </div>
-            </div>
+  <div className="container">
+    <div className="rules-hero-content">
+
+      {/* TEXT */}
+      <div className="hero-text">
+        <h1 className="hero-title">
+          <span className="title-icon">🎯</span>
+          <span className="title-text">
+            HƯỚNG DẪN CÁCH CHƠI
+           
+          </span>
+        </h1>
+
+        <p className="hero-subtitle">
+            Người chơi thu thập vật phẩm lễ hội, xây dựng và nâng cấp lễ hội,
+            kiếm xu thông qua việc tham gia, tổ chức và trao đổi trong suốt hành trình du xuân.
+        </p>
+
+        {/* STATS */}
+        <div className="hero-stats">
+          <div className="stat-item">
+            <span className="stat-number">36</span>
+            <span className="stat-label">Ô bàn cờ</span>
+          </div>
+
+          <div className="stat-item">
+            <span className="stat-number">2–6</span>
+            <span className="stat-label">Người chơi</span>
+          </div>
+
+          <div className="stat-item">
+            <span className="stat-number">40–60</span>
+            <span className="stat-label">Phút / ván</span>
           </div>
         </div>
-      </section>
+
+      </div>
+    </div>
+  </div>
+</section>
+
 
       <section className="section rules-sections">
         <div className="container">

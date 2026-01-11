@@ -5,13 +5,19 @@
 
 /* ========== HERO SECTION ========== */
 .rules-hero {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-  color: white;
-  padding: 6rem 0 4rem;
-  text-align: center;
   position: relative;
+  padding: 120px 0 100px;
+  background: linear-gradient(
+    135deg,
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  color: white;
   overflow: hidden;
 }
+.deco-1 { top: 15%; left: 10%; }
+.deco-2 { bottom: 20%; right: 12%; }
+.deco-3 { top: 25%; right: 25%; }
 
 .rules-hero::before {
   content: '';

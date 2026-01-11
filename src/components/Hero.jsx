@@ -18,6 +18,7 @@ const Hero = () => {
           <div className="hero-text">
             <h1 className="hero-title">
               <span className="hero-title-main">XUÂN THU </span>
+              
               <span className="hero-title-sub">BÁCH HỘI</span>
             </h1>
 
