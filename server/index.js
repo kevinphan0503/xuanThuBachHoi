@@ -34,8 +34,8 @@ app.get('/api/festivals', async (req, res) => {
 app.get('/api/festivals/:festival_id', async (req, res) => {
     try {
         const id = req.params.festival_id || req.params.id;
-        // console.log(`Fetching festival with id: ${id}`);
-        const [rows] = await pool.query('SELECT * FROM `Festival` WHERE festival_id = ?', [id]);
+        const result = await pool.query('SELECT * FROM "Festival" WHERE festival_id = $1', [id]);
+        const rows = result.rows;
         if (!rows || rows.length === 0) {
             return res.status(404).json({ error: 'Not found' });
         }
