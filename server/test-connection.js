@@ -1,9 +1,12 @@
-import pool, { ping } from './db.js';
+import pool, { checkRenderConnection } from './db.js';
 
 try {
-  const ok = await ping();
-  if (ok) {
+  const info = await checkRenderConnection();
+  if (info.ok) {
     console.log('Postgres connection OK');
+    console.log(`Host: ${info.host} | Port: ${info.port}`);
+    console.log(`User: ${info.user}`);
+    console.log(info.version);
   } else {
     console.log('Postgres ping failed');
   }

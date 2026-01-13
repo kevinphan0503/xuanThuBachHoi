@@ -4,6 +4,7 @@ import './FestivalDetail.css'
 
 const FestivalDetail = () => {
   const { id } = useParams()
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
   const [festival, setFestival] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -15,7 +16,7 @@ const FestivalDetail = () => {
       try {
         setLoading(true)
         setError('')
-        const res = await fetch(`http://localhost:5000/api/festivals/${id}`)
+        const res = await fetch(`${API_URL}/api/festivals/${id}`)
         if (!res.ok) throw new Error(`API error ${res.status}`)
         const data = await res.json()
         if (active) setFestival(data)

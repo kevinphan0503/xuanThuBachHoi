@@ -2,36 +2,30 @@
 
 ## Yêu cầu
 - Node.js và npm
-- MySQL Server
+- PostgreSQL Server
 - Database: `boardgame_festival`
 
-## Bước 1: Tạo Database và Tables
+## Bước 1: Tạo Database và Tables (PostgreSQL)
 
-1. Đăng nhập vào MySQL:
-```bash
-mysql -u root -p
+1. Đăng nhập vào PostgreSQL (PowerShell):
+```powershell
+psql -U postgres
 ```
 
-2. Tạo database (nếu chưa có):
-```sql
-CREATE DATABASE IF NOT EXISTS boardgame_festival;
-USE boardgame_festival;
+2. Tạo database và schema (file `server/schema.sql` đã bao gồm tạo DB và kết nối):
+```powershell
+psql -U postgres -f server/schema.sql
 ```
 
-3. Chạy file schema.sql:
-```bash
-mysql -u root -p boardgame_festival < server/schema.sql
-```
-
-Hoặc copy nội dung từ `server/schema.sql` và chạy trong MySQL client.
+Hoặc mở `psql` rồi copy nội dung từ `server/schema.sql` để chạy.
 
 ## Bước 2: Cấu hình Environment Variables
 
-Tạo file `.env` trong thư mục `server/` (nếu chưa có):
+Tạo file `.env` (ở thư mục gốc hoặc `server/`) nếu chưa có:
 ```
 DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
+DB_PORT=5432
+DB_USER=postgres
 DB_PASSWORD=your_password
 DB_NAME=boardgame_festival
 API_PORT=5000
@@ -39,19 +33,19 @@ API_PORT=5000
 
 ## Bước 3: Cài đặt dependencies
 
-```bash
+```powershell
 npm install
 ```
 
 ## Bước 4: Chạy ứng dụng
 
 ### Terminal 1 - Chạy Backend Server:
-```bash
+```powershell
 npm run server
 ```
 
 ### Terminal 2 - Chạy Frontend:
-```bash
+```powershell
 npm run dev
 ```
 
@@ -63,7 +57,7 @@ npm run dev
   - Username: `admin`
   - Password: `admin123`
 
-## Cấu trúc Database
+## Cấu trúc Database (PostgreSQL)
 
 ### Tables chính:
 - `products`: Sản phẩm (boardgame, móc khóa, khăn)
@@ -101,3 +95,56 @@ File `server/schema.sql` đã bao gồm:
 - Trong production, nên dùng bcrypt để hash password
 - Nên thêm JWT authentication cho admin
 - Có thể cần điều chỉnh CORS settings trong `server/index.js`
+
+## Triển khai với Render + Vercel
+
+- Backend (Render Web Service):
+  - Nếu dùng Internal DB URL: đặt `DATABASE_URL=<Internal URL>`, `DB_SSL=false`.
+  - Nếu dùng External DB URL: đặt `DATABASE_URL=<External URL>`, `DB_SSL=true`.
+  - Luôn đặt `API_PORT=5000` (hoặc giá trị bạn dùng).
+
+- Frontend (Vercel):
+  - Đặt biến `VITE_API_URL` trỏ tới URL backend Render, ví dụ `https://your-render-api.onrender.com`.
+
+- Local development dùng Render DB:
+```powershell
+$env:DATABASE_URL = "postgresql://<user>:<pass>@dpg-...render.com/<db>"
+$env:DB_SSL = "true"
+$env:VITE_API_URL = "http://localhost:5000"
+npm run server
+# Mở tab khác
+npm run dev
+```
+
+## Chạy chỉ Frontend (dùng API + DB trên Render)
+
+Bạn có thể KHÔNG chạy `npm run server` tại máy, thay vào đó dùng API đã deploy trên Render:
+
+1. Xác định URL backend Render (ví dụ `https://xuanthubachhoi-api.onrender.com`).
+2. Thiết lập biến môi trường cho Vite:
+```powershell
+$env:VITE_API_URL = "https://<your-render-api>.onrender.com"
+```
+3. Chạy frontend:
+```powershell
+npm run dev
+```
+
+Lúc này, tất cả request từ frontend sẽ gọi tới API Render, API này đã sử dụng `DATABASE_URL` trỏ vào Postgres Render, vì vậy dữ liệu hiển thị sẽ lấy trực tiếp từ Render DB.
+
+Mẹo:
+- Bạn có thể lưu cấu hình vào file `.env` ở thư mục gốc:
+```
+VITE_API_URL=https://<your-render-api>.onrender.com
+```
+- Với Vite, chỉ các biến bắt đầu bằng `VITE_` mới khả dụng ở frontend.
+
+## Khởi tạo schema/data trên Render DB
+
+Nếu cần nạp schema/data vào DB Render:
+```powershell
+# External URL ví dụ
+psql "postgresql://...render.com/boardgame_festival_qxw0" -f server/schema.sql
+psql "postgresql://...render.com/boardgame_festival_qxw0" -f server/datasample.sql
+```
+Lưu ý: `server/schema.sql` có lệnh tạo/kết nối database; nếu chạy trên Render đã có sẵn DB, hãy chỉ giữ phần tạo bảng/types hoặc dùng file schema phù hợp.
