@@ -8,6 +8,7 @@ import About from './pages/About'
 import GameRules from './pages/GameRules'
 import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
+import FestivalDetail from './pages/FestivalDetail'
 import './App.css'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/festivals/:id" element={<FestivalDetail />} />
             <Route path="/rules" element={<GameRules />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/contact" element={<Contact />} />

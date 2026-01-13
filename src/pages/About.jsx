@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { BookOpen, Target, Users, Award, Clock, MapPin } from 'lucide-react'
 import useScrollReveal from '../hooks/useScrollReveal'
 import './About.css'
@@ -13,6 +14,32 @@ const About = () => {
   const introRef = useScrollReveal()
   const featuresRef = useScrollReveal()
   const missionRef = useScrollReveal()
+
+  const [festivals, setFestivals] = useState([])
+  const [loadingFestivals, setLoadingFestivals] = useState(true)
+  const [festivalError, setFestivalError] = useState('')
+
+  useEffect(() => {
+    let active = true
+    async function load() {
+      try {
+        setLoadingFestivals(true)
+        setFestivalError('')
+        const res = await fetch('http://localhost:5000/api/festivals')
+        if (!res.ok) throw new Error(`API error ${res.status}`)
+        const data = await res.json()
+        if (active) setFestivals(Array.isArray(data) ? data : [])
+      } catch (err) {
+        if (active) setFestivalError(err.message || 'Failed to load festivals')
+      } finally {
+        if (active) setLoadingFestivals(false)
+      }
+    }
+    load()
+    return () => {
+      active = false
+    }
+  }, [])
 
   const features = [
     {
@@ -47,7 +74,7 @@ const About = () => {
           <div className="hero-content" ref={heroRef}>
             <h1>Xuân Thu Bách Hội — Board game Văn hóa Truyền thống</h1>
             <p>
-              Xuân Thu Bách Hội là board game chiến thuật, kết hợp yếu tố mô phỏng, thẻ kiến thức và thử thách vui nhộn. 
+              Xuân Thu Bách Hội là board game chiến thuật, kết hợp yếu tố mô phỏng, thẻ kiến thức và thử thách vui nhộn.
               Trò chơi lấy cảm hứng từ lễ hội truyền thống khắp ba miền, được thiết kế vui tươi, đậm chất dân gian và phù hợp với mọi lứa tuổi.
             </p>
           </div>
@@ -61,7 +88,7 @@ const About = () => {
             <div className="intro-text">
               <h2 className="section-title reveal-text">Giới thiệu</h2>
               <p className="intro-description reveal-text reveal-delay-1">
-                XUÂN THU BÁCH HỘI không chỉ là trò chơi giải trí mà còn là phương tiện truyền tải giá trị văn hóa. 
+                XUÂN THU BÁCH HỘI không chỉ là trò chơi giải trí mà còn là phương tiện truyền tải giá trị văn hóa.
                 Mỗi lượt đi là một hành trình khám phá văn hóa — vừa chiến thuật để phát triển lễ hội, vừa học hỏi về phong tục, ẩm thực và truyền thống.
               </p>
               <h3>Mục tiêu</h3>
@@ -77,36 +104,48 @@ const About = () => {
                 <li>Cơ chế nâng cấp lễ hội bằng Bánh, Mứt, Trang trí, Hoạt động.</li>
               </ul>
             </div>
+            {/* List festivals */}
             <div className="intro-visual">
               <div className="festival-timeline">
-                <div className="timeline-item">
-                  <div className="timeline-marker"></div>
-                  <div className="timeline-content">
-                    <h4>Hội Lim</h4>
-                    <p>Lễ hội quan họ Bắc Ninh</p>
+                {loadingFestivals && (
+                  <div className="timeline-item">
+                    <div className="timeline-marker"></div>
+                    <div className="timeline-content">
+                      <h4>Đang tải danh sách lễ hội…</h4>
+                    </div>
                   </div>
-                </div>
-                <div className="timeline-item">
-                  <div className="timeline-marker"></div>
-                  <div className="timeline-content">
-                    <h4>Chọi Trâu</h4>
-                    <p>Lễ hội truyền thống Đồ Sơn</p>
+                )}
+                {festivalError && !loadingFestivals && (
+                  <div className="timeline-item">
+                    <div className="timeline-marker"></div>
+                    <div className="timeline-content">
+                      <h4>Lỗi tải dữ liệu</h4>
+                      <p>{festivalError}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="timeline-item">
-                  <div className="timeline-marker"></div>
-                  <div className="timeline-content">
-                    <h4>Giỗ Tổ Hùng Vương</h4>
-                    <p>Lễ hội đền Hùng Phú Thọ</p>
+                )}
+                {!loadingFestivals && !festivalError && festivals.length === 0 && (
+                  <div className="timeline-item">
+                    <div className="timeline-marker"></div>
+                    <div className="timeline-content">
+                      <h4>Chưa có lễ hội</h4>
+                    </div>
                   </div>
-                </div>
-                <div className="timeline-item">
-                  <div className="timeline-marker"></div>
-                  <div className="timeline-content">
-                    <h4>Lễ hội Cà phê</h4>
-                    <p>Festival cà phê Buôn Ma Thuột</p>
+                )}
+                {!loadingFestivals && !festivalError && festivals.map((f, idx) => (
+                  <div className="timeline-item" key={f.festival_id ?? idx}>
+                    <div className="timeline-marker"></div>
+                    <div className="timeline-content">
+                      {f.festival_id ? (
+                        <h4>
+                          <Link to={`/festivals/${f.festival_id}`}>{f.name}</Link>
+                        </h4>
+                      ) : (
+                        <h4>{f.name}</h4>
+                      )}
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
@@ -158,7 +197,7 @@ const About = () => {
             <div className="mission-text">
               <h2 className="section-title reveal-text">Ý nghĩa của trò chơi</h2>
               <p>
-                XUÂN THU BÁCH HỘI không chỉ là trò chơi giải trí mà còn là phương tiện truyền tải giá trị văn hóa. 
+                XUÂN THU BÁCH HỘI không chỉ là trò chơi giải trí mà còn là phương tiện truyền tải giá trị văn hóa.
                 Thông qua trò chơi, chúng tôi mong muốn:
               </p>
               <ul className="mission-list">
@@ -202,7 +241,7 @@ const About = () => {
         </div>
       </section>
 
-  
+
 
     </div>
   )
