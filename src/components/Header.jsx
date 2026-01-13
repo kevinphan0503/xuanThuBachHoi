@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X, Gamepad2 } from 'lucide-react'
+import { Menu, X, LogIn } from 'lucide-react'
 import './Header.css'
 import BuyNowButton from './BuyNowButton'
 import logo from '../../assets/logo.png'
@@ -17,6 +17,7 @@ const Header = () => {
     { path: '/', label: 'TRANG CHỦ' },
     { path: '/about', label: 'GIỚI THIỆU' },
     { path: '/rules', label: 'HƯỚNG DẪN CHƠI' },
+    { path: '/shopping', label: 'CỬA HÀNG' },
     { path: '/contact', label: 'LIÊN HỆ' }
   ]
 
@@ -24,11 +25,13 @@ const Header = () => {
     <header className="header">
       <div className="container">
         <div className="header-content">
+
           <Link to="/" className="logo">
-            <img src={logo} alt="Logo Xuân Thu Bách Hội" className="logo-img" />
+            <img src={logo} alt="Xuân Thu Bách Hội" className="logo-img" />
             <span>XUÂN THU BÁCH HỘI</span>
           </Link>
-       
+
+
 
 
           <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
@@ -48,6 +51,11 @@ const Header = () => {
           </nav>
 
           <div className="header-actions">
+            <Link to="/admin/login" className="login-btn">
+              <LogIn size={18} />
+              <span>Đăng nhập</span>
+            </Link>
+
             <BuyNowButton variant="inline" />
           </div>
 

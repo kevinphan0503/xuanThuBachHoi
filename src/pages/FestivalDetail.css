@@ -1,0 +1,164 @@
+/* ===== FESTIVAL DETAIL ===== */
+
+.festival-detail-page {
+  background: #fffaf0;
+  padding-bottom: 4rem;
+}
+
+/* ===== HEADER ===== */
+.festival-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 2.8rem;
+}
+
+/* Title luôn ở giữa */
+.festival-header .section-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+/* Nút quay lại bên phải */
+.festival-header .back-btn {
+  position: absolute;
+  right: 0;
+  padding: 8px 18px;
+  background: #f4c430;
+  color: #fff;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all .2s ease;
+}
+
+.festival-header .back-btn:hover {
+  background: #e0ae2f;
+  transform: translateY(-1px);
+}
+
+/* ===== MAIN CARD ===== */
+.festival-detail-card {
+  display: grid;
+  grid-template-columns: 4fr 6fr;
+  gap: 2.8rem;
+  background: white;
+  padding: 2.8rem;
+  border-radius: 26px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+  animation: fadeUp .6s ease;
+}
+
+/* ===== LEFT ===== */
+.festival-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.festival-title.center {
+  text-align: center;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+/* IMAGE */
+.festival-image {
+  margin-top: 1.4rem; /* 👈 hạ ảnh xuống thêm */
+  height: 270px;
+  background: linear-gradient(
+    135deg,
+    rgba(255,200,120,0.4),
+    rgba(255,245,230,1)
+  );
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #555;
+  border: 2px dashed rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+
+.festival-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ===== RIGHT ===== */
+.festival-right h4 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+}
+
+.festival-description {
+  font-size: 1.05rem;
+  line-height: 1.9;
+  color: #444;
+  text-align: justify;
+}
+
+/* ===== VIDEO – CHUNG BACKGROUND ===== */
+.festival-video-section {
+  margin-top: 4.5rem;
+  padding: 4rem 2rem;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fff6e5, #fffaf0);
+}
+
+/* VIDEO TO HƠN */
+.video-wrapper {
+  position: relative;
+  max-width: 1100px; /* 👈 to hơn */
+  margin: 0 auto;
+  padding-top: 56.25%;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 25px 70px rgba(0,0,0,0.15);
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .festival-detail-card {
+    grid-template-columns: 1fr;
+    padding: 2rem;
+  }
+
+  .festival-image {
+    height: 230px;
+  }
+
+  .festival-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .festival-header .back-btn {
+    position: static;
+    transform: none;
+  }
+}

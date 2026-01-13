@@ -82,75 +82,67 @@ const About = () => {
       </section>
 
       {/* Introduction Section */}
-      <section className="section intro-section">
-        <div className="container">
-          <div className="intro-content" ref={introRef}>
-            <div className="intro-text">
-              <h2 className="section-title reveal-text">Giới thiệu</h2>
-              <p className="intro-description reveal-text reveal-delay-1">
-                XUÂN THU BÁCH HỘI không chỉ là trò chơi giải trí mà còn là phương tiện truyền tải giá trị văn hóa.
-                Mỗi lượt đi là một hành trình khám phá văn hóa — vừa chiến thuật để phát triển lễ hội, vừa học hỏi về phong tục, ẩm thực và truyền thống.
-              </p>
-              <h3>Mục tiêu</h3>
-              <ul className="intro-description">
-                <li>Trở thành nhà tổ chức lễ hội có quy mô, thương hiệu và tài sản lớn nhất khi ván chơi kết thúc.</li>
-                <li>Gìn giữ và lan tỏa giá trị truyền thống qua từng ô lễ hội và thẻ kiến thức.</li>
-                <li>Kết nối cộng đồng thông qua các thử thách tương tác vui nhộn.</li>
-              </ul>
-              <h3>Điểm nổi bật</h3>
-              <ul className="intro-description">
-                <li>40 ô trên bàn cờ bao gồm các lễ hội khắp Việt Nam.</li>
-                <li>60 thẻ Lộc Xuân và Gieo Quẻ với kiến thức văn hóa và thử thách.</li>
-                <li>Cơ chế nâng cấp lễ hội bằng Bánh, Mứt, Trang trí, Hoạt động.</li>
-              </ul>
-            </div>
-            {/* List festivals */}
-            <div className="intro-visual">
-              <div className="festival-timeline">
-                {loadingFestivals && (
-                  <div className="timeline-item">
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                      <h4>Đang tải danh sách lễ hội…</h4>
-                    </div>
-                  </div>
-                )}
-                {festivalError && !loadingFestivals && (
-                  <div className="timeline-item">
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                      <h4>Lỗi tải dữ liệu</h4>
-                      <p>{festivalError}</p>
-                    </div>
-                  </div>
-                )}
-                {!loadingFestivals && !festivalError && festivals.length === 0 && (
-                  <div className="timeline-item">
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                      <h4>Chưa có lễ hội</h4>
-                    </div>
-                  </div>
-                )}
-                {!loadingFestivals && !festivalError && festivals.map((f, idx) => (
-                  <div className="timeline-item" key={f.festival_id ?? idx}>
-                    <div className="timeline-marker"></div>
-                    <div className="timeline-content">
-                      {f.festival_id ? (
-                        <h4>
-                          <Link to={`/festivals/${f.festival_id}`}>{f.name}</Link>
-                        </h4>
-                      ) : (
-                        <h4>{f.name}</h4>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      {/* Introduction Section */}
+<section className="section intro-section">
+  <div className="container">
+    <h2 className="section-title center">Giới thiệu</h2>
+
+    <div className="intro-grid" ref={introRef}>
+      {/* LEFT CONTENT */}
+      <div className="intro-cards">
+        <div className="intro-card highlight">
+          <h3>🌸 Xuân Thu Bách Hội</h3>
+          <p>
+            Không chỉ là trò chơi giải trí, Xuân Thu Bách Hội còn là hành trình khám phá
+            lễ hội truyền thống Việt Nam. Mỗi lượt đi là một câu chuyện văn hóa – nơi
+            chiến thuật song hành cùng tri thức dân gian.
+          </p>
         </div>
-      </section>
+
+        <div className="intro-card">
+          <h3>🎯 Mục tiêu</h3>
+          <ul>
+            <li>Trở thành nhà tổ chức lễ hội thành công nhất</li>
+            <li>Gìn giữ & lan tỏa giá trị truyền thống</li>
+            <li>Kết nối cộng đồng qua thử thách tương tác</li>
+          </ul>
+        </div>
+
+        <div className="intro-card">
+          <h3>✨ Điểm nổi bật</h3>
+          <ul>
+            <li>40 lễ hội tiêu biểu khắp Việt Nam</li>
+            <li>60 thẻ kiến thức & thử thách dân gian</li>
+            <li>Nâng cấp lễ hội bằng Bánh – Mứt – Trang trí</li>
+          </ul>
+        </div>
+      </div>
+
+      {/* RIGHT CONTENT */}
+      <div className="festival-panel">
+        <h3 className="panel-title">📍 Lễ hội trong trò chơi</h3>
+
+        <div className="festival-scroll">
+          {loadingFestivals && <p>Đang tải lễ hội…</p>}
+          {festivalError && <p className="error">{festivalError}</p>}
+
+          {!loadingFestivals &&
+            !festivalError &&
+            festivals.map((f, idx) => (
+              <Link
+                to={`/festivals/${f.festival_id}`}
+                key={f.festival_id ?? idx}
+                className="festival-item-card"
+              >
+                <span className="dot" />
+                <span>{f.name}</span>
+              </Link>
+            ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Features Section */}
       <section className="section features-section">

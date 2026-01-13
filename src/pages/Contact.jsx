@@ -11,8 +11,8 @@ import BT from '../../assets/BT.jpg'
 import TM from '../../assets/TM.png'
 import CT from '../../assets/CT.jpg'
 import CT3 from '../../assets/CT3.png'
-import HV3 from '../../assets/HV3.png'
-import NQ from '../../assets/NQ.jpg'
+import HV3 from '../../assets/HV5.jpg'
+import NQ from '../../assets/NQ.png'
 import HP from '../../assets/HP.jpg'
 
 const Contact = () => {
@@ -238,10 +238,17 @@ const Contact = () => {
 
             <div className="contact-map-container">
               <h3>Vị trí của chúng tôi</h3>
-              <div className="map-placeholder">
-                <MapPin size={48} />
-                <p>Hà Nội, Việt Nam</p>
-                <span>Văn phòng chính</span>
+              <div className="map-wrapper">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.634!2d105.7855!3d10.0456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDAyJzQ0LjIiTiAxMDVcwjQ3JzA3LjgiRQ!5e0!3m2!1svi!2s!4v1234567890!5m2!1svi!2s"
+                  width="100%"
+                  height="400"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Vị trí Xuân Thu Bách Hội - 144B CMT8, P.Cái Khế, Q.Ninh Kiều, Cần Thơ"
+                ></iframe>
               </div>
             </div>
           </div>
