@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import pool, { ping, getFestivals, checkRenderConnection } from './db.js';
 
 dotenv.config();
@@ -8,6 +10,10 @@ dotenv.config();
 const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
+
+// Resolve __dirname for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Track page visits endpoint
 app.post('/api/page-visit', async (req, res) => {
@@ -325,6 +331,16 @@ app.get('/api/admin/analytics/visits', async (req, res) => {
 });
 
 const PORT = process.env.API_PORT || process.env.PORT || 5000;
+// Serve frontend build assets from ../dist
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
+
+// SPA fallback: non-API routes serve index.html
+app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(distPath, 'index.html'));
+});
+
 app.listen(PORT, () => {
     console.log(`API listening on http://localhost:${PORT}`);
 });
