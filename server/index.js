@@ -335,8 +335,9 @@ const PORT = process.env.API_PORT || process.env.PORT || 5000;
 const distPath = path.join(__dirname, '../dist');
 app.use(express.static(distPath));
 
-// SPA fallback: non-API routes serve index.html
-app.get('*', (req, res, next) => {
+// SPA fallback: non-API GET requests serve index.html (no path pattern)
+app.use((req, res, next) => {
+    if (req.method !== 'GET') return next();
     if (req.path.startsWith('/api')) return next();
     res.sendFile(path.join(distPath, 'index.html'));
 });
