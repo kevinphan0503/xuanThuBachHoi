@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { API_BASE_URL } from '../config/api'
 import './FestivalDetail.css'
+import QRCode from 'react-qr-code'
 
 const getVideoEmbedUrl = (url) => {
   if (!url) return ''
@@ -35,6 +36,13 @@ const FestivalDetail = () => {
   const [festival, setFestival] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  const detailUrl = useMemo(() => {
+    if (typeof window === 'undefined') return ''
+    const host = window.location.origin
+    const base = host.includes('localhost') ? 'https://xuan-thu-bach-hoi.vercel.app' : host
+    return `${base}/festivals/${id}`
+  }, [id])
 
   useEffect(() => {
     let active = true
@@ -101,6 +109,20 @@ const FestivalDetail = () => {
                   className="festival-description"
                   dangerouslySetInnerHTML={{ __html: festival.description || '' }}
                 />
+
+                <div className="festival-share-card">
+                  <div className="share-copy">
+                    <h4>🔗 Chia sẻ trang</h4>
+                    <p>Quét QR hoặc mở liên kết để xem trang chi tiết này trên thiết bị khác.</p>
+                    <a className="share-link" href={detailUrl} target="_blank" rel="noreferrer">
+                      {detailUrl}
+                    </a>
+                  </div>
+                  <div className="qr-wrapper" aria-label="Mã QR dẫn tới trang chi tiết lễ hội">
+                    {detailUrl && <QRCode value={detailUrl} size={148} />}
+                    <span className="qr-caption">Quét để mở nhanh</span>
+                  </div>
+                </div>
               </div>
 
             </div>
