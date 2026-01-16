@@ -97,9 +97,10 @@ const FestivalDetail = () => {
               {/* RIGHT */}
               <div className="festival-right">
                 <h4>📜 Thông tin lễ hội</h4>
-                <p className="festival-description">
-                  {festival.description}
-                </p>
+                <div
+                  className="festival-description"
+                  dangerouslySetInnerHTML={{ __html: festival.description || '' }}
+                />
               </div>
 
             </div>

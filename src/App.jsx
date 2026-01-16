@@ -18,6 +18,8 @@ import AdminProducts from './pages/admin/AdminProducts'
 import AdminOrders from './pages/admin/AdminOrders'
 import AdminAnalytics from './pages/admin/AdminAnalytics'
 import AdminSettings from './pages/admin/AdminSettings'
+import AdminFestivals from './pages/admin/AdminFestivals'
+import AdminFestivalContent from './pages/admin/AdminFestivalContent'
 import './App.css'
 
 // Protected route component
@@ -53,6 +55,8 @@ function App() {
           }>
             <Route index element={<AdminDashboard />} />
             <Route path="products" element={<AdminProducts />} />
+            <Route path="festivals" element={<AdminFestivals />} />
+            <Route path="festival-content" element={<AdminFestivalContent />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="analytics" element={<AdminAnalytics />} />
             <Route path="settings" element={<AdminSettings />} />

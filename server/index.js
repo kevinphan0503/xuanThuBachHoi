@@ -3,13 +3,28 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { v2 as cloudinary } from 'cloudinary';
 import pool, { ping, getFestivals, checkRenderConnection } from './db.js';
 
 dotenv.config();
 
+// Cloudinary configuration (env driven)
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const hasCloudinaryConfig = Boolean(
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET
+);
+const cloudinaryFolder = process.env.CLOUDINARY_FOLDER || '';
+
 const app = express();
 app.use(cors({ origin: '*' }));
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 // Resolve __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -76,6 +91,118 @@ app.get('/api/festivals/:festival_id', async (req, res) => {
             return res.status(404).json({ error: 'Not found' });
         }
         res.json(rows[0]);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Admin - Upload festival image to Cloudinary
+app.post('/api/admin/upload/festival-image', async (req, res) => {
+    try {
+        if (!hasCloudinaryConfig) {
+            return res.status(500).json({ error: 'Missing Cloudinary credentials' });
+        }
+
+        const { file } = req.body; // expects base64 string (with or without data URI prefix)
+        if (!file) {
+            return res.status(400).json({ error: 'File is required' });
+        }
+
+        const base64Data = (() => {
+            if (file.startsWith('data:')) {
+                const parts = file.split(',');
+                return parts[1] || '';
+            }
+            return file;
+        })();
+
+        const buffer = Buffer.from(base64Data, 'base64');
+
+        const uploadOptions = { resource_type: 'image' };
+        if (cloudinaryFolder) uploadOptions.folder = cloudinaryFolder;
+
+        const uploadResult = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                uploadOptions,
+                (error, result) => {
+                    if (error) return reject(error);
+                    resolve(result);
+                }
+            );
+            stream.end(buffer);
+        });
+
+        res.json({
+            url: uploadResult.secure_url,
+            public_id: uploadResult.public_id,
+            width: uploadResult.width,
+            height: uploadResult.height,
+            format: uploadResult.format
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Admin - Festival CRUD
+app.get('/api/admin/festivals', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM festival ORDER BY created_at DESC');
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Admin - Game sets (boardgame list for festival mapping)
+app.get('/api/admin/game-sets', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT game_id, name FROM game_set ORDER BY game_id ASC');
+        res.json(result.rows);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.post('/api/admin/festivals', async (req, res) => {
+    try {
+        const { game_id, name, description, image_url, link_video, festival_status } = req.body;
+        const result = await pool.query(
+            `INSERT INTO festival (game_id, name, description, image_url, link_video, festival_status)
+             VALUES ($1, $2, $3, $4, $5, $6)
+             RETURNING festival_id`,
+            [game_id, name, description, image_url, link_video, festival_status || 'AVAILABLE']
+        );
+        res.json({ festival_id: result.rows[0].festival_id, message: 'Festival created successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.put('/api/admin/festivals/:id', async (req, res) => {
+    try {
+        const { game_id, name, description, image_url, link_video, festival_status } = req.body;
+        await pool.query(
+            `UPDATE festival
+             SET game_id = $1,
+                 name = $2,
+                 description = $3,
+                 image_url = $4,
+                 link_video = $5,
+                 festival_status = $6
+             WHERE festival_id = $7`,
+            [game_id, name, description, image_url, link_video, festival_status || 'AVAILABLE', req.params.id]
+        );
+        res.json({ message: 'Festival updated successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+app.delete('/api/admin/festivals/:id', async (req, res) => {
+    try {
+        await pool.query('DELETE FROM festival WHERE festival_id = $1', [req.params.id]);
+        res.json({ message: 'Festival deleted successfully' });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

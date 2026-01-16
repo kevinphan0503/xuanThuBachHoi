@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { Link, useLocation, Outlet, useNavigate } from 'react-router-dom'
-import { 
-  LayoutDashboard, 
-  Package, 
-  ShoppingBag, 
-  BarChart3, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Package,
+  ShoppingBag,
+  BarChart3,
+  Settings,
   LogOut,
   Menu,
-  X
+  X,
+  CalendarRange,
+  FileText
 } from 'lucide-react'
 import './AdminLayout.css'
 
@@ -20,6 +22,8 @@ const AdminLayout = () => {
   const menuItems = [
     { path: '/admin', icon: LayoutDashboard, label: 'Dashboard', badge: 'NEW' },
     { path: '/admin/products', icon: Package, label: 'Sản phẩm' },
+    { path: '/admin/festivals', icon: CalendarRange, label: 'Lễ hội' },
+    { path: '/admin/festival-content', icon: FileText, label: 'Nội dung lễ hội' },
     { path: '/admin/orders', icon: ShoppingBag, label: 'Đơn hàng' },
     { path: '/admin/analytics', icon: BarChart3, label: 'Thống kê' },
     { path: '/admin/settings', icon: Settings, label: 'Cài đặt' }
@@ -39,7 +43,7 @@ const AdminLayout = () => {
             {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-        
+
         <nav className="sidebar-nav">
           <div className="nav-section">
             <h3 className="nav-section-title">UI ELEMENTS</h3>
