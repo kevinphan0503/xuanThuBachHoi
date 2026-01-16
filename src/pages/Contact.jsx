@@ -102,13 +102,13 @@ const Contact = () => {
   // 👇 Phần đội ngũ
   const teamMembers = [
     { name: 'Nguyễn Hoàng Phúc', image: HP },
-    
+
     { name: 'Nguyễn Thị Bảo Trân', image: BT },
     { name: 'Lê Tuyết Minh', image: TM },
     { name: 'Phùng Cẩm Thi', image: CT },
     { name: 'Phan Hữu Văn', image: HV3 },
     { name: 'Phan Nhật Quý', image: NQ }
-   
+
   ]
 
   const heroRef = useScrollReveal()

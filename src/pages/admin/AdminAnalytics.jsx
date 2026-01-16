@@ -12,9 +12,8 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import { Eye, Users, TrendingUp, Globe } from 'lucide-react'
+import { API_BASE_URL } from '../../config/api'
 import './AdminAnalytics.css'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const AdminAnalytics = () => {
   const [analytics, setAnalytics] = useState(null)
@@ -27,7 +26,7 @@ const AdminAnalytics = () => {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/admin/analytics/visits?period=${period}`)
+      const response = await fetch(`${API_BASE_URL}/api/admin/analytics/visits?period=${period}`)
       const data = await response.json()
       setAnalytics(data)
     } catch (error) {
@@ -109,10 +108,10 @@ const AdminAnalytics = () => {
               <YAxis stroke="#666" />
               <Tooltip />
               <Legend />
-              <Line 
-                type="monotone" 
-                dataKey="count" 
-                stroke="#3498db" 
+              <Line
+                type="monotone"
+                dataKey="count"
+                stroke="#3498db"
                 strokeWidth={3}
                 name="Lượt truy cập"
                 dot={{ fill: '#3498db', r: 4 }}

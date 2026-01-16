@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ShoppingCart, Package, Star } from 'lucide-react'
+import { API_BASE_URL } from '../config/api'
 import './Shopping.css'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const Shopping = () => {
   const [products, setProducts] = useState([])
@@ -16,7 +15,7 @@ const Shopping = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/products`)
+      const response = await fetch(`${API_BASE_URL}/api/products`)
       const data = await response.json()
       setProducts(data)
     } catch (error) {
@@ -29,7 +28,7 @@ const Shopping = () => {
   const addToCart = (product) => {
     const existingItem = cart.find(item => item.product_id === product.product_id)
     if (existingItem) {
-      setCart(cart.map(item => 
+      setCart(cart.map(item =>
         item.product_id === product.product_id
           ? { ...item, quantity: item.quantity + 1 }
           : item
@@ -47,7 +46,7 @@ const Shopping = () => {
     if (quantity <= 0) {
       removeFromCart(productId)
     } else {
-      setCart(cart.map(item => 
+      setCart(cart.map(item =>
         item.product_id === productId
           ? { ...item, quantity }
           : item
@@ -65,11 +64,11 @@ const Shopping = () => {
     { value: 'accessories', label: 'Vật phẩm' }
   ]
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
+  const filteredProducts = selectedCategory === 'all'
+    ? products
     : selectedCategory === 'accessories'
-    ? products.filter(p => p.category === 'keychain' || p.category === 'towel')
-    : products.filter(p => p.category === selectedCategory)
+      ? products.filter(p => p.category === 'keychain' || p.category === 'towel')
+      : products.filter(p => p.category === selectedCategory)
 
   const getCategoryLabel = (category) => {
     if (category === 'keychain' || category === 'towel') {
@@ -122,8 +121,8 @@ const Shopping = () => {
                 filteredProducts.map(product => (
                   <div key={product.product_id} className="product-card">
                     <div className="product-image">
-                      <img 
-                        src={product.image_url || '/assets/logo.png'} 
+                      <img
+                        src={product.image_url || '/assets/logo.png'}
                         alt={product.name}
                         onError={(e) => {
                           e.target.src = '/assets/logo.png'

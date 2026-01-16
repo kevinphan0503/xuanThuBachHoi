@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BookOpen, Target, Users, Award, Clock, MapPin } from 'lucide-react'
 import useScrollReveal from '../hooks/useScrollReveal'
+import { API_BASE_URL } from '../config/api'
 import './About.css'
 import f1 from '../../assets/festival-placeholder-1.svg'
 import f2 from '../../assets/festival-placeholder-2.svg'
@@ -25,8 +26,7 @@ const About = () => {
       try {
         setLoadingFestivals(true)
         setFestivalError('')
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
-        const res = await fetch(`${API_URL}/api/festivals`)
+        const res = await fetch(`${API_BASE_URL}/api/festivals`)
         if (!res.ok) throw new Error(`API error ${res.status}`)
         const data = await res.json()
         if (active) setFestivals(Array.isArray(data) ? data : [])

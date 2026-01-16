@@ -1,10 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import { API_BASE_URL } from '../config/api'
 import './FestivalDetail.css'
+
+const getVideoEmbedUrl = (url) => {
+  if (!url) return ''
+
+  try {
+    const parsed = new URL(url)
+    const host = parsed.hostname
+
+    if (host.includes('youtube.com')) {
+      const videoId = parsed.searchParams.get('v')
+      if (videoId) return `https://www.youtube.com/embed/${videoId}`
+
+      const pathParts = parsed.pathname.split('/').filter(Boolean)
+      const last = pathParts[pathParts.length - 1]
+      if (pathParts.includes('embed') && last) return `https://www.youtube.com/embed/${last}`
+    }
+
+    if (host.includes('youtu.be')) {
+      const id = parsed.pathname.replace('/', '')
+      if (id) return `https://www.youtube.com/embed/${id}`
+    }
+
+    return url
+  } catch {
+    return url
+  }
+}
 
 const FestivalDetail = () => {
   const { id } = useParams()
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
   const [festival, setFestival] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -16,7 +43,7 @@ const FestivalDetail = () => {
       try {
         setLoading(true)
         setError('')
-        const res = await fetch(`${API_URL}/api/festivals/${id}`)
+        const res = await fetch(`${API_BASE_URL}/api/festivals/${id}`)
         if (!res.ok) throw new Error(`API error ${res.status}`)
         const data = await res.json()
         if (active) setFestival(data)
@@ -78,11 +105,11 @@ const FestivalDetail = () => {
             </div>
 
             {/* VIDEO – CHUNG BACKGROUND */}
-            {festival.video_url && (
+            {festival.link_video && (
               <div className="festival-video-section">
                 <div className="video-wrapper">
                   <iframe
-                    src={festival.video_url}
+                    src={getVideoEmbedUrl(festival.link_video)}
                     title={festival.name}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

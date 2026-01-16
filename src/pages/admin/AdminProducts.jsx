@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Plus, Edit, Trash2, Package } from 'lucide-react'
+import { API_BASE_URL } from '../../config/api'
 import './AdminProducts.css'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const AdminProducts = () => {
   const [products, setProducts] = useState([])
@@ -26,7 +25,7 @@ const AdminProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/admin/products`)
+      const response = await fetch(`${API_BASE_URL}/api/admin/products`)
       const data = await response.json()
       setProducts(data)
     } catch (error) {
@@ -40,11 +39,11 @@ const AdminProducts = () => {
     e.preventDefault()
     try {
       const url = editingProduct
-        ? `${API_URL}/api/admin/products/${editingProduct.product_id}`
-        : `${API_URL}/api/admin/products`
-      
+        ? `${API_BASE_URL}/api/admin/products/${editingProduct.product_id}`
+        : `${API_BASE_URL}/api/admin/products`
+
       const method = editingProduct ? 'PUT' : 'POST'
-      
+
       const response = await fetch(url, {
         method,
         headers: {
@@ -86,9 +85,9 @@ const AdminProducts = () => {
 
   const handleDelete = async (id) => {
     if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')) return
-    
+
     try {
-      await fetch(`${API_URL}/api/admin/products/${id}`, {
+      await fetch(`${API_BASE_URL}/api/admin/products/${id}`, {
         method: 'DELETE'
       })
       fetchProducts()
@@ -155,8 +154,8 @@ const AdminProducts = () => {
             {products.map(product => (
               <tr key={product.product_id}>
                 <td>
-                  <img 
-                    src={product.image_url || '/assets/logo.png'} 
+                  <img
+                    src={product.image_url || '/assets/logo.png'}
                     alt={product.name}
                     className="product-thumb"
                     onError={(e) => e.target.src = '/assets/logo.png'}

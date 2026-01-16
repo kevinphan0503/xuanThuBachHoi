@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Eye } from 'lucide-react'
+import { API_BASE_URL } from '../../config/api'
 import './AdminOrders.css'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([])
@@ -15,7 +14,7 @@ const AdminOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/admin/orders`)
+      const response = await fetch(`${API_BASE_URL}/api/admin/orders`)
       const data = await response.json()
       setOrders(data)
     } catch (error) {
@@ -27,7 +26,7 @@ const AdminOrders = () => {
 
   const updateOrderStatus = async (orderId, status) => {
     try {
-      await fetch(`${API_URL}/api/admin/orders/${orderId}/status`, {
+      await fetch(`${API_BASE_URL}/api/admin/orders/${orderId}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -65,7 +64,7 @@ const AdminOrders = () => {
 
   const viewOrderDetails = async (orderId) => {
     try {
-      const response = await fetch(`${API_URL}/api/orders/${orderId}`)
+      const response = await fetch(`${API_BASE_URL}/api/orders/${orderId}`)
       const data = await response.json()
       setSelectedOrder(data)
     } catch (error) {
@@ -138,7 +137,7 @@ const AdminOrders = () => {
         <div className="modal-overlay" onClick={() => setSelectedOrder(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <h2>Chi tiết đơn hàng #{selectedOrder.order_id}</h2>
-            
+
             <div className="order-details">
               <div className="detail-section">
                 <h3>Thông tin khách hàng</h3>

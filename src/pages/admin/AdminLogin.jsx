@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LogIn, Lock, User } from 'lucide-react'
+import { API_BASE_URL } from '../../config/api'
 import './AdminLogin.css'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const AdminLogin = () => {
   const [username, setUsername] = useState('')
@@ -18,7 +17,7 @@ const AdminLogin = () => {
     setLoading(true)
 
     try {
-      const response = await fetch(`${API_URL}/api/admin/login`, {
+      const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -51,7 +50,7 @@ const AdminLogin = () => {
 
         <form onSubmit={handleSubmit} className="login-form">
           {error && <div className="error-message">{error}</div>}
-          
+
           <div className="form-group">
             <label>
               <User size={18} />

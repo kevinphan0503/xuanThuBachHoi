@@ -14,9 +14,8 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import { Users, ShoppingBag, Package, DollarSign, TrendingUp } from 'lucide-react'
+import { API_BASE_URL } from '../../config/api'
 import './AdminDashboard.css'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState(null)
@@ -29,7 +28,7 @@ const AdminDashboard = () => {
 
   const fetchStatistics = async () => {
     try {
-      const response = await fetch(`${API_URL}/api/admin/statistics`)
+      const response = await fetch(`${API_BASE_URL}/api/admin/statistics`)
       const data = await response.json()
       setStats(data)
     } catch (error) {
@@ -146,19 +145,19 @@ const AdminDashboard = () => {
           <h2>Traffic Tháng 11 2025</h2>
           <div className="card-actions">
             <div className="time-filter">
-              <button 
+              <button
                 className={timeFilter === 'day' ? 'active' : ''}
                 onClick={() => setTimeFilter('day')}
               >
                 Day
               </button>
-              <button 
+              <button
                 className={timeFilter === 'month' ? 'active' : ''}
                 onClick={() => setTimeFilter('month')}
               >
                 Month
               </button>
-              <button 
+              <button
                 className={timeFilter === 'year' ? 'active' : ''}
                 onClick={() => setTimeFilter('year')}
               >
@@ -193,9 +192,9 @@ const AdminDashboard = () => {
                 <span className="stat-bar-value">{item.value}</span>
               </div>
               <div className="stat-bar-progress">
-                <div 
-                  className="stat-bar-fill" 
-                  style={{ 
+                <div
+                  className="stat-bar-fill"
+                  style={{
                     width: `${(item.value / stats.totalOrders) * 100}%`,
                     backgroundColor: item.color
                   }}

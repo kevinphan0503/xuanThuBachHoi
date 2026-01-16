@@ -330,7 +330,7 @@ app.get('/api/admin/analytics/visits', async (req, res) => {
     }
 });
 
-const PORT = process.env.API_PORT || process.env.PORT || 5000;
+const PORT = process.env.API_PORT || process.env.PORT || 5001;
 // Serve frontend build assets from ../dist
 const distPath = path.join(__dirname, '../dist');
 app.use(express.static(distPath));

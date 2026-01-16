@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+import { API_BASE_URL } from '../config/api'
 
 const PageTracker = () => {
   const location = useLocation()
@@ -9,7 +8,7 @@ const PageTracker = () => {
   useEffect(() => {
     // Track page visits (don't track admin pages)
     if (!location.pathname.startsWith('/admin')) {
-      fetch(`${API_URL}/api/page-visit`, {
+      fetch(`${API_BASE_URL}/api/page-visit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
