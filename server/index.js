@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { v2 as cloudinary } from 'cloudinary';
+import nodemailer from 'nodemailer';
 import pool, { ping, getFestivals, checkRenderConnection } from './db.js';
 
 dotenv.config();
@@ -21,6 +22,31 @@ const hasCloudinaryConfig = Boolean(
     process.env.CLOUDINARY_API_SECRET
 );
 const cloudinaryFolder = process.env.CLOUDINARY_FOLDER || '';
+
+// Nodemailer configuration for contact form
+const contactRecipient = process.env.CONTACT_RECIPIENT || 'quyphce18055@fpt.edu.vn';
+const mailTransport = (() => {
+    if (!process.env.SMTP_HOST) return null;
+
+    const baseConfig = {
+        host: process.env.SMTP_HOST,
+        port: Number(process.env.SMTP_PORT || 587),
+        secure: process.env.SMTP_SECURE === 'true'
+    };
+
+    const authUser = process.env.SMTP_USER;
+    const authPass = process.env.SMTP_PASS;
+    if (authUser && authPass) {
+        baseConfig.auth = { user: authUser, pass: authPass };
+    }
+
+    try {
+        return nodemailer.createTransport(baseConfig);
+    } catch (err) {
+        console.error('Failed to create mail transport:', err);
+        return null;
+    }
+})();
 
 const app = express();
 app.use(cors({ origin: '*' }));
@@ -47,6 +73,47 @@ app.post('/api/page-visit', async (req, res) => {
     } catch (err) {
         console.error('Error tracking visit:', err);
         res.status(500).json({ error: err.message });
+    }
+});
+
+// Contact form -> send email
+app.post('/api/contact', async (req, res) => {
+    try {
+        const { name, email, phone, subject, message } = req.body || {};
+
+        if (!name || !email || !subject || !message) {
+            return res.status(400).json({ error: 'Thiếu thông tin bắt buộc' });
+        }
+
+        if (!mailTransport) {
+            return res.status(500).json({ error: 'Mail server chưa được cấu hình' });
+        }
+
+        const mailFrom = process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@xuanthubachhoi.vn';
+        const mailSubject = `[Liên hệ] ${subject} - ${name}`;
+        const htmlBody = `
+            <h2>Thông tin liên hệ mới</h2>
+            <p><strong>Họ tên:</strong> ${name}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Số điện thoại:</strong> ${phone || '(không cung cấp)'}</p>
+            <p><strong>Chủ đề:</strong> ${subject}</p>
+            <p><strong>Nội dung:</strong></p>
+            <p>${(message || '').replace(/\n/g, '<br>')}</p>
+        `;
+
+        await mailTransport.sendMail({
+            from: mailFrom,
+            to: contactRecipient,
+            replyTo: email,
+            subject: mailSubject,
+            text: `Lien he moi\nHo ten: ${name}\nEmail: ${email}\nSDT: ${phone || '(khong cung cap)'}\nChu de: ${subject}\n\n${message}`,
+            html: htmlBody
+        });
+
+        res.json({ success: true, message: 'Đã gửi liên hệ thành công' });
+    } catch (err) {
+        console.error('Error sending contact email:', err);
+        res.status(500).json({ error: 'Không gửi được email, vui lòng thử lại sau' });
     }
 });
 

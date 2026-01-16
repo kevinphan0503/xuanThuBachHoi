@@ -57,7 +57,7 @@
 
 .contact-info-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0,74,142,0.06);
+  box-shadow: 0 20px 40px rgba(0, 74, 142, 0.06);
 }
 
 .info-icon {
@@ -165,8 +165,20 @@
   gap: 1rem;
   margin-top: 1rem;
   padding: 1rem;
-  background: linear-gradient(135deg, rgba(230,45,50,0.04) 0%, rgba(243,224,70,0.03) 100%);
+  background: linear-gradient(135deg, rgba(230, 45, 50, 0.04) 0%, rgba(243, 224, 70, 0.03) 100%);
   color: white;
+  border-radius: 10px;
+  font-weight: 500;
+}
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(230, 45, 50, 0.12);
+  color: #fff;
   border-radius: 10px;
   font-weight: 500;
 }
@@ -258,26 +270,26 @@
   .contact-hero h1 {
     font-size: 2rem;
   }
-  
+
   .contact-info-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-  
+
   .contact-content {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
-  
+
   .contact-form {
     padding: 2rem;
   }
-  
+
   .form-row {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .contact-info-card {
     padding: 1.5rem;
   }
@@ -287,25 +299,26 @@
   .contact-hero {
     padding: 4rem 0 3rem;
   }
-  
+
   .contact-hero h1 {
     font-size: 1.8rem;
   }
-  
+
   .contact-form {
     padding: 1.5rem;
   }
-  
+
   .contact-info-card {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
   }
-  
+
   .faq-item {
     padding: 1.5rem;
   }
 }
+
 /* ===== TEAM SECTION (Hàng ngang) ===== */
 .team-section {
   text-align: center;
@@ -317,18 +330,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: nowrap; /* giữ 1 hàng ngang, nếu muốn co lại thì dùng wrap */
+  flex-wrap: nowrap;
+  /* giữ 1 hàng ngang, nếu muốn co lại thì dùng wrap */
   gap: 30px;
-  overflow-x: auto; /* giúp cuộn ngang trên màn hình nhỏ */
+  overflow-x: auto;
+  /* giúp cuộn ngang trên màn hình nhỏ */
   padding-bottom: 10px;
 }
 
 .team-card {
-  flex: 0 0 180px; /* chiều rộng cố định cho từng thẻ */
+  flex: 0 0 180px;
+  /* chiều rộng cố định cho từng thẻ */
   background: #fff;
   border-radius: 16px;
   padding: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
   min-width: 180px;
 }
@@ -355,6 +371,7 @@
 .team-grid::-webkit-scrollbar {
   height: 6px;
 }
+
 .team-grid::-webkit-scrollbar-thumb {
   background: #c8b69e;
   border-radius: 4px;

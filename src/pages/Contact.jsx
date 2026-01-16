@@ -4,6 +4,7 @@
 import React, { useState } from 'react'
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from 'lucide-react'
 import useScrollReveal from '../hooks/useScrollReveal'
+import { apiFetch } from '../config/api'
 import './Contact.css'
 
 // images (imported so Vite bundles them during build)
@@ -24,7 +25,7 @@ const Contact = () => {
     message: ''
   })
 
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [status, setStatus] = useState({ loading: false, success: '', error: '' })
 
   const handleChange = (e) => {
     setFormData({
@@ -33,12 +34,18 @@ const Contact = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('Form submitted:', formData)
-    setIsSubmitted(true)
-    setTimeout(() => {
-      setIsSubmitted(false)
+    setStatus({ loading: true, success: '', error: '' })
+
+    try {
+      await apiFetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      })
+
+      setStatus({ loading: false, success: 'Cảm ơn bạn đã gửi tin nhắn! Chúng tôi sẽ liên hệ lại sớm.', error: '' })
       setFormData({
         name: '',
         email: '',
@@ -46,7 +53,9 @@ const Contact = () => {
         subject: '',
         message: ''
       })
-    }, 3000)
+    } catch (err) {
+      setStatus({ loading: false, success: '', error: err.message || 'Gửi thất bại. Vui lòng thử lại.' })
+    }
   }
 
   const contactInfo = [
@@ -222,15 +231,22 @@ const Contact = () => {
                   ></textarea>
                 </div>
 
-                <button type="submit" className="btn btn-submit">
+                <button type="submit" className="btn btn-submit" disabled={status.loading}>
                   <Send size={20} />
-                  Gửi tin nhắn
+                  {status.loading ? 'Đang gửi...' : 'Gửi tin nhắn'}
                 </button>
 
-                {isSubmitted && (
+                {status.success && (
                   <div className="success-message">
                     <MessageCircle size={24} />
-                    <p>Cảm ơn bạn đã gửi tin nhắn! Chúng tôi sẽ liên hệ lại sớm.</p>
+                    <p>{status.success}</p>
+                  </div>
+                )}
+
+                {status.error && (
+                  <div className="error-message">
+                    <MessageCircle size={24} />
+                    <p>{status.error}</p>
                   </div>
                 )}
               </form>
