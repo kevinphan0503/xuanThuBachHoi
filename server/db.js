@@ -6,8 +6,8 @@ dotenv.config();
 const {
     DATABASE_URL,
     LOCAL_DATABASE_URL = 'postgresql://postgres:123456@localhost:5432/boardgame_festival',
-    USE_LOCAL_DB = 'true',
-    DB_SSL = 'true',
+    USE_LOCAL_DB,
+    DB_SSL = '',
     DB_HOST = 'localhost',
     DB_PORT = '5432',
     DB_USER = 'postgres',
@@ -23,16 +23,26 @@ const forceLocalByPort = Number(SERVER_PORT) === 5001 ? true : null;
 // Toggle to use local database while testing:
 // 1) Set env USE_LOCAL_DB=true, OR
 // 2) Temporarily uncomment the `forceLocal` option in createPool() below.
-// const USE_LOCAL_DB = 'true';
-const envUseLocal = USE_LOCAL_DB.toLowerCase() === 'true';
+// In Render, we default to remote DB unless USE_LOCAL_DB is explicitly true.
+const hasRender = Boolean(process.env.RENDER || process.env.RENDER_INTERNAL_HOSTNAME);
+const envUseLocal = (() => {
+    if (typeof USE_LOCAL_DB === 'string') {
+        return USE_LOCAL_DB.toLowerCase() === 'true';
+    }
+    if (hasRender || DATABASE_URL) {
+        return false;
+    }
+    return true;
+})();
 
 function createPool({ forceLocal = null } = {}) {
     const useLocal = forceLocal ?? envUseLocal;
 
     // Auto-detect SSL usage (Render requires SSL on External URL); skip for local
+    const dbSslFlag = (DB_SSL || '').toLowerCase() === 'true';
     const shouldUseSSL = !useLocal && (
         (PGSSLMODE && PGSSLMODE.toLowerCase() === 'require') ||
-        (DB_SSL && DB_SSL.toLowerCase() === 'true') ||
+        dbSslFlag ||
         (DATABASE_URL && /render\.com/.test(DATABASE_URL))
     );
     const sslOption = shouldUseSSL ? { rejectUnauthorized: false } : undefined;
