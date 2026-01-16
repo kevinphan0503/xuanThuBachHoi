@@ -63,9 +63,7 @@ function AdminLogin() {
                     </button>
                 </form>
 
-                <div className="admin-login-hint">
-                    Tài khoản demo: admin@example.com / admin123
-                </div>
+                
             </div>
         </div>
     )
