@@ -43,8 +43,17 @@ const Contact = () => {
       })
 
       if (!res.ok) {
-        const text = await res.text().catch(() => '')
-        throw new Error(text || `API error ${res.status}`)
+        let message = `API error ${res.status}`
+        try {
+          const data = await res.json()
+          if (data && (data.error || data.detail)) {
+            message = `${data.error || 'API error'}${data.detail ? ' - ' + data.detail : ''}`
+          }
+        } catch {
+          const text = await res.text().catch(() => '')
+          if (text) message = text
+        }
+        throw new Error(message)
       }
 
       setStatus({ loading: false, success: 'Cảm ơn bạn đã gửi tin nhắn! Chúng tôi sẽ liên hệ lại sớm.', error: '' })

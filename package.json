@@ -11,6 +11,7 @@
     "db:test": "node server/test-connection.js",
     "server": "nodemon server/index.js",
     "server:start": "node server/index.js",
+    "start": "node server/index.js",
     "start:render": "npm run build && node server/index.js",
     "server:local": "cross-env API_PORT=5001 nodemon server/index.js"
   },

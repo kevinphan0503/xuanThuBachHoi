@@ -26,21 +26,34 @@ const cloudinaryFolder = process.env.CLOUDINARY_FOLDER || '';
 // Nodemailer configuration for contact form
 const contactRecipient = process.env.CONTACT_RECIPIENT || 'vanphce181991@fpt.edu.vn';
 const mailTransport = (() => {
-    if (!process.env.SMTP_HOST) return null;
+    const {
+        SMTP_SERVICE,
+        SMTP_HOST,
+        SMTP_PORT,
+        SMTP_SECURE,
+        SMTP_USER,
+        SMTP_PASS
+    } = process.env;
 
-    const baseConfig = {
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT || 587),
-        secure: process.env.SMTP_SECURE === 'true'
-    };
-
-    const authUser = process.env.SMTP_USER;
-    const authPass = process.env.SMTP_PASS;
-    if (authUser && authPass) {
-        baseConfig.auth = { user: authUser, pass: authPass };
-    }
+    // require either SERVICE or HOST
+    if (!SMTP_SERVICE && !SMTP_HOST) return null;
 
     try {
+        if (SMTP_SERVICE) {
+            // Example: SMTP_SERVICE=gmail
+            const cfg = {
+                service: SMTP_SERVICE,
+            };
+            if (SMTP_USER && SMTP_PASS) cfg.auth = { user: SMTP_USER, pass: SMTP_PASS };
+            return nodemailer.createTransport(cfg);
+        }
+
+        const baseConfig = {
+            host: SMTP_HOST,
+            port: Number(SMTP_PORT || 587),
+            secure: SMTP_SECURE === 'true'
+        };
+        if (SMTP_USER && SMTP_PASS) baseConfig.auth = { user: SMTP_USER, pass: SMTP_PASS };
         return nodemailer.createTransport(baseConfig);
     } catch (err) {
         console.error('Failed to create mail transport:', err);
