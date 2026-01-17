@@ -24,7 +24,7 @@ const hasCloudinaryConfig = Boolean(
 const cloudinaryFolder = process.env.CLOUDINARY_FOLDER || '';
 
 // Nodemailer configuration for contact form
-const contactRecipient = process.env.CONTACT_RECIPIENT || 'quyphce18055@fpt.edu.vn';
+const contactRecipient = process.env.CONTACT_RECIPIENT || 'vanphce181991@fpt.edu.vn';
 const mailTransport = (() => {
     if (!process.env.SMTP_HOST) return null;
 

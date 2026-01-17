@@ -1,10 +1,7 @@
-
-
-
 import React, { useState } from 'react'
 import { Mail, Phone, MapPin, Send, Clock, MessageCircle } from 'lucide-react'
 import useScrollReveal from '../hooks/useScrollReveal'
-import { apiFetch } from '../config/api'
+import { API_BASE_URL } from '../config/api'
 import './Contact.css'
 
 // images (imported so Vite bundles them during build)
@@ -39,11 +36,16 @@ const Contact = () => {
     setStatus({ loading: true, success: '', error: '' })
 
     try {
-      await apiFetch('/api/contact', {
+      const res = await fetch(`${API_BASE_URL}/api/contact`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(formData)
       })
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '')
+        throw new Error(text || `API error ${res.status}`)
+      }
 
       setStatus({ loading: false, success: 'Cảm ơn bạn đã gửi tin nhắn! Chúng tôi sẽ liên hệ lại sớm.', error: '' })
       setFormData({
@@ -111,7 +113,6 @@ const Contact = () => {
   // 👇 Phần đội ngũ
   const teamMembers = [
     { name: 'Nguyễn Hoàng Phúc', image: HP },
-
     { name: 'Nguyễn Thị Bảo Trân', image: BT },
     { name: 'Lê Tuyết Minh', image: TM },
     { name: 'Phùng Cẩm Thi', image: CT },

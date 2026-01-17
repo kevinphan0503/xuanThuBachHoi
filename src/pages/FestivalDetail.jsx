@@ -39,9 +39,7 @@ const FestivalDetail = () => {
 
   const detailUrl = useMemo(() => {
     if (typeof window === 'undefined') return ''
-    const host = window.location.origin
-    const base = host.includes('localhost') ? 'https://xuan-thu-bach-hoi.vercel.app' : host
-    return `${base}/festivals/${id}`
+    return `${window.location.origin}/festivals/${id}`
   }, [id])
 
   useEffect(() => {
