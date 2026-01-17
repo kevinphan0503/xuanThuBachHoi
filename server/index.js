@@ -113,7 +113,25 @@ app.post('/api/contact', async (req, res) => {
         res.json({ success: true, message: 'Đã gửi liên hệ thành công' });
     } catch (err) {
         console.error('Error sending contact email:', err);
-        res.status(500).json({ error: 'Không gửi được email, vui lòng thử lại sau' });
+        res.status(500).json({ error: 'Không gửi được email, vui lòng thử lại sau', detail: err?.message || undefined });
+    }
+});
+
+// Fallback: store contact message in DB (for environments without SMTP)
+// (Removed DB fallback; focus on email sending only)
+
+// SMTP verify endpoint to diagnose mail configuration/connectivity
+app.get('/api/mail/verify', async (req, res) => {
+    try {
+        if (!mailTransport) {
+            return res.status(500).json({ configured: false, ok: false, error: 'Mail server chưa được cấu hình' });
+        }
+
+        // Nodemailer verify checks connection and authentication if set
+        await mailTransport.verify();
+        res.json({ configured: true, ok: true });
+    } catch (err) {
+        res.status(500).json({ configured: true, ok: false, error: err?.message || String(err) });
     }
 });
 
