@@ -45,7 +45,7 @@ const AdminLogin = () => {
       <div className="login-container">
         <div className="login-header">
           <h1>Xuân Thu Bách Hội</h1>
-          <p>Admin Dashboard</p>
+          
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
@@ -85,9 +85,7 @@ const AdminLogin = () => {
           </button>
         </form>
 
-        <div className="login-footer">
-          <p>Mặc định: admin / admin123</p>
-        </div>
+       
       </div>
     </div>
   )

@@ -40,20 +40,7 @@ const Hero = () => {
               </Link>
             </div>
 
-            <div className="hero-features">
-              <div className="feature-item">
-                <span className="feature-number">2–6</span>
-                <span className="feature-label">người chơi</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-number">45–60</span>
-                <span className="feature-label">phút</span>
-              </div>
-              <div className="feature-item">
-                <span className="feature-number">12+</span>
-                <span className="feature-label">tuổi</span>
-              </div>
-            </div>
+          
           </div>
 
           {/* IMAGE */}

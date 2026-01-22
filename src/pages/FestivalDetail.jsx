@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { API_BASE_URL } from '../config/api'
 import './FestivalDetail.css'
-import QRCode from 'react-qr-code'
 
 const getVideoEmbedUrl = (url) => {
   if (!url) return ''
@@ -17,7 +16,9 @@ const getVideoEmbedUrl = (url) => {
 
       const pathParts = parsed.pathname.split('/').filter(Boolean)
       const last = pathParts[pathParts.length - 1]
-      if (pathParts.includes('embed') && last) return `https://www.youtube.com/embed/${last}`
+      if (pathParts.includes('embed') && last) {
+        return `https://www.youtube.com/embed/${last}`
+      }
     }
 
     if (host.includes('youtu.be')) {
@@ -61,7 +62,9 @@ const FestivalDetail = () => {
     }
 
     load()
-    return () => { active = false }
+    return () => {
+      active = false
+    }
   }, [id])
 
   return (
@@ -79,21 +82,16 @@ const FestivalDetail = () => {
 
         {!loading && !error && festival && (
           <>
-            {/* MAIN DETAIL */}
+            {/* CARD THÔNG TIN */}
             <div className="festival-detail-card">
 
               {/* LEFT */}
               <div className="festival-left">
-                <h3 className="festival-title center">
-                  {festival.name}
-                </h3>
+                <h3 className="festival-title center">{festival.name}</h3>
 
                 <div className="festival-image">
                   {festival.image_url ? (
-                    <img
-                      src={festival.image_url}
-                      alt={festival.name}
-                    />
+                    <img src={festival.image_url} alt={festival.name} />
                   ) : (
                     <span>Ảnh lễ hội</span>
                   )}
@@ -105,40 +103,29 @@ const FestivalDetail = () => {
                 <h4>📜 Thông tin lễ hội</h4>
                 <div
                   className="festival-description"
-                  dangerouslySetInnerHTML={{ __html: festival.description || '' }}
+                  dangerouslySetInnerHTML={{
+                    __html: festival.description || ''
+                  }}
                 />
-
-                <div className="festival-share-card">
-                  <div className="share-copy">
-                    <h4>🔗 Chia sẻ trang</h4>
-                    <p>Quét QR hoặc mở liên kết để xem trang chi tiết này trên thiết bị khác.</p>
-                    <a className="share-link" href={detailUrl} target="_blank" rel="noreferrer">
-                      {detailUrl}
-                    </a>
-                  </div>
-                  <div className="qr-wrapper" aria-label="Mã QR dẫn tới trang chi tiết lễ hội">
-                    {detailUrl && <QRCode value={detailUrl} size={148} />}
-                    <span className="qr-caption">Quét để mở nhanh</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            {/* VIDEO – CHUNG BACKGROUND */}
+                     {/* VIDEO – FULL WIDTH */}
             {festival.link_video && (
               <div className="festival-video-section">
                 <div className="video-wrapper">
                   <iframe
                     src={getVideoEmbedUrl(festival.link_video)}
                     title={festival.name}
-                    frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
                 </div>
               </div>
             )}
+              </div>
+
+          
+            </div>
+
+           
           </>
         )}
       </div>

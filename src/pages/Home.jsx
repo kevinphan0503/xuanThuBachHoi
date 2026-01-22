@@ -62,9 +62,7 @@ const Home = () => {
                   Tìm hiểu thêm
                   <ArrowRight size={20} />
                 </Link>
-                <Link to="/rules" className="btn btn-secondary">
-                  Hướng dẫn chơi
-                </Link>
+              
               </div>
             </div>
            

@@ -77,6 +77,73 @@
   transform: translateY(-1px);
 }
 
+.actions-group {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.btn-cancel,
+.btn-delete {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+.btn-cancel {
+  background: #f1c40f;
+}
+
+.btn-cancel:hover {
+  background: #d4ac0d;
+}
+
+.btn-delete {
+  background: #e74c3c;
+}
+
+.btn-delete:hover {
+  background: #c0392b;
+}
+
+.payment-chip {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 6px 10px;
+  background: #f8f9fa;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.payment-status {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.payment-status.paid {
+  background: #e8f7ef;
+  color: #1e8449;
+}
+
+.payment-status.pending {
+  background: #fff4e5;
+  color: #b9770e;
+}
+
+.payment-status.cancelled {
+  background: #fdecea;
+  color: #c0392b;
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;

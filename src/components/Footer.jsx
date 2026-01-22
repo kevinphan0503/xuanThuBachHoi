@@ -28,7 +28,7 @@ const Footer = () => {
             <h4>LIÊN KẾT NHANH</h4>
             <ul>
               <li><Link to="/about">Giới thiệu</Link></li>
-              <li><Link to="/rules">Hướng dẫn chơi</Link></li>
+             
              
               <li><Link to="/contact">Liên hệ</Link></li>
             </ul>

@@ -109,7 +109,7 @@ CREATE TABLE orders (
     customer_address TEXT NOT NULL,
     total_amount NUMERIC(10,2) NOT NULL,
     shipping_fee NUMERIC(10,2) DEFAULT 30000,
-    payment_method VARCHAR(50) DEFAULT 'bank_transfer',
+    payment_method VARCHAR(50) DEFAULT 'cod',
     status order_status_enum DEFAULT 'pending',
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -141,7 +141,7 @@ CREATE TABLE order_items (
 CREATE TABLE payment (
     payment_id SERIAL PRIMARY KEY,
     order_id INT NOT NULL,
-    payment_method VARCHAR(50),
+    payment_method VARCHAR(50) DEFAULT 'cod',
     payment_status VARCHAR(20) DEFAULT 'PENDING',
     transaction_id VARCHAR(100),
     payment_time TIMESTAMP,

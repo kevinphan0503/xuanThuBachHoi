@@ -16,7 +16,6 @@ const Header = () => {
   const navItems = [
     { path: '/', label: 'TRANG CHỦ' },
     { path: '/about', label: 'GIỚI THIỆU' },
-    { path: '/rules', label: 'HƯỚNG DẪN CHƠI' },
     { path: '/shopping', label: 'CỬA HÀNG' },
     { path: '/contact', label: 'LIÊN HỆ' }
   ]

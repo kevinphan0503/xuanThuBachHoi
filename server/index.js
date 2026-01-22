@@ -61,6 +61,21 @@ const mailTransport = (() => {
     }
 })();
 
+async function sendOrderEmail({ to, subject, text, html }) {
+    if (!mailTransport || !to) return;
+    try {
+        await mailTransport.sendMail({
+            from: process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@xuanthubachhoi.vn',
+            to,
+            subject,
+            text,
+            html
+        });
+    } catch (err) {
+        console.error('Email send failed:', err?.message || err);
+    }
+}
+
 const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json({ limit: '10mb' }));
@@ -329,42 +344,133 @@ app.get('/api/products/:id', async (req, res) => {
     }
 });
 
-// Orders endpoints
+// Orders endpoints (public checkout)
 app.post('/api/orders', async (req, res) => {
+    const client = await pool.connect();
     try {
-        const { customer_name, customer_email, customer_phone, customer_address, items, payment_method, shipping_fee } = req.body;
+        const {
+            customer_name,
+            customer_email,
+            customer_phone,
+            customer_address,
+            items,
+            payment_method,
+            shipping_fee
+        } = req.body || {};
 
-        // Calculate total
-        let total_amount = shipping_fee || 30000;
-        items.forEach(item => {
-            total_amount += item.price * item.quantity;
-        });
+        if (!customer_name || !customer_email || !customer_phone || !customer_address) {
+            return res.status(400).json({ error: 'Vui lòng điền đầy đủ thông tin khách hàng' });
+        }
 
-        // Create order
-        const result = await pool.query(
-            'INSERT INTO orders (customer_name, customer_email, customer_phone, customer_address, total_amount, shipping_fee, payment_method) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING order_id',
-            [customer_name, customer_email, customer_phone, customer_address, total_amount, shipping_fee || 30000, payment_method || 'bank_transfer']
-        );
+        if (!Array.isArray(items) || items.length === 0) {
+            return res.status(400).json({ error: 'Giỏ hàng trống' });
+        }
 
-        const orderId = result.rows[0].order_id;
+        const normalizedPaymentMethod = (payment_method || 'cod').toLowerCase();
+        if (normalizedPaymentMethod !== 'cod') {
+            return res.status(400).json({ error: 'Chỉ hỗ trợ thanh toán khi nhận hàng (COD)' });
+        }
 
-        // Insert order items
-        for (const item of items) {
-            await pool.query(
-                'INSERT INTO order_items (order_id, product_id, quantity, price, subtotal) VALUES ($1, $2, $3, $4, $5)',
-                [orderId, item.product_id, item.quantity, item.price, item.price * item.quantity]
+        const shippingFee = Number.isFinite(Number(shipping_fee)) && Number(shipping_fee) >= 0
+            ? Number(shipping_fee)
+            : 30000;
+
+        await client.query('BEGIN');
+
+        const validatedItems = [];
+        let totalAmount = shippingFee;
+
+        for (const rawItem of items) {
+            const quantity = Number(rawItem?.quantity || 0);
+            const productId = Number(rawItem?.product_id);
+
+            if (!productId || quantity <= 0) {
+                await client.query('ROLLBACK');
+                return res.status(400).json({ error: 'Sản phẩm không hợp lệ' });
+            }
+
+            const productResult = await client.query(
+                'SELECT product_id, price, stock_quantity, is_active FROM products WHERE product_id = $1',
+                [productId]
             );
 
-            // Update product stock
-            await pool.query(
+            if (productResult.rowCount === 0 || productResult.rows[0].is_active === false) {
+                await client.query('ROLLBACK');
+                return res.status(400).json({ error: 'Sản phẩm không tồn tại hoặc đã ngừng bán' });
+            }
+
+            const product = productResult.rows[0];
+            if (product.stock_quantity < quantity) {
+                await client.query('ROLLBACK');
+                return res.status(400).json({ error: 'Sản phẩm không đủ tồn kho' });
+            }
+
+            const price = Number(product.price);
+            const subtotal = price * quantity;
+            totalAmount += subtotal;
+            validatedItems.push({ product_id: productId, quantity, price, subtotal });
+        }
+
+        const orderResult = await client.query(
+            `INSERT INTO orders (customer_name, customer_email, customer_phone, customer_address, total_amount, shipping_fee, payment_method)
+             VALUES ($1, $2, $3, $4, $5, $6, 'cod') RETURNING order_id, status`,
+            [customer_name, customer_email, customer_phone, customer_address, totalAmount, shippingFee]
+        );
+
+        const orderId = orderResult.rows[0].order_id;
+
+        for (const item of validatedItems) {
+            await client.query(
+                'INSERT INTO order_items (order_id, product_id, quantity, price, subtotal) VALUES ($1, $2, $3, $4, $5)',
+                [orderId, item.product_id, item.quantity, item.price, item.subtotal]
+            );
+
+            await client.query(
                 'UPDATE products SET stock_quantity = stock_quantity - $1 WHERE product_id = $2',
                 [item.quantity, item.product_id]
             );
         }
 
-        res.json({ order_id: orderId, message: 'Order created successfully' });
+        await client.query(
+            'INSERT INTO payment (order_id, payment_method, payment_status) VALUES ($1, $2, $3)',
+            [orderId, 'cod', 'PENDING']
+        );
+
+        await client.query('COMMIT');
+
+        const responsePayload = {
+            order_id: orderId,
+            status: orderResult.rows[0].status,
+            payment_method: 'cod',
+            total_amount: totalAmount,
+            shipping_fee: shippingFee,
+            message: 'Đặt hàng thành công. Chúng tôi sẽ liên hệ để xác nhận đơn hàng.'
+        };
+
+        // Send confirmation email (best-effort)
+        const orderSummaryLines = validatedItems
+            .map((item) => `- ${item.quantity} x ${item.product_id} (${item.price.toLocaleString('vi-VN')}đ) = ${item.subtotal.toLocaleString('vi-VN')}đ`)
+            .join('\n');
+        await sendOrderEmail({
+            to: customer_email,
+            subject: `[Xuân Thu Bách Hội] Đã nhận đơn hàng #${orderId}`,
+            text: `Chào ${customer_name},\n\nChúng tôi đã nhận đơn hàng #${orderId}.\nPhương thức: COD (thanh toán khi nhận hàng).\nTổng tiền: ${totalAmount.toLocaleString('vi-VN')}đ (bao gồm phí vận chuyển ${shippingFee.toLocaleString('vi-VN')}đ).\n\nChi tiết:\n${orderSummaryLines}\n\nChúng tôi sẽ liên hệ để xác nhận đơn hàng.\nCảm ơn bạn đã mua sắm!`,
+            html: `
+                <p>Chào ${customer_name},</p>
+                <p>Chúng tôi đã nhận đơn hàng <strong>#${orderId}</strong>.</p>
+                <p><strong>Phương thức:</strong> COD (thanh toán khi nhận hàng)</p>
+                <p><strong>Tổng tiền:</strong> ${totalAmount.toLocaleString('vi-VN')}đ (gồm phí vận chuyển ${shippingFee.toLocaleString('vi-VN')}đ)</p>
+                <p><strong>Chi tiết:</strong><br>${orderSummaryLines.replace(/\n/g, '<br>')}</p>
+                <p>Chúng tôi sẽ liên hệ để xác nhận đơn hàng.<br>Cảm ơn bạn đã mua sắm!</p>
+            `
+        });
+
+        res.status(201).json(responsePayload);
     } catch (err) {
+        await client.query('ROLLBACK').catch(() => {});
         res.status(500).json({ error: err.message });
+    } finally {
+        client.release();
     }
 });
 
@@ -381,7 +487,16 @@ app.get('/api/orders/:id', async (req, res) => {
             [req.params.id]
         );
 
-        res.json({ ...orders[0], items: itemsResult.rows });
+        const paymentResult = await pool.query(
+            'SELECT payment_method, payment_status, payment_time FROM payment WHERE order_id = $1 ORDER BY payment_id DESC LIMIT 1',
+            [req.params.id]
+        );
+
+        res.json({
+            ...orders[0],
+            items: itemsResult.rows,
+            payment: paymentResult.rows[0] || { payment_method: 'cod', payment_status: 'PENDING' }
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -452,20 +567,156 @@ app.delete('/api/admin/products/:id', async (req, res) => {
 // Admin - Orders
 app.get('/api/admin/orders', async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM orders ORDER BY order_date DESC');
+        const result = await pool.query(
+            `SELECT o.*, COALESCE(SUM(oi.quantity), 0) AS items_count, COALESCE(p.payment_status, 'PENDING') AS payment_status
+             FROM orders o
+             LEFT JOIN order_items oi ON o.order_id = oi.order_id
+             LEFT JOIN LATERAL (
+                 SELECT payment_status FROM payment WHERE order_id = o.order_id ORDER BY payment_id DESC LIMIT 1
+             ) p ON true
+             GROUP BY o.order_id, p.payment_status
+             ORDER BY o.order_date DESC`
+        );
         res.json(result.rows);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-app.put('/api/admin/orders/:id/status', async (req, res) => {
+app.get('/api/admin/orders/:id', async (req, res) => {
     try {
-        const { status } = req.body;
-        await pool.query('UPDATE orders SET status = $1 WHERE order_id = $2', [status, req.params.id]);
-        res.json({ message: 'Order status updated successfully' });
+        const orderResult = await pool.query('SELECT * FROM orders WHERE order_id = $1', [req.params.id]);
+        if (orderResult.rowCount === 0) {
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        const itemsResult = await pool.query(
+            'SELECT oi.*, p.name as product_name, p.image_url FROM order_items oi JOIN products p ON oi.product_id = p.product_id WHERE oi.order_id = $1',
+            [req.params.id]
+        );
+
+        const paymentResult = await pool.query(
+            'SELECT payment_method, payment_status, payment_time FROM payment WHERE order_id = $1 ORDER BY payment_id DESC LIMIT 1',
+            [req.params.id]
+        );
+
+        res.json({
+            ...orderResult.rows[0],
+            items: itemsResult.rows,
+            payment: paymentResult.rows[0] || { payment_method: 'cod', payment_status: 'PENDING' }
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+});
+
+app.put('/api/admin/orders/:id/status', async (req, res) => {
+    const client = await pool.connect();
+    try {
+        const { status } = req.body || {};
+        const allowedStatuses = ['pending', 'confirmed', 'shipping', 'completed', 'cancelled'];
+        if (!status || !allowedStatuses.includes(status)) {
+            return res.status(400).json({ error: 'Trạng thái không hợp lệ' });
+        }
+
+        await client.query('BEGIN');
+
+        const currentResult = await client.query('SELECT status, customer_email, customer_name, total_amount FROM orders WHERE order_id = $1', [req.params.id]);
+        if (currentResult.rowCount === 0) {
+            await client.query('ROLLBACK');
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        const previousStatus = currentResult.rows[0].status;
+        const customerEmail = currentResult.rows[0].customer_email;
+        const customerName = currentResult.rows[0].customer_name;
+        const totalAmount = currentResult.rows[0].total_amount;
+
+        await client.query('UPDATE orders SET status = $1, updated_at = NOW() WHERE order_id = $2', [status, req.params.id]);
+
+        const paymentStatus = status === 'completed'
+            ? 'PAID'
+            : status === 'cancelled'
+                ? 'CANCELLED'
+                : 'PENDING';
+
+        const paymentTime = status === 'completed' ? new Date() : null;
+
+        const paymentUpdate = await client.query(
+            'UPDATE payment SET payment_status = $2, payment_time = $3 WHERE order_id = $1',
+            [req.params.id, paymentStatus, paymentTime]
+        );
+
+        if (paymentUpdate.rowCount === 0) {
+            await client.query(
+                'INSERT INTO payment (order_id, payment_method, payment_status, payment_time) VALUES ($1, $2, $3, $4)',
+                [req.params.id, 'cod', paymentStatus, paymentTime]
+            );
+        }
+
+        if (status === 'cancelled' && previousStatus !== 'cancelled') {
+            const itemsResult = await client.query('SELECT product_id, quantity FROM order_items WHERE order_id = $1', [req.params.id]);
+            for (const item of itemsResult.rows) {
+                await client.query(
+                    'UPDATE products SET stock_quantity = stock_quantity + $1 WHERE product_id = $2',
+                    [item.quantity, item.product_id]
+                );
+            }
+        }
+
+        await client.query('COMMIT');
+        if (status === 'confirmed') {
+            await sendOrderEmail({
+                to: customerEmail,
+                subject: `[Xuân Thu Bách Hội] Đơn hàng #${req.params.id} đã được xác nhận`,
+                text: `Chào ${customerName},\n\nĐơn hàng #${req.params.id} của bạn đã được xác nhận.\nPhương thức: COD.\nTổng tiền: ${Number(totalAmount).toLocaleString('vi-VN')}đ.\nChúng tôi sẽ sớm giao hàng cho bạn.\nCảm ơn bạn!`,
+                html: `
+                    <p>Chào ${customerName},</p>
+                    <p>Đơn hàng <strong>#${req.params.id}</strong> của bạn đã được xác nhận.</p>
+                    <p><strong>Phương thức:</strong> COD</p>
+                    <p><strong>Tổng tiền:</strong> ${Number(totalAmount).toLocaleString('vi-VN')}đ</p>
+                    <p>Chúng tôi sẽ sớm giao hàng cho bạn.<br>Cảm ơn bạn!</p>
+                `
+            });
+        }
+
+        res.json({ message: 'Cập nhật trạng thái đơn hàng thành công' });
+    } catch (err) {
+        await client.query('ROLLBACK').catch(() => {});
+        res.status(500).json({ error: err.message });
+    } finally {
+        client.release();
+    }
+});
+
+app.delete('/api/admin/orders/:id', async (req, res) => {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+
+        const itemsResult = await client.query('SELECT product_id, quantity FROM order_items WHERE order_id = $1', [req.params.id]);
+        if (itemsResult.rowCount === 0) {
+            await client.query('ROLLBACK');
+            return res.status(404).json({ error: 'Order not found' });
+        }
+
+        for (const item of itemsResult.rows) {
+            await client.query(
+                'UPDATE products SET stock_quantity = stock_quantity + $1 WHERE product_id = $2',
+                [item.quantity, item.product_id]
+            );
+        }
+
+        await client.query('DELETE FROM payment WHERE order_id = $1', [req.params.id]);
+        await client.query('DELETE FROM orders WHERE order_id = $1', [req.params.id]);
+
+        await client.query('COMMIT');
+        res.json({ message: 'Xóa đơn hàng và hoàn lại tồn kho thành công' });
+    } catch (err) {
+        await client.query('ROLLBACK').catch(() => {});
+        res.status(500).json({ error: err.message });
+    } finally {
+        client.release();
     }
 });
 

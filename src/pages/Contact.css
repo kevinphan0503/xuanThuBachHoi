@@ -76,11 +76,11 @@
   font-size: 1.2rem;
   color: #2c3e50;
   margin-bottom: 0.5rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .info-main {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   color: var(--color-primary);
   font-weight: 500;
   margin-bottom: 0.25rem;
