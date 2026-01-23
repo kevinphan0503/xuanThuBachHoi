@@ -12,7 +12,7 @@ const Footer = () => {
             <p>
               Dự án Xuân Thu Bách Hội. Gìn giữ di sản, kiến tạo giải thưởng toàn cầu cho tinh thần văn hóa truyền thống.
             </p>
-            
+
           </div>
 
           <div className="footer-section">
@@ -44,7 +44,7 @@ const Footer = () => {
         </div>
 
         <div className="footer-bottom">
-          <p>© 2024 Xuân Thu Bách Hội Project. Bản quyền thuộc về đội ngũ phát triển.</p>
+          <p>© 2025 Xuân Thu Bách Hội. Bản quyền thuộc về đội ngũ phát triển.</p>
           <div className="footer-links">
             <a href="#">Bảo mật</a>
             <a href="#">Điều khoản</a>

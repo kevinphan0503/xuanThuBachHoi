@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Users, Clock, Baby } from 'lucide-react'
+import { Users, Clock, Baby, BookOpen, Codepen } from 'lucide-react'
 import './Home.css'
 
 const Home = () => {
@@ -23,9 +23,10 @@ const Home = () => {
   ]
 
   const stats = [
-    { label: 'Số người chơi', value: '2 - 6', icon: <Users size={24} /> },
-    { label: 'Thời lượng', value: '45-60 m', icon: <Clock size={24} /> },
-    { label: 'Độ tuổi', value: '12+', icon: <Baby size={24} /> }
+    { icon: <Codepen size={24} />, label: 'Thể loại', value: 'Chiến thuật và giáo dục' },
+    { icon: <Users size={24} />, label: 'Số người chơi', value: '2-6 người' },
+    { icon: <Clock size={24} />, label: 'Thời gian chơi', value: '40-60 phút' },
+    { icon: <BookOpen size={24} />, label: 'Độ tuổi', value: '12+' },
   ]
 
   const testimonials = [
@@ -44,7 +45,7 @@ const Home = () => {
   return (
     <div className="home">
       <section className="hero-banner">
-        <div className="hero-backdrop"/>
+        <div className="hero-backdrop" />
         <div className="container">
           <div className="hero-content">
             <div className="hero-pill">KHƠI DẬY DI SẢN - KẾT NỐI TƯƠNG LAI</div>
