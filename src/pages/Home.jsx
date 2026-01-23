@@ -7,23 +7,23 @@ const Home = () => {
   const featureCards = [
     {
       title: 'Hành Trình Bốn Mùa',
-      description: 'Hành trình khám phá văn hóa Việt từ đền Hùng đến miền Tây Nam Bộ',
+      description: 'Hành trình khám phá văn hóa trải dài từ Bắc vào Nam qua bốn mùa lễ hội.',
       icon: '🌸'
     },
     {
       title: 'Chiến Thuật Lộc Xuân',
-      description: 'Kết hợp thú vị giữa vận may và chiến thuật, mỗi nước đi là một câu chuyện',
+      description: 'Kết hợp thú vị giữa vận may và chiến thuật, mỗi nước đi là một câu chuyện.',
       icon: '🧧'
     },
     {
-      title: 'Tuyệt Tác Dân Gian',
-      description: 'Chất liệu giấy mỹ thuật, hộp tranh khắc gỗ, mang đậm nét văn hóa Việt',
+      title: 'Học mà chơi - Chơi mà học',
+      description: 'Tiếp thu kiến thức về lễ hội, trò chơi dân gian và nghi thức truyền thống.',
       icon: '🎴'
     }
   ]
 
   const stats = [
-    { icon: <Codepen size={24} />, label: 'Thể loại', value: 'Chiến thuật và giáo dục' },
+    { icon: <Codepen size={24} />, label: 'Thể loại', value: 'Chiến thuật' },
     { icon: <Users size={24} />, label: 'Số người chơi', value: '2-6 người' },
     { icon: <Clock size={24} />, label: 'Thời gian chơi', value: '40-60 phút' },
     { icon: <BookOpen size={24} />, label: 'Độ tuổi', value: '12+' },
@@ -45,34 +45,16 @@ const Home = () => {
   return (
     <div className="home">
       <section className="hero-banner">
-        <div className="hero-backdrop" />
-        <div className="container">
-          <div className="hero-content">
-            <div className="hero-pill">KHƠI DẬY DI SẢN - KẾT NỐI TƯƠNG LAI</div>
-            <h1 className="hero-title">
-              <span className="hero-title-main">XUÂN THU</span>
-              <span className="hero-title-sub">BÁCH HỘI</span>
-            </h1>
-            <p className="hero-subtitle">
-              Hóa thân thành nhà tổ chức lễ hội tài ba, du hành qua bốn mùa di sản Việt Nam trên bàn cờ chiến thuật đỉnh cao.
-            </p>
-            <div className="hero-actions">
-              <Link to="/shopping" className="btn hero-btn-primary">
-                Sở hữu báu vật - 299.000đ
-              </Link>
-              <Link to="/about" className="btn hero-btn-ghost">
-                Khám phá hành trình
-              </Link>
-            </div>
-          </div>
-        </div>
+        <div className="hero-backdrop" ></div>
       </section>
-
-      <section className="section intro-block">
+      <section className="section intro-block" style={{ background: '#fefbd9' }}>
         <div className="container">
-          <h2 className="section-heading">Nơi Tinh Hoa Hội Tụ</h2>
+          <h2 className="section-heading">Xuân Thu Bách Hội</h2>
           <p className="section-lead">
-            Hơn cả một trò chơi, đây là bản giao hưởng giữa trí tuệ hiện đại và hồn cốt dân tộc, nơi mỗi nước đi đều thấm đượm phong vị quê hương.
+            Boardgame trải nghiệm lấy cảm hứng từ các lễ hội truyền thống Việt Nam.
+          </p>
+          <p className="section-lead" style={{ marginTop: '-40px', width: '80%', maxWidth: '820px' }}>
+            Thông qua tương tác và những lựa chọn trong quá trình chơi, người chơi sẽ cùng nhau khám phá văn hoá, kết nối và trải nghiệm vào không gian lễ hội theo cách gần gũi và sống động.
           </p>
           <div className="feature-grid">
             {featureCards.map((card) => (
@@ -104,7 +86,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="section testimonial-block">
+      <section className="section testimonial-block" style={{ background: '#fefbd9' }}>
         <div className="container">
           <h2 className="section-heading">Chia Sẻ Từ Cộng Đồng</h2>
           <p className="section-lead subtle">Những cảm xúc thật từ những người đã chạm tay vào di sản.</p>

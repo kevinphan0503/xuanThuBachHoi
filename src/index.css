@@ -8,7 +8,7 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Be Vietnam Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
 
   --color-primary: #152149;
@@ -62,12 +62,15 @@ html {
 .btn-secondary {
   background: linear-gradient(90deg, var(--color-gold) 0%, var(--color-yellow) 100%);
 }
+
 .btn-secondary:hover {
   box-shadow: 0 10px 20px rgba(240, 147, 251, 0.3);
 }
+
 .section {
   padding: 80px 0;
 }
+
 /* ===================== */
 /* SECTION TITLE */
 /* ===================== */
@@ -87,7 +90,7 @@ html {
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
   border-radius: 2px;
 }
 
@@ -100,7 +103,7 @@ background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-seconda
 .gallery-hero *,
 .rules-hero * {
   opacity: 1 !important;
-  
+
   visibility: visible !important;
 
 }
