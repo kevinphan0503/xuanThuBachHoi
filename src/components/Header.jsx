@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 import { Menu, X, LogIn } from 'lucide-react'
 import './Header.css'
 import BuyNowButton from './BuyNowButton'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/logo2.png'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -29,7 +29,7 @@ const Header = () => {
 
         <Link to="/" className="logo">
           <img src={logo} alt="Xuân Thu Bách Hội" className="logo-img" />
-          <span className="logo-text">XUÂN THU BÁCH HỘI</span>
+          
         </Link>
 
         <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
