@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { BookOpen, Target, Users, Award, Clock, MapPin } from 'lucide-react'
+import { Target, Users, MapPin, Shield, Sparkles, GraduationCap, Play } from 'lucide-react'
 import useScrollReveal from '../hooks/useScrollReveal'
 import { API_BASE_URL } from '../config/api'
 import './About.css'
-import f1 from '../../assets/festival-placeholder-1.svg'
-import f2 from '../../assets/festival-placeholder-2.svg'
+import f1 from '../../assets/hoi3.png'
+import f2 from '../../assets/hoi4.png'
 import f3 from '../../assets/festival-placeholder-3.svg'
 import f4 from '../../assets/festival-placeholder-4.svg'
 import f5 from '../../assets/festival-placeholder-5.svg'
@@ -42,182 +42,184 @@ const About = () => {
     }
   }, [])
 
-  const features = [
+  const coreGoals = [
     {
-      icon: <BookOpen size={48} />,
+      icon: <Shield size={26} />,
       title: 'Gìn giữ truyền thống',
       description: 'Mỗi ô lễ hội, thẻ kiến thức và thử thách đều phản ánh nét đẹp phong tục Việt.'
     },
     {
-      icon: <Target size={48} />,
+      icon: <Target size={26} />,
       title: 'Học mà chơi',
       description: 'Người chơi tiếp thu kiến thức về lễ hội, trò chơi dân gian và nghi thức truyền thống.'
     },
     {
-      icon: <Users size={48} />,
+      icon: <Users size={26} />,
       title: 'Kết nối cộng đồng',
       description: 'Thử thách tương tác như hát dân ca, múa, nhảy dân gian tạo không khí vui vẻ.'
     }
   ]
 
-  const gameSpecs = [
-    { icon: <Users size={24} />, label: 'Số người chơi', value: '2-6 người' },
-    { icon: <Clock size={24} />, label: 'Thời gian chơi', value: '40-60 phút' },
-    { icon: <BookOpen size={24} />, label: 'Độ tuổi', value: 'Mọi lứa tuổi' },
-    { icon: <MapPin size={24} />, label: 'Thể loại', value: 'Chiến thuật, Văn hóa' }
+  const journeySteps = [
+    { label: 'Giai đoạn 1', title: 'Bắt đầu', desc: 'Chọn gia tộc và làng xuất phát', icon: <Play size={18} /> },
+    { label: 'Giai đoạn 2', title: 'Du hành', desc: 'Khám phá bản đồ lễ hội theo mùa', icon: <MapPin size={18} /> },
+    { label: 'Giai đoạn 3', title: 'Lễ hội', desc: 'Hoàn tất nghi lễ và thu thập bùa may', icon: <Sparkles size={18} /> },
+    { label: 'Về đích', title: 'Chiến thắng', desc: 'Trở thành Bậc thầy Thủ hộ', icon: <GraduationCap size={18} /> }
   ]
+
+  const showcaseFestivals = festivals.slice(0, 4)
+
+  const fallbackFestivals = [
+    { name: 'Hội Lim', description: 'Cái nôi của những làn điệu Quan họ' },
+    { name: 'Chọi Trâu', description: 'Sức mạnh và tinh thần đoàn kết' },
+    { name: 'Hội Gióng', description: 'Huyền thoại người anh hùng ngựa sắt' },
+    { name: 'Chùa Hương', description: 'Hành trình trảy hội mùa xuân' }
+  ]
+
+  const festivalsToRender = showcaseFestivals.length ? showcaseFestivals : fallbackFestivals
+  const placeholders = [f1, f2, f3, f4, f5]
 
   return (
     <div className="about-page">
-      {/* Hero Section */}
-      <section className="about-hero">
+      <section className="about-hero" ref={heroRef}>
         <div className="container">
-          <div className="hero-content" ref={heroRef}>
-            <h1>Xuân Thu Bách Hội — Board game Văn hóa Truyền thống</h1>
-            <p>
-              Xuân Thu Bách Hội là board game chiến thuật, kết hợp yếu tố mô phỏng, thẻ kiến thức và thử thách vui nhộn.
-              Trò chơi lấy cảm hứng từ lễ hội truyền thống khắp ba miền, được thiết kế vui tươi, đậm chất dân gian và phù hợp với mọi lứa tuổi.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Introduction Section */}
-      {/* Introduction Section */}
-      <section className="section intro-section">
-        <div className="container">
-          <h2 className="section-title center">Giới thiệu</h2>
-
-          <div className="intro-grid" ref={introRef}>
-            {/* LEFT CONTENT */}
-            <div className="intro-cards">
-              <div className="intro-card highlight">
-                <h3>🌸 Xuân Thu Bách Hội</h3>
-                <p>
-                  Không chỉ là trò chơi giải trí, Xuân Thu Bách Hội còn là hành trình khám phá
-                  lễ hội truyền thống Việt Nam. Mỗi lượt đi là một câu chuyện văn hóa – nơi
-                  chiến thuật song hành cùng tri thức dân gian.
-                </p>
-              </div>
-
-              <div className="intro-card">
-                <h3>🎯 Mục tiêu</h3>
-                <ul>
-                  <li>Trở thành nhà tổ chức lễ hội thành công nhất</li>
-                  <li>Gìn giữ & lan tỏa giá trị truyền thống</li>
-                  <li>Kết nối cộng đồng qua thử thách tương tác</li>
-                </ul>
-              </div>
-
-              <div className="intro-card">
-                <h3>✨ Điểm nổi bật</h3>
-                <ul>
-                  <li>40 lễ hội tiêu biểu khắp Việt Nam</li>
-                  <li>60 thẻ kiến thức & thử thách dân gian</li>
-                  <li>Nâng cấp lễ hội bằng Bánh – Mứt – Trang trí</li>
-                </ul>
-              </div>
-            </div>
-
-            {/* RIGHT CONTENT */}
-            <div className="festival-panel">
-              <h3 className="panel-title">📍 Lễ hội trong trò chơi</h3>
-
-              <div className="festival-scroll">
-                {loadingFestivals && <p>Đang tải lễ hội…</p>}
-                {festivalError && <p className="error">{festivalError}</p>}
-
-                {!loadingFestivals &&
-                  !festivalError &&
-                  festivals.map((f, idx) => (
-                    <Link
-                      to={`/festivals/${f.festival_id}`}
-                      key={f.festival_id ?? idx}
-                      className="festival-item-card"
-                    >
-                      <span className="dot" />
-                      <span>{f.name}</span>
-                    </Link>
-                  ))}
+          <div className="hero-card">
+            <div className="hero-content">
+              <h1>Xuân Thu Bách Hội: Board game Văn hóa Truyền thống</h1>
+              <p>
+                Trải nghiệm tìm hiểu trực quan và thú vị về Việt Nam thông qua hành trình chiến thuật của bộ sưu tập lễ hội truyền thống.
+              </p>
+              <div className="hero-actions">
+                <Link to="/gallery" className="btn-secondary">Xem Trailer</Link>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="section features-section">
-        <div className="container" ref={featuresRef}>
-          <h2 className="section-title reveal-text">Tại sao chọn XUÂN THU BÁCH HỘI?</h2>
-          <div className="features-grid">
-            {features.map((feature, index) => (
-              <div key={index} className={`feature-card reveal-text reveal-delay-${index + 1}`}>
-                <div className="feature-icon">
-                  {feature.icon}
+      <section className="story-panel" ref={introRef}>
+        <div className="container">
+          <div className="story-banner">
+            <div className="story-overlay">
+              <h2>Giai thoại lịch sử</h2>
+              <p>
+                Xuân Thu Bách Hội gợi cảm hứng từ cộng đồng ASEAN chung bước xây dựng tương lai, với mỗi bước đi là một câu chuyện lịch sử.
+              </p>
+              <div className="story-badge">100+ sự kiện di sản</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="core-goals" ref={featuresRef}>
+        <div className="container">
+          <h2 className="section-title">Mục tiêu Cốt lõi</h2>
+          <div className="goals-grid">
+            {coreGoals.map((item) => (
+              <div className="goal-card" key={item.title}>
+                <div className="goal-icon">{item.icon}</div>
+                <div className="goal-body">
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
                 </div>
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-description">{feature.description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-    
-
-      {/* Mission Section */}
-      <section className="section mission-section">
-        <div className="container" ref={missionRef}>
-          <div className="mission-content">
-            <div className="mission-text">
-              <h2 className="section-title reveal-text">Ý nghĩa của trò chơi</h2>
-              <p>
-                XUÂN THU BÁCH HỘI không chỉ là trò chơi giải trí mà còn là phương tiện truyền tải giá trị văn hóa.
-                Thông qua trò chơi, chúng tôi mong muốn:
-              </p>
-              <ul className="mission-list">
-                <li>Gìn giữ và lan tỏa giá trị truyền thống qua từng ô lễ hội và thẻ kiến thức</li>
-                <li>Học mà chơi — chơi mà học: Tiếp thu kiến thức về lễ hội và nghi thức truyền thống</li>
-                <li>Kết nối cộng đồng: Thử thách tương tác tạo không khí vui vẻ, khuyến khích giao lưu</li>
-                <li>Truyền cảm hứng sáng tạo: Tự do nâng cấp và biến lễ hội trở nên độc đáo</li>
-              </ul>
-            </div>
-            <div className="mission-visual">
-              <div className="mission-card">
-                <div className="card-header">
-                  <h3>Hành trình lễ hội</h3>
-                </div>
-                <div className="card-body">
-                  <div className="journey-path">
-                    <div className="path-point active">
-                      <span className="point-icon">🎉</span>
-                      <span className="point-label">Bắt đầu</span>
-                    </div>
-                    <div className="path-line"></div>
-                    <div className="path-point">
-                      <span className="point-icon">🏮</span>
-                      <span className="point-label">Mua lễ hội</span>
-                    </div>
-                    <div className="path-line"></div>
-                    <div className="path-point">
-                      <span className="point-icon">🎭</span>
-                      <span className="point-label">Nâng cấp</span>
-                    </div>
-                    <div className="path-line"></div>
-                    <div className="path-point">
-                      <span className="point-icon">🏆</span>
-                      <span className="point-label">Chiến thắng</span>
-                    </div>
-                  </div>
-                </div>
+      <section className="components-section">
+        <div className="container components-grid">
+          <div className="components-text">
+            <h2>Thành phần Trò chơi</h2>
+            <p>
+              Mỗi lá bài trong Xuân Thu Bách Hội là một tác phẩm nghệ thuật, được thiết kế tỉ mỉ để phản ánh linh hồn Việt Nam.
+              Từ vùng cao phía Bắc đến đồng bằng sông Cửu Long, hãy khám phá sự đa dạng của đất nước.
+            </p>
+            <div className="stat-cards">
+              <div className="stat-card orange">
+                <span className="stat-value">15+</span>
+                <span className="stat-label">Lễ hội độc đáo</span>
               </div>
+              <div className="stat-card blue">
+                <span className="stat-value">20+</span>
+                <span className="stat-label">Thẻ thử thách</span>
+              </div>
+            </div>
+          </div>
+          <div className="components-visual">
+            <div className="visual-item large">
+              <img src={f1} alt="Lễ hội" />
+            </div>
+            <div className="visual-item">
+              <img src={f2} alt="Lễ hội" />
             </div>
           </div>
         </div>
       </section>
 
+      <section className="festival-highlight">
+        <div className="container">
+          <div className="festival-header">
+            <h2>Lễ hội Nổi bật</h2>
+            <div className="festival-note">
+              <span>Những trải nghiệm ấn tượng trong trò chơi</span>
+              <Link to="/festivals" className="festival-link">Xem thêm thư viện</Link>
+            </div>
+          </div>
+          <div className="festival-grid">
+            {festivalsToRender.map((f, idx) => {
+              const imgSrc = f.image_url || placeholders[idx % placeholders.length]
+              return (
+                <Link
+                  to={f.festival_id ? `/festivals/${f.festival_id}` : '#'}
+                  key={f.festival_id ?? idx}
+                  className="festival-card"
+                >
+                  <div className="festival-thumb">
+                    <img src={imgSrc} alt={f.name || 'Lễ hội'} />
+                  </div>
+                  <h3>{f.name}</h3>
+                  <p>{ 'Khám phá sức hút và tinh thần đoàn kết'}</p>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+      </section>
 
+      <section className="journey-section" ref={missionRef}>
+        <div className="container">
+          <div className="section-heading">
+            <h2>Hành trình Trò chơi</h2>
+            <p>Con đường từ người học việc đến Bậc thầy Thủ hộ</p>
+          </div>
+          <div className="journey-track">
+            {journeySteps.map((step, index) => (
+              <div className="journey-step" key={step.title}>
+                <div className="journey-dot" />
+                <div className="journey-card">
+                  <h4>{step.label}</h4>
+                  <h3>{step.title}</h3>
+                  <p>{step.desc}</p>
+                </div>
+                {index < journeySteps.length - 1 && <div className="journey-connector" aria-hidden="true" />}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
+      <section className="cta-section">
+        <div className="container cta-card">
+          <h2>Sẵn sàng bảo tồn lịch sử?</h2>
+          <p>Tham gia cùng những người yêu di sản để khám phá vẻ đẹp của lễ hội truyền thống Việt Nam.</p>
+          <div className="cta-actions">
+            <Link to="/shopping" className="btn-solid">Đặt trước Board Game</Link>
+            <Link to="/about" className="btn-ghost">Tham gia Cộng đồng</Link>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }

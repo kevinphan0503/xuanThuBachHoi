@@ -22,45 +22,37 @@ const Header = () => {
 
   return (
     <header className="header">
-      <div className="container">
-        <div className="header-content">
+      <div className="container header-inner">
+        <button className="menu-toggle" onClick={toggleMenu}>
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
-          <Link to="/" className="logo">
-            <img src={logo} alt="Xuân Thu Bách Hội" className="logo-img" />
-            <span>XUÂN THU BÁCH HỘI</span>
+        <Link to="/" className="logo">
+          <img src={logo} alt="Xuân Thu Bách Hội" className="logo-img" />
+          <span className="logo-text">XUÂN THU BÁCH HỘI</span>
+        </Link>
+
+        <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
+          <ul className="nav-list">
+            {navItems.map((item) => (
+              <li key={item.path} className="nav-item">
+                <Link
+                  to={item.path}
+                  className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="header-actions">
+          <Link to="/admin/login" className="login-btn">
+            ĐĂNG NHẬP
           </Link>
-
-
-
-
-          <nav className={`nav ${isMenuOpen ? 'nav-open' : ''}`}>
-            <ul className="nav-list">
-              {navItems.map((item) => (
-                <li key={item.path} className="nav-item">
-                  <Link
-                    to={item.path}
-                    className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="header-actions">
-            <Link to="/admin/login" className="login-btn">
-              <LogIn size={18} />
-              <span>Đăng nhập</span>
-            </Link>
-
-            <BuyNowButton variant="inline" />
-          </div>
-
-          <button className="menu-toggle" onClick={toggleMenu}>
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          
         </div>
       </div>
     </header>

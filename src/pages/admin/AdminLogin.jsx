@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { LogIn, Lock, User } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { LogIn, Lock, User, Eye } from 'lucide-react'
 import { API_BASE_URL } from '../../config/api'
 import './AdminLogin.css'
 
@@ -9,6 +9,7 @@ const AdminLogin = () => {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [remember, setRemember] = useState(false)
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -42,34 +43,33 @@ const AdminLogin = () => {
 
   return (
     <div className="admin-login">
-      <div className="login-container">
-        <div className="login-header">
-          <h1>Xuân Thu Bách Hội</h1>
-          
+      <div className="login-pattern" aria-hidden="true" />
+      <div className="login-decor left" aria-hidden="true" />
+      <div className="login-decor right" aria-hidden="true" />
+
+      <div className="login-card">
+        <div className="card-logo">
+          <img src="/assets/logo.png" alt="Xuân Thu Bách Hội" />
         </div>
+        <h2 className="card-title">Hệ Thống Quản Trị</h2>
+        <p className="card-subtitle">Vui lòng đăng nhập để truy cập trung tâm quản lý Xuân Thu Bách Hội</p>
 
         <form onSubmit={handleSubmit} className="login-form">
           {error && <div className="error-message">{error}</div>}
 
-          <div className="form-group">
-            <label>
-              <User size={18} />
-              Tên đăng nhập
-            </label>
+          <label className="input-group">
+            <span className="input-icon"><User size={16} /></span>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               required
-              placeholder="Nhập tên đăng nhập"
+              placeholder="Nhập tên người dùng hoặc email"
             />
-          </div>
+          </label>
 
-          <div className="form-group">
-            <label>
-              <Lock size={18} />
-              Mật khẩu
-            </label>
+          <label className="input-group">
+            <span className="input-icon"><Lock size={16} /></span>
             <input
               type="password"
               value={password}
@@ -77,15 +77,27 @@ const AdminLogin = () => {
               required
               placeholder="Nhập mật khẩu"
             />
+            <span className="input-icon trailing" aria-hidden="true"><Eye size={16} /></span>
+          </label>
+
+          <div className="form-options">
+            <label className="checkbox">
+              <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+              <span>Ghi nhớ</span>
+            </label>
+            <button type="button" className="link-button">Quên mật khẩu?</button>
           </div>
 
           <button type="submit" className="login-button" disabled={loading}>
             <LogIn size={20} />
-            {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+            {loading ? 'Đang đăng nhập...' : 'Đăng nhập hệ thống'}
           </button>
         </form>
 
-       
+        <div className="card-footer">
+          <Link to="/" className="back-link">← Quay lại trang chủ</Link>
+          <p className="copyright">© 2024 Xuân Thu Bách Hội · Bảo mật bởi hệ thống quản trị</p>
+        </div>
       </div>
     </div>
   )

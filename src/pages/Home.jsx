@@ -1,96 +1,122 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowRight, Users, Clock, Target, BookOpen, Trophy, Star, Music, Camera, Gift, Heart } from 'lucide-react'
-import Hero from '../components/Hero'
-import FeatureSection from '../components/FeatureSection'
-import GamePreview from '../components/GamePreview'
-import TestimonialSection from '../components/TestimonialSection'
-import RotatableImage from '../components/RotatableImage'
-import useScrollReveal from '../hooks/useScrollReveal'
+import { Users, Clock, Baby } from 'lucide-react'
 import './Home.css'
 
 const Home = () => {
-  const introRef = useScrollReveal()
-  const ctaRef = useScrollReveal()
-
-  const features = [
+  const featureCards = [
     {
-      icon: <Users size={48} />,
-      title: 'Đa người chơi',
-      description: 'Chơi cùng 2-6 người, mỗi người đóng vai một "nhà tổ chức lễ hội"'
+      title: 'Hành Trình Bốn Mùa',
+      description: 'Hành trình khám phá văn hóa Việt từ đền Hùng đến miền Tây Nam Bộ',
+      icon: '🌸'
     },
     {
-      icon: <Clock size={48} />,
-      title: 'Thời gian linh hoạt',
-      description: 'Mỗi ván chơi kéo dài 40-60 phút, phù hợp cho mọi lứa tuổi'
+      title: 'Chiến Thuật Lộc Xuân',
+      description: 'Kết hợp thú vị giữa vận may và chiến thuật, mỗi nước đi là một câu chuyện',
+      icon: '🧧'
     },
     {
-      icon: <BookOpen size={48} />,
-      title: 'Học mà chơi',
-      description: 'Tiếp thu kiến thức về lễ hội, trò chơi dân gian và nghi thức truyền thống'
+      title: 'Tuyệt Tác Dân Gian',
+      description: 'Chất liệu giấy mỹ thuật, hộp tranh khắc gỗ, mang đậm nét văn hóa Việt',
+      icon: '🎴'
     }
   ]
 
-  const gameStats = [
-    { number: '40', label: 'Ô lễ hội trên bàn cờ' },
-    { number: '60', label: 'Thẻ Lộc Xuân & Gieo Quẻ' },
-    { number: '30+', label: 'Lễ hội truyền thống' },
-    { number: '4.8/5', label: 'Đánh giá từ người chơi' }
+  const stats = [
+    { label: 'Số người chơi', value: '2 - 6', icon: <Users size={24} /> },
+    { label: 'Thời lượng', value: '45-60 m', icon: <Clock size={24} /> },
+    { label: 'Độ tuổi', value: '12+', icon: <Baby size={24} /> }
+  ]
+
+  const testimonials = [
+    {
+      name: 'Thế Văn',
+      role: 'Sinh viên',
+      quote: 'Là một sinh viên, mình thấy trò chơi cực kỳ cuốn hút, mang lại sự tìm tòi và giúp mình hiểu sâu hơn về ý nghĩa của các lễ hội truyền thống hay những câu lạc bộ “khám phá lịch sử”.'
+    },
+    {
+      name: 'Huỳnh Châu',
+      role: 'Phụ huynh',
+      quote: 'Tôi rất yêu thích những món quà ý nghĩa cho gia đình. Xuân Thu Bách Hội giúp gắn kết các thành viên và lưu giữ giá trị cội nguồn cho lũ trẻ.'
+    }
   ]
 
   return (
     <div className="home">
-      <Hero />
-      
-      <section className="section intro-section">
+      <section className="hero-banner">
+        <div className="hero-backdrop"/>
         <div className="container">
-          <div className="intro-content" ref={introRef}>
-            <div className="intro-text">
-              <h2 className="section-title reveal-text">Xuân Thu Bách Hội</h2>
-              <h3 className="intro-subtitle reveal-text reveal-delay-1">Khám phá văn hóa - Kết nối cộng đồng</h3>
-              <p className="intro-description reveal-text reveal-delay-2">
-               Xuân Thu Bách Hội là một board game chiến thuật, kết hợp yếu tố mô phỏng, thẻ kiến thức và thử thách vui nhộn. 
-                Trò chơi lấy cảm hứng từ lễ hội truyền thống khắp ba miền, được thiết kế vui tươi, đậm chất dân gian và phù hợp với mọi lứa tuổi.
-              </p>
-              <p className="intro-description reveal-text reveal-delay-3">
-                Trong trò chơi, bạn sẽ đi khắp các vùng miền để mua quyền tổ chức các lễ hội (Hội Lim, Chọi Trâu, Lễ hội Cà phê, Giỗ Tổ Hùng Vương...), 
-                nâng cấp lễ hội bằng bánh mứt, trang trí, hoạt động, rút thẻ Lộc Xuân để nhận kiến thức văn hóa và cơ hội, 
-                hoặc rút thẻ Gieo Quẻ để gặp những thử thách hài hước và kịch tính.
-              </p>
-              <div className="intro-actions reveal-text reveal-delay-4">
-                <Link to="/about" className="btn">
-                  Tìm hiểu thêm
-                  <ArrowRight size={20} />
-                </Link>
-              
-              </div>
+          <div className="hero-content">
+            <div className="hero-pill">KHƠI DẬY DI SẢN - KẾT NỐI TƯƠNG LAI</div>
+            <h1 className="hero-title">
+              <span className="hero-title-main">XUÂN THU</span>
+              <span className="hero-title-sub">BÁCH HỘI</span>
+            </h1>
+            <p className="hero-subtitle">
+              Hóa thân thành nhà tổ chức lễ hội tài ba, du hành qua bốn mùa di sản Việt Nam trên bàn cờ chiến thuật đỉnh cao.
+            </p>
+            <div className="hero-actions">
+              <Link to="/shopping" className="btn hero-btn-primary">
+                Sở hữu báu vật - 299.000đ
+              </Link>
+              <Link to="/about" className="btn hero-btn-ghost">
+                Khám phá hành trình
+              </Link>
             </div>
-           
           </div>
         </div>
       </section>
 
-      <FeatureSection features={features} />
-
-     
-
-      <GamePreview />
-
-      <TestimonialSection />
-
-      <section className="section cta-section cta-light">
+      <section className="section intro-block">
         <div className="container">
-          <div className="cta-content" ref={ctaRef}>
-            <h2 className="reveal-text">Sẵn sàng trải nghiệm?</h2>
-            <p className="reveal-text reveal-delay-1">Hãy bắt đầu hành trình khám phá lễ hội truyền thống Việt Nam ngay hôm nay!</p>
-            <div className="cta-actions reveal-text reveal-delay-2">
-              <Link to="/contact" className="btn">
-                Liên hệ mua game
-              </Link>
-              <Link to="/gallery" className="btn btn-secondary">
-                Xem hình ảnh
-              </Link>
-            </div>
+          <h2 className="section-heading">Nơi Tinh Hoa Hội Tụ</h2>
+          <p className="section-lead">
+            Hơn cả một trò chơi, đây là bản giao hưởng giữa trí tuệ hiện đại và hồn cốt dân tộc, nơi mỗi nước đi đều thấm đượm phong vị quê hương.
+          </p>
+          <div className="feature-grid">
+            {featureCards.map((card) => (
+              <div className="feature-card-home" key={card.title}>
+                <span className="feature-icon-home" aria-hidden="true">{card.icon}</span>
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="stats-section-home">
+        <div className="container">
+          <div className="stats-heading">
+            <span className="stats-heading-icon" aria-hidden="true">✦</span>
+            <span>Thông số cuộc chơi</span>
+          </div>
+          <div className="stats-grid-home">
+            {stats.map((item) => (
+              <div className="stat-card-home" key={item.label}>
+                <div className="stat-icon">{item.icon}</div>
+                <div className="stat-value">{item.value}</div>
+                <div className="stat-label">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section testimonial-block">
+        <div className="container">
+          <h2 className="section-heading">Chia Sẻ Từ Cộng Đồng</h2>
+          <p className="section-lead subtle">Những cảm xúc thật từ những người đã chạm tay vào di sản.</p>
+          <div className="testimonial-grid-home">
+            {testimonials.map((item) => (
+              <div className="testimonial-card-home" key={item.name}>
+                <p className="testimonial-quote">“{item.quote}”</p>
+                <div className="testimonial-author">
+                  <div className="author-name">{item.name}</div>
+                  <div className="author-role">{item.role}</div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
