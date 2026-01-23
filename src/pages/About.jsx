@@ -163,25 +163,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* Game Specifications */}
-      <section className="section specs-section gradient-bg">
-        <div className="container">
-          <h2 className="section-title" style={{ color: 'white' }}>Thông số game</h2>
-          <div className="specs-grid">
-            {gameSpecs.map((spec, index) => (
-              <div key={index} className="spec-item">
-                <div className="spec-icon">
-                  {spec.icon}
-                </div>
-                <div className="spec-content">
-                  <h4>{spec.label}</h4>
-                  <span>{spec.value}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    
 
       {/* Mission Section */}
       <section className="section mission-section">
