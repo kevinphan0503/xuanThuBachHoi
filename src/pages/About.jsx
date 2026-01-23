@@ -90,7 +90,7 @@ const About = () => {
                 Trải nghiệm tìm hiểu trực quan và thú vị về Việt Nam thông qua hành trình chiến thuật của bộ sưu tập lễ hội truyền thống.
               </p>
               <div className="hero-actions">
-                <Link to="/gallery" className="btn-secondary">Xem Trailer</Link>
+                <Link to="/" className="btn-secondary">Xem Trailer</Link>
               </div>
             </div>
           </div>
