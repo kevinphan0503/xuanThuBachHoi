@@ -38,6 +38,20 @@ const envUseLocal = (() => {
 function createPool({ forceLocal = null } = {}) {
     const useLocal = forceLocal ?? envUseLocal;
 
+    // Log database connection info
+    console.log('═══════════════════════════════════════════════════════════');
+    console.log(`🔌 Database Configuration:`);
+    console.log(`   Mode: ${useLocal ? '🟢 LOCAL DATABASE' : '🔴 RENDER DATABASE'}`);
+    if (useLocal) {
+        console.log(`   Host: ${DB_HOST || 'localhost'}`);
+        console.log(`   Port: ${DB_PORT || 5432}`);
+        console.log(`   Database: ${DB_NAME || 'boardgame_festival'}`);
+    } else {
+        console.log(`   Using DATABASE_URL from environment`);
+        console.log(`   URL Pattern: ${DATABASE_URL ? DATABASE_URL.substring(0, 30) + '...' : 'Not set'}`);
+    }
+    console.log('═══════════════════════════════════════════════════════════');
+
     // Auto-detect SSL usage (Render requires SSL on External URL); skip for local
     const dbSslFlag = (DB_SSL || '').toLowerCase() === 'true';
     const shouldUseSSL = !useLocal && (

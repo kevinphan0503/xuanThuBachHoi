@@ -6,6 +6,8 @@ import PromoNotification from './components/PromoNotification'
 import PageTracker from './components/PageTracker'
 import Home from './pages/Home'
 import About from './pages/About'
+import Register from './pages/Register.jsx'
+import Login from './pages/Login.jsx'
 import GameRules from './pages/GameRules'
 import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
@@ -70,6 +72,8 @@ function App() {
           <Route path="/gallery" element={<PublicLayout><Gallery /></PublicLayout>} />
           <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
           <Route path="/shopping" element={<PublicLayout><Shopping /></PublicLayout>} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>

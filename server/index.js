@@ -1,13 +1,28 @@
 import express from 'express';
-import cors from 'cors';
+import session from 'express-session';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { v2 as cloudinary } from 'cloudinary';
 import nodemailer from 'nodemailer';
 import pool, { ping, getFestivals, checkRenderConnection } from './db.js';
+import cors from 'cors'; // Ensure CORS is imported at the top of the file
 
 dotenv.config();
+const app = express();
+// Session middleware
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'xuanthubachhoi_secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    }
+}));
+// Middleware xử lý JSON body
+app.use(express.json());
+// Middleware xử lý form-urlencoded nếu cần
+app.use(express.urlencoded({ extended: true }));
 
 // Cloudinary configuration (env driven)
 cloudinary.config({
@@ -15,6 +30,7 @@ cloudinary.config({
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
 
 const hasCloudinaryConfig = Boolean(
     process.env.CLOUDINARY_CLOUD_NAME &&
@@ -76,9 +92,79 @@ async function sendOrderEmail({ to, subject, text, html }) {
     }
 }
 
-const app = express();
-app.use(cors({ origin: '*' }));
-app.use(express.json({ limit: '10mb' }));
+// Ensure consistent CORS configuration
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:3001'], // Allow both ports
+    credentials: true // Allow cookies to be sent
+}));
+
+// API đăng kí tài khoản người dùng
+app.post('/api/register', async (req, res) => {
+    const { username, password, email, full_name, phone, address } = req.body;
+    if (!username || !password || !email || !full_name || !phone || !address) {
+        return res.status(400).json({ error: 'Vui lòng nhập đầy đủ thông tin.' });
+    }
+    try {
+        // Kiểm tra trùng username/email
+        const userCheck = await pool.query('SELECT * FROM users WHERE username = $1 OR email = $2', [username, email]);
+        if (userCheck.rows.length > 0) {
+            return res.status(409).json({ error: 'Tên đăng nhập hoặc email đã tồn tại.' });
+        }
+        // Hash password
+        const bcrypt = await import('bcryptjs');
+        const salt = await bcrypt.genSalt(10);
+        const password_hash = await bcrypt.hash(password, salt);
+        // Thêm user mới
+        await pool.query(
+            'INSERT INTO users (username, password_hash, email, full_name, phone, address) VALUES ($1, $2, $3, $4, $5, $6)',
+            [username, password_hash, email, full_name, phone, address]
+        );
+        return res.json({ message: 'Đăng kí thành công!' });
+    } catch (err) {
+        return res.status(500).json({ error: 'Lỗi máy chủ.' });
+    }
+});
+
+
+// API đăng nhập người dùng
+app.post('/api/login', async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) {
+        return res.status(400).json({ error: 'Vui lòng nhập đầy đủ thông tin.' });
+    }
+    try {
+        const userResult = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+        if (userResult.rows.length === 0) {
+            return res.status(401).json({ error: 'Tên đăng nhập hoặc mật khẩu không đúng.' });
+        }
+        const user = userResult.rows[0];
+        const bcrypt = await import('bcryptjs');
+        const isMatch = await bcrypt.compare(password, user.password_hash);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Tên đăng nhập hoặc mật khẩu không đúng.' });
+        }
+        // Lưu thông tin user vào session (ẩn password_hash)
+        const { password_hash, ...userInfo } = user;
+        req.session.user = userInfo;
+        return res.json({ user: userInfo });
+    } catch (err) {
+        return res.status(500).json({ error: 'Lỗi máy chủ.' });
+    }
+});
+// API kiểm tra trạng thái đăng nhập
+app.get('/api/session', (req, res) => {
+    if (req.session.user) {
+        res.json({ loggedIn: true, user: req.session.user });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+// API đăng xuất
+app.post('/api/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.json({ success: true });
+    });
+});
 
 // Resolve __dirname for ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -467,7 +553,7 @@ app.post('/api/orders', async (req, res) => {
 
         res.status(201).json(responsePayload);
     } catch (err) {
-        await client.query('ROLLBACK').catch(() => {});
+        await client.query('ROLLBACK').catch(() => { });
         res.status(500).json({ error: err.message });
     } finally {
         client.release();
@@ -682,7 +768,7 @@ app.put('/api/admin/orders/:id/status', async (req, res) => {
 
         res.json({ message: 'Cập nhật trạng thái đơn hàng thành công' });
     } catch (err) {
-        await client.query('ROLLBACK').catch(() => {});
+        await client.query('ROLLBACK').catch(() => { });
         res.status(500).json({ error: err.message });
     } finally {
         client.release();
@@ -713,7 +799,7 @@ app.delete('/api/admin/orders/:id', async (req, res) => {
         await client.query('COMMIT');
         res.json({ message: 'Xóa đơn hàng và hoàn lại tồn kho thành công' });
     } catch (err) {
-        await client.query('ROLLBACK').catch(() => {});
+        await client.query('ROLLBACK').catch(() => { });
         res.status(500).json({ error: err.message });
     } finally {
         client.release();
@@ -806,7 +892,7 @@ app.get('/api/admin/analytics/visits', async (req, res) => {
     }
 });
 
-const PORT = process.env.API_PORT || process.env.PORT || 5001;
+const PORT = process.env.API_PORT || process.env.PORT || 5000;
 // Serve frontend build assets from ../dist
 const distPath = path.join(__dirname, '../dist');
 app.use(express.static(distPath));

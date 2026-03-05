@@ -107,25 +107,25 @@ const FestivalDetail = () => {
                     __html: festival.description || ''
                   }}
                 />
-                     {/* VIDEO – FULL WIDTH */}
-            {festival.link_video && (
-              <div className="festival-video-section">
-                <div className="video-wrapper">
-                  <iframe
-                    src={getVideoEmbedUrl(festival.link_video)}
-                    title={festival.name}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
-            )}
+                {/* VIDEO – FULL WIDTH */}
+                {festival.link_video && (
+                  <div className="festival-video-section">
+                    <div className="video-wrapper">
+                      <iframe
+                        src={getVideoEmbedUrl(festival.link_video)}
+                        title={festival.name}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
-          
+
             </div>
 
-           
+
           </>
         )}
       </div>

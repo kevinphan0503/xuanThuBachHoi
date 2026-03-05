@@ -20,12 +20,18 @@ WITH
 /* =====================================================
    ENUM TYPES (PostgreSQL)
    ===================================================== */
+/* =====================================================
+   ENUM TYPES
+   ===================================================== */
+
 CREATE TYPE product_category AS ENUM ('boardgame', 'keychain', 'towel', 'other');
 CREATE TYPE order_status_enum AS ENUM ('pending', 'confirmed', 'shipping', 'completed', 'cancelled');
+CREATE TYPE difficulty_level AS ENUM ('EASY', 'MEDIUM', 'HARD');
 
 /* =====================================================
    ADMIN USERS
    ===================================================== */
+
 CREATE TABLE admin_users (
     admin_id SERIAL PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
@@ -35,8 +41,24 @@ CREATE TABLE admin_users (
 );
 
 /* =====================================================
-   GAME SET (1 bộ board game)
+   USERS
    ===================================================== */
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    full_name VARCHAR(255),
+    phone VARCHAR(20),
+    address TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+/* =====================================================
+   GAME SET
+   ===================================================== */
+
 CREATE TABLE game_set (
     game_id SERIAL PRIMARY KEY,
     name VARCHAR(150) NOT NULL,
@@ -49,8 +71,9 @@ CREATE TABLE game_set (
 );
 
 /* =====================================================
-   FESTIVAL (16 lễ hội)
+   FESTIVAL
    ===================================================== */
+
 CREATE TABLE festival (
     festival_id SERIAL PRIMARY KEY,
     game_id INT NOT NULL,
@@ -69,6 +92,7 @@ CREATE TABLE festival (
 /* =====================================================
    QR CODE
    ===================================================== */
+
 CREATE TABLE qr_code (
     qr_id SERIAL PRIMARY KEY,
     festival_id INT NOT NULL UNIQUE,
@@ -82,8 +106,49 @@ CREATE TABLE qr_code (
 );
 
 /* =====================================================
-   PRODUCTS (E-commerce)
+   QUIZ
    ===================================================== */
+
+CREATE TABLE quiz_questions (
+    question_id SERIAL PRIMARY KEY,
+    festival_id INT,
+    content TEXT NOT NULL,
+    difficulty difficulty_level DEFAULT 'EASY',
+    points_per_question INT DEFAULT 10,
+    CONSTRAINT fk_quiz_festival 
+        FOREIGN KEY (festival_id) 
+        REFERENCES festival(festival_id) 
+        ON DELETE CASCADE
+);
+
+CREATE TABLE quiz_answers (
+    answer_id SERIAL PRIMARY KEY,
+    question_id INT NOT NULL,
+    content TEXT NOT NULL,
+    is_correct BOOLEAN DEFAULT FALSE,
+    CONSTRAINT fk_answer_question 
+        FOREIGN KEY (question_id) 
+        REFERENCES quiz_questions(question_id) 
+        ON DELETE CASCADE
+);
+
+CREATE TABLE quiz_attempts (
+    attempt_id SERIAL PRIMARY KEY,
+    user_id INT NULL,
+    guest_session_id VARCHAR(255) UNIQUE NULL,
+    display_name VARCHAR(100) NOT NULL,
+    score INT DEFAULT 0,
+    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_attempt_user 
+        FOREIGN KEY (user_id) 
+        REFERENCES users(user_id) 
+        ON DELETE CASCADE
+);
+
+/* =====================================================
+   PRODUCTS
+   ===================================================== */
+
 CREATE TABLE products (
     product_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -101,8 +166,10 @@ CREATE TABLE products (
 /* =====================================================
    ORDERS
    ===================================================== */
+
 CREATE TABLE orders (
     order_id SERIAL PRIMARY KEY,
+    user_id INT NULL,
     customer_name VARCHAR(255) NOT NULL,
     customer_email VARCHAR(255) NOT NULL,
     customer_phone VARCHAR(20) NOT NULL,
@@ -112,12 +179,17 @@ CREATE TABLE orders (
     payment_method VARCHAR(50) DEFAULT 'cod',
     status order_status_enum DEFAULT 'pending',
     order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_orders_user 
+        FOREIGN KEY (user_id) 
+        REFERENCES users(user_id) 
+        ON DELETE SET NULL
 );
 
 /* =====================================================
    ORDER ITEMS
    ===================================================== */
+
 CREATE TABLE order_items (
     order_item_id SERIAL PRIMARY KEY,
     order_id INT NOT NULL,
@@ -138,6 +210,7 @@ CREATE TABLE order_items (
 /* =====================================================
    PAYMENT
    ===================================================== */
+
 CREATE TABLE payment (
     payment_id SERIAL PRIMARY KEY,
     order_id INT NOT NULL,
@@ -152,8 +225,9 @@ CREATE TABLE payment (
 );
 
 /* =====================================================
-   PAGE VISITS (Analytics)
+   PAGE VISITS
    ===================================================== */
+
 CREATE TABLE page_visits (
     visit_id SERIAL PRIMARY KEY,
     page_path VARCHAR(255) NOT NULL,
@@ -165,7 +239,6 @@ CREATE TABLE page_visits (
 
 CREATE INDEX idx_page_path ON page_visits(page_path);
 CREATE INDEX idx_visit_date ON page_visits(visit_date);
-
 /* =====================================================
    SAMPLE DATA
    ===================================================== */
