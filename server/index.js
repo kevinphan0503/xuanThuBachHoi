@@ -1,5 +1,6 @@
 import express from 'express';
 import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -10,12 +11,27 @@ import cors from 'cors'; // Ensure CORS is imported at the top of the file
 
 dotenv.config();
 const app = express();
+const PgSession = connectPgSimple(session);
+const isProduction = process.env.NODE_ENV === 'production';
+
+if (isProduction) {
+    // Render sits behind a proxy; trust it so secure cookies work correctly.
+    app.set('trust proxy', 1);
+}
+
 // Session middleware
 app.use(session({
+    store: new PgSession({
+        pool,
+        tableName: 'user_sessions',
+        createTableIfMissing: true
+    }),
     secret: process.env.SESSION_SECRET || 'xuanthubachhoi_secret',
     resave: false,
     saveUninitialized: false,
     cookie: {
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     }
 }));
