@@ -9,7 +9,7 @@ import f2 from '../../assets/hoi4.png'
 import f3 from '../../assets/festival-placeholder-3.svg'
 import f4 from '../../assets/festival-placeholder-4.svg'
 import f5 from '../../assets/festival-placeholder-5.svg'
-
+import f6 from '../../assets/anhhdsd.jpg'
 const About = () => {
   const heroRef = useScrollReveal()
   const introRef = useScrollReveal()
@@ -77,7 +77,13 @@ const About = () => {
   ]
 
   const festivalsToRender = showcaseFestivals.length ? showcaseFestivals : fallbackFestivals
-  const placeholders = [f1, f2, f3, f4, f5]
+  const fallbackDescriptions = [
+    'Khám phá làn điệu Quan họ say đắm lòng người',
+    'Không khí hào hùng của lễ hội đấu trí và sức mạnh',
+    'Truyền thuyết người anh hùng cưỡi ngựa sắt',
+    'Hành trình trẩy hội trên non nước hữu tình'
+  ]
+  const placeholders = [f1, f2, f3, f4, f5, f6  ]
 
   return (
     <div className="about-page">
@@ -158,32 +164,32 @@ const About = () => {
         </div>
       </section>
 
-      <section className="festival-highlight">
+     
+
+   
+
+      <section className="howto-video-section">
         <div className="container">
-          <div className="festival-header">
-            <h2>Lễ hội Nổi bật</h2>
-            <div className="festival-note">
-              <span>Những trải nghiệm ấn tượng trong trò chơi</span>
-              <Link to="/festivals" className="festival-link">Xem thêm thư viện</Link>
-            </div>
+          <div className="howto-header">
+            <h2>Video Hướng dẫn Chơi</h2>
+            <p>Chỉ mất vài phút để nắm vững các quy tắc cơ bản và bắt đầu hành trình bảo tồn di sản của riêng bạn.</p>
           </div>
-          <div className="festival-grid">
-            {festivalsToRender.map((f, idx) => {
-              const imgSrc = f.image_url || placeholders[idx % placeholders.length]
-              return (
-                <Link
-                  to={f.festival_id ? `/festivals/${f.festival_id}` : '#'}
-                  key={f.festival_id ?? idx}
-                  className="festival-card"
-                >
-                  <div className="festival-thumb">
-                    <img src={imgSrc} alt={f.name || 'Lễ hội'} />
-                  </div>
-                  <h3>{f.name}</h3>
-                  <p>{ 'Khám phá sức hút và tinh thần đoàn kết'}</p>
-                </Link>
-              )
-            })}
+          <div className="howto-video-shell">
+            <div className="howto-video-frame">
+              <video
+                src="/assets/HDSD.mov"
+                controls
+                poster={f6}
+              >
+                Trình duyệt của bạn không hỗ trợ video.
+              </video>
+              <div className="howto-video-label">Khám phá luật chơi Xuân Thu Bách Hội</div>
+            </div>
+            <div className="howto-video-meta">
+              <span className="howto-video-caption">
+                Tải xuống bản PDF luật chơi chi tiết từ mục Tài liệu nếu bạn muốn xem lại ngoại tuyến.
+              </span>
+            </div>
           </div>
         </div>
       </section>

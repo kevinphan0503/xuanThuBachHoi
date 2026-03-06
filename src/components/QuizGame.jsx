@@ -236,7 +236,7 @@ const QuizGame = () => {
 
     const startGame = async (questionCount = MAX_QUESTIONS) => {
         if (!sessionUser && !guestName.trim()) {
-            setErrorMessage('Vui long nhap ten truoc khi bat dau choi.');
+            setErrorMessage('Vui lòng nhập tên trước khi bắt đầu chơi.');
             return;
         }
 
@@ -271,7 +271,7 @@ const QuizGame = () => {
     const handleCustomPlay = () => {
         const parsed = Number(customQuestionCountInput);
         if (!Number.isFinite(parsed) || parsed < MIN_QUESTIONS) {
-            setErrorMessage(`So cau hoi toi thieu la ${MIN_QUESTIONS}.`);
+            setErrorMessage(`Số câu hỏi tối thiểu là ${MIN_QUESTIONS}.`);
             return;
         }
         startGame(parsed);
@@ -295,9 +295,9 @@ const QuizGame = () => {
 
     const handleBoardgameAnswer = (isCorrect) => {
         if (isCorrect) {
-            setBoardgameMessage('Chuc mung ban da tra loi dung!');
+            setBoardgameMessage('Chúc mừng bạn đã trả lời đúng!');
         } else {
-            setBoardgameMessage('Xin loi, ban da tra loi sai.');
+            setBoardgameMessage('Tiếc quá, bạn đã trả lời sai mất rồi.');
         }
         setBoardgameStep('result');
     };
@@ -361,6 +361,11 @@ const QuizGame = () => {
 
     const currentQuestion = questions[currentQuestionIndex];
     const currentQuestionPoints = getQuestionPoints(currentQuestion);
+    const currentQuestionNumber = currentQuestionIndex + 1;
+    const totalQuestionCount = Math.min(questions.length, selectedQuestionCount);
+    const quizProgressPercent = totalQuestionCount > 0
+        ? Math.min(100, Math.max(0, (currentQuestionNumber / totalQuestionCount) * 100))
+        : 0;
 
     const getAnswerClassName = (answer, index) => {
         let className = 'answer-option';
@@ -382,21 +387,27 @@ const QuizGame = () => {
         && parsedCustomCount >= MIN_QUESTIONS
         && parsedCustomCount <= MAX_QUESTIONS;
     const canStartCustomQuiz = canStartAsGuestOrUser && isCustomCountValid;
+    const quickQuestionOptions = [10, 20, 30, 40];
+    const isBoardgameCorrect = String(boardgameMessage || '').toLowerCase().includes('đúng');
 
     return (
         <div className="quiz-game">
             {gameMode === null ? (
-                <div className="start-panel">
+                <div className="start-panel quiz-start-panel">
                     {isCheckingSession ? (
                         <div className="quiz-status">Đang kiểm tra phiên đăng nhập...</div>
                     ) : (
                         <>
-                            <div className="start-title">Sẵn sàng thử thách Quiz?</div>
+                            <div className="quiz-start-header">
+                                <div className="start-title">Sẵn sàng thử thách Quiz?</div>
+                                <p className="start-subtitle">Chọn chế độ và số lượng câu hỏi để bắt đầu hành trình khám phá lễ hội.</p>
+                            </div>
+
                             {sessionUser ? (
-                                <div className="player-label">Người chơi: {sessionUser.username}</div>
+                                <div className="player-label quiz-start-player">Người chơi: {sessionUser.username}</div>
                             ) : (
-                                <div className="guest-name-wrap">
-                                    <label className="guest-name-label" htmlFor="guestName">Nhập tên người chơi (Guest)</label>
+                                <div className="guest-name-wrap quiz-start-field">
+                                    <label className="guest-name-label" htmlFor="guestName">Nhập tên người chơi</label>
                                     <input
                                         id="guestName"
                                         className="guest-name-input"
@@ -408,69 +419,125 @@ const QuizGame = () => {
                                 </div>
                             )}
 
-                            <div className="start-actions">
+                            <div className="custom-count-wrap quiz-start-field">
+                                <label htmlFor="questionCount" className="guest-name-label">Số lượng câu hỏi</label>
+                                <div className="quiz-count-layout">
+                                    <div className="quiz-count-quick">
+                                        {quickQuestionOptions.map((option) => (
+                                            <button
+                                                key={option}
+                                                type="button"
+                                                className={`quiz-count-chip ${Number(customQuestionCountInput) === option ? 'active' : ''}`}
+                                                onClick={() => setCustomQuestionCountInput(String(option))}
+                                            >
+                                                {option}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="quiz-count-manual">
+                                        <span className="quiz-count-note">Tùy chọn thủ công (5 - 40)</span>
+                                        <input
+                                            id="questionCount"
+                                            type="number"
+                                            min={MIN_QUESTIONS}
+                                            max={MAX_QUESTIONS}
+                                            value={customQuestionCountInput}
+                                            onChange={(e) => setCustomQuestionCountInput(e.target.value)}
+                                            className="guest-name-input quiz-count-input"
+                                            placeholder="Nhập số câu mong muốn..."
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="start-actions quiz-start-actions">
                                 <button
                                     onClick={() => startGame(MAX_QUESTIONS)}
-                                    className="start-button"
+                                    className="start-button quiz-start-main-btn"
                                     disabled={!canStartAsGuestOrUser}
                                 >
-                                    Chơi Ngay (40 cau)
+                                    Chơi ngay (40 câu)
                                 </button>
-                            </div>
-
-                            <div className="custom-count-wrap">
-                                <label htmlFor="questionCount" className="guest-name-label">Nhập số lượng câu hỏi muốn chơi (Tối thiểu 5)</label>
-                                <input
-                                    id="questionCount"
-                                    type="number"
-                                    min={MIN_QUESTIONS}
-                                    max={MAX_QUESTIONS}
-                                    value={customQuestionCountInput}
-                                    onChange={(e) => setCustomQuestionCountInput(e.target.value)}
-                                    className="guest-name-input"
-                                />
                                 <button
                                     onClick={handleCustomPlay}
-                                    className="start-button start-button-secondary"
+                                    className="start-button start-button-secondary quiz-start-custom-btn"
                                     disabled={!canStartCustomQuiz}
                                 >
-                                    Bắt Đầu Theo Số Câu Đã Nhập
+                                    Bắt đầu theo số câu đã nhập
                                 </button>
-                            </div>
-
-                            <div className="custom-count-wrap">
                                 <button
                                     onClick={startBoardGame}
-                                    className="start-button boardgame-entry-button"
+                                    className="start-button boardgame-entry-button quiz-start-boardgame-btn"
                                 >
                                     Tôi đang chơi BoardGame
                                 </button>
                             </div>
+
+                            {errorMessage && <div className="quiz-status quiz-error">{errorMessage}</div>}
                         </>
                     )}
                 </div>
             ) : gameMode === 'boardgame' ? (
-                <div className="score-panel">
-                    <div className="score-section">Chế Độ BoardGame</div>
+                <div className="score-panel boardgame-panel">
+                    <div className="score-section boardgame-title">Chế Độ BoardGame</div>
                     {errorMessage && <div className="quiz-status quiz-error">{errorMessage}</div>}
 
                     {boardgameStep === 'choose-difficulty' && (
-                        <div className="result-actions">
-                            <button className="start-button" onClick={() => handleChooseBoardgameDifficulty('EASY')} disabled={isBoardgameLoading}>Dễ</button>
-                            <button className="start-button" onClick={() => handleChooseBoardgameDifficulty('MEDIUM')} disabled={isBoardgameLoading}>Trung bình</button>
-                            <button className="start-button" onClick={() => handleChooseBoardgameDifficulty('HARD')} disabled={isBoardgameLoading}>Khó</button>
-                            <button className="start-button start-button-secondary" onClick={resetToQuizHome}>Quay lại</button>
+                        <div className="boardgame-choose-panel">
+                            <div className="boardgame-description">Chọn mức độ để bắt đầu lượt hỏi</div>
+                            <div className="boardgame-difficulty-grid">
+                                <button
+                                    className="start-button boardgame-difficulty-button boardgame-easy"
+                                    onClick={() => handleChooseBoardgameDifficulty('EASY')}
+                                    disabled={isBoardgameLoading}
+                                >
+                                    Dễ
+                                </button>
+                                <button
+                                    className="start-button boardgame-difficulty-button boardgame-medium"
+                                    onClick={() => handleChooseBoardgameDifficulty('MEDIUM')}
+                                    disabled={isBoardgameLoading}
+                                >
+                                    Trung bình
+                                </button>
+                                <button
+                                    className="start-button boardgame-difficulty-button boardgame-hard"
+                                    onClick={() => handleChooseBoardgameDifficulty('HARD')}
+                                    disabled={isBoardgameLoading}
+                                >
+                                    Khó
+                                </button>
+                            </div>
+                            <div className="boardgame-footer-action">
+                                   <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
+                                    ← Quay lại
+                                </button>
+                            </div>
                         </div>
                     )}
 
                     {isBoardgameLoading && <div className="quiz-status">Đang tải câu hỏi...</div>}
 
                     {boardgameStep === 'question' && boardgameQuestion && !isBoardgameLoading && (
-                        <div>
-                            <div className="question-meta">
-                                Lượt hỏi (ID {boardgameQuestion.festival_id || 'N/A'}): {boardgameQuestion.festival_name || 'Không rõ'} | Độ khó: {formatDifficultyLabel(boardgameQuestion.difficulty)}
+                        <div className="quiz-play-layout">
+                            <div className="quiz-play-head">
+                                <div className="question-count">
+                                    <span>BoardGame</span>
+                                </div>
+                                <div className="question-meta">
+                                    Lượt hỏi (ID {boardgameQuestion.festival_id || 'N/A'}): {boardgameQuestion.festival_name || 'Không rõ'} | Độ khó: {formatDifficultyLabel(boardgameQuestion.difficulty)}
+                                </div>
                             </div>
-                            <div className="question-text">{boardgameQuestion.content}</div>
+
+                            <div className="quiz-progress-track" aria-hidden="true">
+                                <div className="quiz-progress-fill" style={{ width: '100%' }} />
+                            </div>
+
+                            <div className="question-section">
+                                <div className="question-text">{boardgameQuestion.content}</div>
+                                <div className="question-divider" />
+                            </div>
+
                             <div className="answer-section">
                                 {boardgameQuestion.answers.map((answer, index) => (
                                     <button
@@ -484,18 +551,48 @@ const QuizGame = () => {
                                     </button>
                                 ))}
                             </div>
+
+                            <div className="quiz-bottom-actions">
+                                <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
+                                    ← Quay lại
+                                </button>
+                                <button
+                                    type="button"
+                                    className="quiz-next-button"
+                                    onClick={() => setBoardgameStep('choose-difficulty')}
+                                >
+                                    Đổi mức độ →
+                                </button>
+                            </div>
                         </div>
                     )}
 
                     {boardgameStep === 'result' && (
-                        <>
-                            <div className="quiz-status">{boardgameMessage}</div>
-                            <div className="result-actions">
-                                <button className="start-button" onClick={continueBoardgameSameDifficulty}>Tiếp tục mức độ này</button>
-                                <button className="start-button start-button-secondary" onClick={() => setBoardgameStep('choose-difficulty')}>Chọn lại mức độ</button>
-                                <button className="start-button start-button-secondary" onClick={resetToQuizHome}>Quay lại</button>
+                        <div className="boardgame-result-panel">
+                           
+                            <div className={`quiz-status boardgame-result-message ${isBoardgameCorrect ? 'success' : 'fail'}`}>
+                                {boardgameMessage}
                             </div>
-                        </>
+                            <div className="result-actions boardgame-result-actions">
+                                <button
+                                    className="start-button boardgame-result-continue"
+                                    onClick={continueBoardgameSameDifficulty}
+                                >
+                                    Tiếp tục mức độ này
+                                </button>
+                                <button
+                                    className="start-button boardgame-result-change"
+                                    onClick={() => setBoardgameStep('choose-difficulty')}
+                                >
+                                    Chọn lại mức độ
+                                </button>
+                            </div>
+                            <div className="boardgame-result-back-wrap">
+                                <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
+                                ← Quay lại
+                            </button>
+                            </div>
+                        </div>
                     )}
                 </div>
             ) : isLoading ? (
@@ -503,34 +600,70 @@ const QuizGame = () => {
             ) : errorMessage ? (
                 <div className="quiz-status quiz-error">{errorMessage}</div>
             ) : showScore ? (
-                <div className="score-panel">
-                    <div className="score-section">
-                        Bạn đã ghi được {score} điểm!
-                        <div className="result-extra">Tổng thời gian: {totalTimeSpent} giây</div>
-                        {isSavingResult && <div className="result-extra">Đang lưu kết quả...</div>}
+                <div className="score-panel quiz-result-panel">
+                    <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
+                                    ← Quay lại
+                                </button>
+                    <div className="quiz-result-header">
+                        <div className="quiz-result-badge">Kết quả lượt chơi</div>
+                        <div className="score-section quiz-result-score">
+                            Bạn đã ghi được <span>{score}</span> điểm!
+                        </div>
+                        <div className="result-extra quiz-result-time">Tổng thời gian: {totalTimeSpent} giây</div>
+                        {isSavingResult && <div className="result-extra quiz-result-saving">Đang lưu kết quả...</div>}
                     </div>
-                    <div className="result-actions">
-                        <button className="start-button start-button-secondary" onClick={resetToQuizHome}>Quay lại</button>
+
+                    <div className="quiz-result-metrics">
+                        <div className="quiz-result-metric-card">
+                            <div className="quiz-result-metric-label">Số câu đã chọn</div>
+                            <div className="quiz-result-metric-value">{selectedQuestionCount}</div>
+                        </div>
+                        <div className="quiz-result-metric-card">
+                            <div className="quiz-result-metric-label">Tổng điểm</div>
+                            <div className="quiz-result-metric-value">{score}</div>
+                        </div>
+                        <div className="quiz-result-metric-card">
+                            <div className="quiz-result-metric-label">Thời gian</div>
+                            <div className="quiz-result-metric-value">{totalTimeSpent}s</div>
+                        </div>
+                    </div>
+
+                    <div className="result-actions quiz-result-actions">
+                       
+                         
                         <button className="start-button" onClick={() => startGame(selectedQuestionCount)}>Chơi lại</button>
                         <button className="start-button start-button-secondary" onClick={() => navigate('/leaderboard')}>Bảng xếp hạng</button>
                     </div>
                 </div>
             ) : (
                 questions.length > 0 ? (
-                    <div>
-                        <div className="timer-section">Thời gian còn lại: {timeLeft}s</div>
-                        <div className="quiz-stats">Tổng điểm hiện tại: {score} điểm | Điểm câu này: {currentQuestionPoints}</div>
-                        <div className="question-section">
+                    <div className="quiz-play-layout">
+                        <div className="quiz-play-head">
                             <div className="question-count">
-                                <span>Câu hỏi {currentQuestionIndex + 1}</span>/{Math.min(questions.length, selectedQuestionCount)}
+                                <span>Câu hỏi {currentQuestionNumber}</span> / {totalQuestionCount}
                             </div>
                             <div className="question-meta">
-                                Lễ hội: {currentQuestion?.festival_name || 'Không rõ'} | Độ khó: {formatDifficultyLabel(currentQuestion?.difficulty)}
+                                Chủ đề: {currentQuestion?.festival_name || 'Không rõ'} | Độ khó: {formatDifficultyLabel(currentQuestion?.difficulty)}
                             </div>
+                        </div>
+
+                        <div className="quiz-progress-track" aria-hidden="true">
+                            <div className="quiz-progress-fill" style={{ width: `${quizProgressPercent}%` }} />
+                        </div>
+
+                        <div className="quiz-stats-row">
+                            <div className="timer-section">Thời gian còn lại: {timeLeft}s</div>
+                            <div className="quiz-stats">Tổng điểm hiện tại: {score} điểm | Điểm câu này: {currentQuestionPoints}</div>
+                            <div className="lives-section">Số mạng còn lại: {lives}</div>
+                        </div>
+
+                        <div className="question-section">
                             <div className="question-text">
                                 {currentQuestion?.content}
                             </div>
+                            <div className="question-divider" />
                         </div>
+
                         <div className="answer-section">
                             {currentQuestion?.answers?.map((answer, index) => (
                                 <button
@@ -545,8 +678,19 @@ const QuizGame = () => {
                                 </button>
                             ))}
                         </div>
-                        <div className="lives-section">
-                            Số mạng còn lại: {lives}
+
+                        <div className="quiz-bottom-actions">
+                            <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
+                                ← Quay lại
+                            </button>
+                            <button
+                                type="button"
+                                className="quiz-next-button"
+                                disabled={isRevealingAnswer}
+                                onClick={() => handleAnswerClick({ is_correct: false }, null)}
+                            >
+                                Tiếp theo →
+                            </button>
                         </div>
                     </div>
                 ) : (
