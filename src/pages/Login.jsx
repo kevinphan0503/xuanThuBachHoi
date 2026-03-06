@@ -60,6 +60,13 @@ const Login = () => {
                     required
                 />
                 <button type="submit">Đăng nhập</button>
+                <button
+                    type="button"
+                    className="register-button"
+                    onClick={() => navigate('/register')}
+                >
+                    Chưa có tài khoản? Đăng ký
+                </button>
             </form>
             {message && <p className="login-message">{message}</p>}
         </div>

@@ -892,6 +892,131 @@ app.get('/api/admin/analytics/visits', async (req, res) => {
     }
 });
 
+// API endpoint to fetch quiz questions
+app.get('/api/quiz/questions', async (req, res) => {
+    try {
+        const rawDifficulty = String(req.query?.difficulty || '').toUpperCase();
+        const difficulty = ['EASY', 'MEDIUM', 'HARD'].includes(rawDifficulty) ? rawDifficulty : null;
+        const requestedLimit = Number(req.query?.limit);
+        const limit = Number.isFinite(requestedLimit)
+            ? Math.max(1, Math.min(200, Math.floor(requestedLimit)))
+            : 40;
+
+        const result = await pool.query(
+            `WITH selected_questions AS (
+                SELECT q.question_id, q.festival_id, q.content, q.difficulty, q.points_per_question
+                FROM quiz_questions q
+                WHERE ($1::difficulty_level IS NULL OR q.difficulty = $1::difficulty_level)
+                ORDER BY RANDOM()
+                LIMIT $2
+             )
+             SELECT sq.question_id, sq.festival_id, f.name AS festival_name, sq.content, sq.difficulty, sq.points_per_question,
+                    json_agg(
+                        json_build_object('content', a.content, 'is_correct', a.is_correct)
+                        ORDER BY a.answer_id
+                    ) AS answers
+             FROM selected_questions sq
+             LEFT JOIN festival f ON f.festival_id = sq.festival_id
+             JOIN quiz_answers a ON sq.question_id = a.question_id
+             GROUP BY sq.question_id, sq.festival_id, f.name, sq.content, sq.difficulty, sq.points_per_question
+             ORDER BY sq.question_id`,
+            [difficulty, limit]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching quiz questions:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+async function saveQuizAttempt(req, res) {
+    const rawScore = Number(req.body?.score);
+    const rawTimeSpent = Number(req.body?.time_spent_seconds);
+    const submittedDisplayName = String(
+        req.body?.display_name || req.body?.displayName || req.body?.name || ''
+    ).trim();
+    const score = Number.isFinite(rawScore) ? Math.max(0, Math.floor(rawScore)) : 0;
+    const timeSpentSeconds = Number.isFinite(rawTimeSpent) ? Math.max(0, Math.floor(rawTimeSpent)) : 0;
+
+    const sessionUser = req.session?.user || null;
+    const isLoggedIn = Boolean(sessionUser?.user_id);
+    const userId = isLoggedIn ? sessionUser.user_id : null;
+    const guestSessionId = isLoggedIn ? null : String(req.sessionID || 'guest');
+    const guestDisplayName = submittedDisplayName.slice(0, 100);
+    const displayName = isLoggedIn
+        ? String(sessionUser.username || sessionUser.full_name || `user_${sessionUser.user_id}`)
+        : (guestDisplayName || `Guest_${String(req.sessionID || 'guest').slice(0, 8)}`);
+
+    try {
+        if (isLoggedIn) {
+            const result = await pool.query(
+                `INSERT INTO quiz_attempts (user_id, guest_session_id, display_name, score, time_spent_seconds)
+                 VALUES ($1, NULL, $2, $3, $4)
+                 RETURNING attempt_id, display_name, score, time_spent_seconds, completed_at`,
+                [userId, displayName, score, timeSpentSeconds]
+            );
+            return res.status(201).json({ saved: true, attempt: result.rows[0] });
+        }
+
+        const result = await pool.query(
+            `INSERT INTO quiz_attempts (user_id, guest_session_id, display_name, score, time_spent_seconds)
+             VALUES (NULL, $1, $2, $3, $4)
+             ON CONFLICT (guest_session_id)
+             DO UPDATE SET
+                display_name = EXCLUDED.display_name,
+                score = GREATEST(quiz_attempts.score, EXCLUDED.score),
+                time_spent_seconds = CASE
+                    WHEN EXCLUDED.score > quiz_attempts.score THEN EXCLUDED.time_spent_seconds
+                    WHEN EXCLUDED.score = quiz_attempts.score THEN LEAST(quiz_attempts.time_spent_seconds, EXCLUDED.time_spent_seconds)
+                    ELSE quiz_attempts.time_spent_seconds
+                END,
+                completed_at = CURRENT_TIMESTAMP
+             RETURNING attempt_id, display_name, score, time_spent_seconds, completed_at`,
+            [guestSessionId, displayName, score, timeSpentSeconds]
+        );
+
+        return res.status(201).json({ saved: true, attempt: result.rows[0] });
+    } catch (error) {
+        console.error('Error saving quiz attempt:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+// Save one completed quiz attempt, resolving display info from session (user vs guest)
+app.post('/api/quiz/attempts', saveQuizAttempt);
+
+// Backward-compatible endpoint alias
+app.post('/api/quiz/submit', async (req, res) => {
+    try {
+        return saveQuizAttempt(req, res);
+    } catch (error) {
+        console.error('Error submitting quiz attempt:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// API endpoint to fetch leaderboard data
+app.get('/api/quiz/leaderboard', async (req, res) => {
+    try {
+        const requestedLimit = Number(req.query?.limit);
+        const limit = Number.isFinite(requestedLimit)
+            ? Math.max(1, Math.min(50, Math.floor(requestedLimit)))
+            : 8;
+
+        const result = await pool.query(
+            `SELECT display_name, score, time_spent_seconds, completed_at
+             FROM quiz_attempts
+             ORDER BY score DESC, time_spent_seconds ASC, completed_at ASC
+             LIMIT $1`,
+            [limit]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 const PORT = process.env.API_PORT || process.env.PORT || 5000;
 // Serve frontend build assets from ../dist
 const distPath = path.join(__dirname, '../dist');

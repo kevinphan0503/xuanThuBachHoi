@@ -13,6 +13,7 @@ import Gallery from './pages/Gallery'
 import Contact from './pages/Contact'
 import Shopping from './pages/Shopping'
 import FestivalDetail from './pages/FestivalDetail'
+import Leaderboard from './pages/Leaderboard'
 import AdminLayout from './pages/admin/AdminLayout'
 import AdminLogin from './pages/admin/AdminLogin'
 import AdminDashboard from './pages/admin/AdminDashboard'
@@ -22,6 +23,7 @@ import AdminAnalytics from './pages/admin/AdminAnalytics'
 import AdminSettings from './pages/admin/AdminSettings'
 import AdminFestivals from './pages/admin/AdminFestivals'
 import AdminFestivalContent from './pages/admin/AdminFestivalContent'
+import QuizGame from './components/QuizGame'
 import './App.css'
 
 // Protected route component
@@ -74,6 +76,8 @@ function App() {
           <Route path="/shopping" element={<PublicLayout><Shopping /></PublicLayout>} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/quiz" element={<PublicLayout><QuizGame /></PublicLayout>} />
+          <Route path="/leaderboard" element={<PublicLayout><Leaderboard /></PublicLayout>} />
         </Routes>
       </div>
     </Router>

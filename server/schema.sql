@@ -1,21 +1,21 @@
 /* =====================================================
    DROP DATABASE (nếu tồn tại)
    ===================================================== */
-DROP DATABASE IF EXISTS boardgame_festival;
+-- DROP DATABASE IF EXISTS boardgame_festival;
 
-/* =====================================================
-   CREATE DATABASE
-   ===================================================== */
-CREATE DATABASE boardgame_festival
-WITH
-    ENCODING = 'UTF8'
-    LC_COLLATE = 'en_US.UTF-8'
-    LC_CTYPE = 'en_US.UTF-8';
+-- /* =====================================================
+--    CREATE DATABASE
+--    ===================================================== */
+-- CREATE DATABASE boardgame_festival
+-- WITH
+--     ENCODING = 'UTF8'
+--     LC_COLLATE = 'en_US.UTF-8'
+--     LC_CTYPE = 'en_US.UTF-8';
 
 /* =====================================================
    CONNECT DATABASE
    ===================================================== */
-\c boardgame_festival;
+-- \c boardgame_festival;
 
 /* =====================================================
    ENUM TYPES (PostgreSQL)
@@ -138,6 +138,8 @@ CREATE TABLE quiz_attempts (
     guest_session_id VARCHAR(255) UNIQUE NULL,
     display_name VARCHAR(100) NOT NULL,
     score INT DEFAULT 0,
+    -- Thêm trường này: thời gian chơi tính bằng giây
+    time_spent_seconds INT NOT NULL DEFAULT 0, 
     completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_attempt_user 
         FOREIGN KEY (user_id) 
@@ -258,22 +260,54 @@ VALUES (
     'ACTIVE'
 );
 
-/* Festival mẫu */
-INSERT INTO festival (game_id, name, description, image_url, link_video)
-VALUES (
-    1,
-    'Hội Gióng',
-    'Lễ hội truyền thống Việt Nam',
-    '/images/hoi-giong.jpg',
-    'https://youtube.com/watch?v=example'
-);
+INSERT INTO users (username, password_hash, email, full_name, phone, address) VALUES
+('master_festival', 'hash_123', 'master@example.com', 'master_festival', '0901234567', 'Cần Thơ'),
+('le_thi_binh', 'hash_456', 'binh@example.com', 'Lê Thị Bình', '0912345678', 'Hà Nội'),
+('tran_thanh', 'hash_789', 'thanh@example.com', 'Trần Thành', '0923456789', 'Đà Nẵng'),
+('pham_dung', 'hash_000', 'dung@example.com', 'Phạm Tiến Dũng', '0934567890', 'TP.HCM');
 
-/* QR mẫu */
-INSERT INTO qr_code (festival_id, qr_content_url)
-VALUES (
-    1,
-    'https://yourdomain.com/festival/1'
-);
+INSERT INTO quiz_attempts (user_id, guest_session_id, display_name, score, time_spent_seconds, completed_at) VALUES
+-- Trường hợp 1: User đăng nhập - Điểm cao nhất, thời gian nhanh (Top 1)
+(1, NULL, 'master_festival', 1200, 1000, '2026-03-06 08:00:00'),
+
+-- Trường hợp 2: Guest chơi ngay - Điểm bằng Top 1 nhưng thời gian chậm hơn (Xếp dưới Top 1)
+(NULL, 'guest_uuid_001', 'Ẩn Danh Pro', 100, 52, '2026-03-06 09:15:00'),
+
+-- Trường hợp 3: Guest chơi ngay - Điểm bằng Top 1, thời gian nhanh nhất (Soán ngôi Top 1)
+(NULL, 'guest_uuid_002', 'Siêu Nhân Quiz', 100, 38, '2026-03-06 10:30:00'),
+
+-- Trường hợp 4: User đăng nhập - Điểm trung bình, thời gian trung bình
+(2, NULL, 'Lê Thị Bình', 80, 60, '2026-03-06 11:00:00'),
+
+-- Trường hợp 5: User đăng nhập - Điểm khá, thời gian chậm
+(3, NULL, 'Trần Thành', 90, 120, '2026-03-06 12:45:00'),
+
+-- Trường hợp 6: Guest chơi ngay - Điểm thấp nhưng cực kỳ nhanh
+(NULL, 'guest_uuid_003', 'Tốc Độ', 50, 15, '2026-03-06 13:20:00'),
+
+-- Trường hợp 7: User đăng nhập - Đồng điểm với Lê Thị Bình nhưng thời gian tốt hơn
+(4, NULL, 'Phạm Tiến Dũng', 80, 42, '2026-03-06 14:00:00'),
+
+-- Trường hợp 8: Guest chơi ngay - Điểm trung bình
+(NULL, 'guest_uuid_004', 'Lễ Hội Việt', 70, 55, '2026-03-06 14:10:00');
+
+
+-- /* Festival mẫu */
+-- INSERT INTO festival (game_id, name, description, image_url, link_video)
+-- VALUES (
+--     1,
+--     'Hội Gióng',
+--     'Lễ hội truyền thống Việt Nam',
+--     '/images/hoi-giong.jpg',
+--     'https://youtube.com/watch?v=example'
+-- );
+
+-- /* QR mẫu */
+-- INSERT INTO qr_code (festival_id, qr_content_url)
+-- VALUES (
+--     1,
+--     'https://yourdomain.com/festival/1'
+-- );
 
 /* Products */
 INSERT INTO products

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { apiFetch } from '../config/api';
 import './Register.css';
 
 const Register = () => {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     username: '',
     password: '',
@@ -20,20 +23,23 @@ const Register = () => {
     e.preventDefault();
     setMessage('');
     try {
-      const res = await fetch('/api/register', {
+      await apiFetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form)
       });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage('Đăng kí thành công!');
-          setForm({ username: '', password: '', email: '', full_name: '', phone: '', address: '' });
-      } else {
-        setMessage(data.error || 'Đăng kí thất bại!');
-      }
+      setMessage('Đăng kí thành công!');
+      setForm({ username: '', password: '', email: '', full_name: '', phone: '', address: '' });
+      setTimeout(() => {
+        navigate('/login');
+      }, 800);
     } catch (err) {
-      setMessage('Lỗi kết nối máy chủ!');
+      try {
+        const parsed = JSON.parse(err.message || '{}');
+        setMessage(parsed.error || 'Đăng kí thất bại!');
+      } catch {
+        setMessage('Lỗi kết nối máy chủ!');
+      }
     }
   };
 

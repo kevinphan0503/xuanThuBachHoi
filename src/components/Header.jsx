@@ -45,6 +45,8 @@ const Header = () => {
     { path: '/about', label: 'GIỚI THIỆU' },
     { path: '/shopping', label: 'CỬA HÀNG' },
     { path: '/contact', label: 'LIÊN HỆ' },
+    { path: '/quiz', label: 'TRÒ CHƠI' }, // Added "Trò Chơi" button
+    { path: '/leaderboard', label: 'BẢNG XẾP HẠNG' },
   ];
 
   return (
