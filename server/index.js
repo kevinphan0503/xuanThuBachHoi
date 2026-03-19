@@ -14,6 +14,24 @@ const app = express();
 const PgSession = connectPgSimple(session);
 const isProduction = process.env.NODE_ENV === 'production';
 
+function parseAllowedOrigins() {
+    const envOrigins = String(process.env.CORS_ORIGINS || '')
+        .split(',')
+        .map((origin) => origin.trim())
+        .filter(Boolean);
+
+    const defaults = [
+        'http://localhost:3000',
+        'http://localhost:3001',
+        'http://localhost:5173',
+        'http://localhost:5174'
+    ];
+
+    return Array.from(new Set([...defaults, ...envOrigins]));
+}
+
+const allowedOrigins = parseAllowedOrigins();
+
 if (isProduction) {
     // Render sits behind a proxy; trust it so secure cookies work correctly.
     app.set('trust proxy', 1);
@@ -108,10 +126,19 @@ async function sendOrderEmail({ to, subject, text, html }) {
     }
 }
 
-// Ensure consistent CORS configuration
+// Allow local dev + configured deploy domains (e.g. Vercel) to call API with cookies.
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://localhost:3001'], // Allow both ports
-    credentials: true // Allow cookies to be sent
+    origin(origin, callback) {
+        // Allow non-browser requests (curl/postman/health checks without Origin header)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) return callback(null, true);
+
+        // Optional convenience: allow preview deployments under *.vercel.app
+        if (/\.vercel\.app$/i.test(origin)) return callback(null, true);
+
+        return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
+    credentials: true
 }));
 
 // API đăng kí tài khoản người dùng

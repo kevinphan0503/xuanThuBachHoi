@@ -102,6 +102,7 @@ File `server/schema.sql` đã bao gồm:
   - Nếu dùng Internal DB URL: đặt `DATABASE_URL=<Internal URL>`, `DB_SSL=false`.
   - Nếu dùng External DB URL: đặt `DATABASE_URL=<External URL>`, `DB_SSL=true`.
   - Luôn đặt `API_PORT=5000` (hoặc giá trị bạn dùng).
+  - Bắt buộc đặt `CORS_ORIGINS` chứa domain frontend, ví dụ: `https://xuan-thu-bach-hoi.vercel.app,https://xuan-thu-bach-hoi-git-main-<team>.vercel.app`.
 
 - Frontend (Vercel):
   - Đặt biến `VITE_API_URL` trỏ tới URL backend Render, ví dụ `https://your-render-api.onrender.com`.
