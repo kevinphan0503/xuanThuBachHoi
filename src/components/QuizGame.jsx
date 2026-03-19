@@ -29,10 +29,17 @@ const QuizGame = () => {
     const [boardgameQuestion, setBoardgameQuestion] = useState(null);
     const [boardgameMessage, setBoardgameMessage] = useState('');
     const [isBoardgameLoading, setIsBoardgameLoading] = useState(false);
+    const [boardgameScore, setBoardgameScore] = useState(0);
+    const [boardgameAnsweredCount, setBoardgameAnsweredCount] = useState(0);
+    const [boardgameCorrectCount, setBoardgameCorrectCount] = useState(0);
+    const [boardgameTotalTimeSpent, setBoardgameTotalTimeSpent] = useState(0);
+    const [isSavingBoardgameResult, setIsSavingBoardgameResult] = useState(false);
 
     const startTimeRef = useRef(null);
     const hasSavedAttemptRef = useRef(false);
     const answerTimeoutRef = useRef(null);
+    const boardgameStartTimeRef = useRef(null);
+    const hasSavedBoardgameAttemptRef = useRef(false);
 
     const MAX_QUESTIONS = 40;
     const MIN_QUESTIONS = 5;
@@ -191,6 +198,28 @@ const QuizGame = () => {
         saveAttempt(finalScore, elapsedSeconds);
     };
 
+    const saveBoardgameAttempt = async (finalScore, finalTimeSpent) => {
+        if (hasSavedBoardgameAttemptRef.current) return;
+        hasSavedBoardgameAttemptRef.current = true;
+
+        setIsSavingBoardgameResult(true);
+        try {
+            await apiFetch('/api/quiz/attempts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    score: finalScore,
+                    time_spent_seconds: finalTimeSpent,
+                    display_name: sessionUser ? undefined : guestName.trim(),
+                }),
+            });
+        } catch (error) {
+            console.error('Error saving boardgame attempt:', error);
+        } finally {
+            setIsSavingBoardgameResult(false);
+        }
+    };
+
     const applyAnswerResult = (isCorrect) => {
         if (!questions[currentQuestionIndex]) return;
 
@@ -278,6 +307,11 @@ const QuizGame = () => {
     };
 
     const startBoardGame = () => {
+        if (!sessionUser && !guestName.trim()) {
+            setErrorMessage('Vui lòng nhập tên trước khi bắt đầu chơi.');
+            return;
+        }
+
         setErrorMessage('');
         setGameMode('boardgame');
         setGameStarted(false);
@@ -286,6 +320,13 @@ const QuizGame = () => {
         setBoardgameDifficulty('');
         setBoardgameQuestion(null);
         setBoardgameMessage('');
+        setBoardgameScore(0);
+        setBoardgameAnsweredCount(0);
+        setBoardgameCorrectCount(0);
+        setBoardgameTotalTimeSpent(0);
+        setIsSavingBoardgameResult(false);
+        boardgameStartTimeRef.current = Date.now();
+        hasSavedBoardgameAttemptRef.current = false;
     };
 
     const handleChooseBoardgameDifficulty = async (difficulty) => {
@@ -294,12 +335,28 @@ const QuizGame = () => {
     };
 
     const handleBoardgameAnswer = (isCorrect) => {
+        setBoardgameAnsweredCount((prev) => prev + 1);
+
         if (isCorrect) {
-            setBoardgameMessage('Chúc mừng bạn đã trả lời đúng!');
+            const pointsEarned = getQuestionPoints(boardgameQuestion);
+            setBoardgameScore((prev) => prev + pointsEarned);
+            setBoardgameCorrectCount((prev) => prev + 1);
+            setBoardgameMessage(`Chúc mừng bạn đã trả lời đúng! +${pointsEarned} điểm.`);
         } else {
             setBoardgameMessage('Tiếc quá, bạn đã trả lời sai mất rồi.');
         }
         setBoardgameStep('result');
+    };
+
+    const finishBoardgameSession = () => {
+        const startedAt = boardgameStartTimeRef.current;
+        const elapsedSeconds = startedAt
+            ? Math.max(0, Math.floor((Date.now() - startedAt) / 1000))
+            : 0;
+
+        setBoardgameTotalTimeSpent(elapsedSeconds);
+        setBoardgameStep('summary');
+        saveBoardgameAttempt(boardgameScore, elapsedSeconds);
     };
 
     const continueBoardgameSameDifficulty = async () => {
@@ -320,6 +377,17 @@ const QuizGame = () => {
         setIsSavingResult(false);
         setSelectedAnswerIndex(null);
         setIsRevealingAnswer(false);
+        setBoardgameDifficulty('');
+        setBoardgameQuestion(null);
+        setBoardgameMessage('');
+        setBoardgameScore(0);
+        setBoardgameAnsweredCount(0);
+        setBoardgameCorrectCount(0);
+        setBoardgameTotalTimeSpent(0);
+        setIsSavingBoardgameResult(false);
+
+        boardgameStartTimeRef.current = null;
+        hasSavedBoardgameAttemptRef.current = false;
 
         if (answerTimeoutRef.current) {
             clearTimeout(answerTimeoutRef.current);
@@ -468,6 +536,7 @@ const QuizGame = () => {
                                 <button
                                     onClick={startBoardGame}
                                     className="start-button boardgame-entry-button quiz-start-boardgame-btn"
+                                    disabled={!canStartAsGuestOrUser}
                                 >
                                     Tôi đang chơi BoardGame
                                 </button>
@@ -509,7 +578,7 @@ const QuizGame = () => {
                                 </button>
                             </div>
                             <div className="boardgame-footer-action">
-                                   <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
+                                <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
                                     ← Quay lại
                                 </button>
                             </div>
@@ -527,6 +596,11 @@ const QuizGame = () => {
                                 <div className="question-meta">
                                     Lượt hỏi (ID {boardgameQuestion.festival_id || 'N/A'}): {boardgameQuestion.festival_name || 'Không rõ'} | Độ khó: {formatDifficultyLabel(boardgameQuestion.difficulty)}
                                 </div>
+                            </div>
+
+                            <div className="quiz-stats-row">
+                                <div className="quiz-stats">Điểm BoardGame hiện tại: {boardgameScore}</div>
+                                <div className="quiz-stats">Đã trả lời: {boardgameAnsweredCount}</div>
                             </div>
 
                             <div className="quiz-progress-track" aria-hidden="true">
@@ -569,7 +643,7 @@ const QuizGame = () => {
 
                     {boardgameStep === 'result' && (
                         <div className="boardgame-result-panel">
-                           
+
                             <div className={`quiz-status boardgame-result-message ${isBoardgameCorrect ? 'success' : 'fail'}`}>
                                 {boardgameMessage}
                             </div>
@@ -586,11 +660,56 @@ const QuizGame = () => {
                                 >
                                     Chọn lại mức độ
                                 </button>
+                                <button
+                                    className="start-button"
+                                    onClick={finishBoardgameSession}
+                                >
+                                    Kết thúc
+                                </button>
                             </div>
                             <div className="boardgame-result-back-wrap">
                                 <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
-                                ← Quay lại
-                            </button>
+                                    ← Quay lại
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {boardgameStep === 'summary' && (
+                        <div className="score-panel quiz-result-panel">
+                            <div className="quiz-result-header">
+                                <div className="quiz-result-badge">Kết quả BoardGame</div>
+                                <div className="score-section quiz-result-score">
+                                    Bạn đã ghi được <span>{boardgameScore}</span> điểm!
+                                </div>
+                                <div className="result-extra quiz-result-time">Tổng thời gian: {boardgameTotalTimeSpent} giây</div>
+                                {isSavingBoardgameResult && <div className="result-extra quiz-result-saving">Đang lưu kết quả...</div>}
+                            </div>
+
+                            <div className="quiz-result-metrics">
+                                <div className="quiz-result-metric-card">
+                                    <div className="quiz-result-metric-label">Số câu đã trả lời</div>
+                                    <div className="quiz-result-metric-value">{boardgameAnsweredCount}</div>
+                                </div>
+                                <div className="quiz-result-metric-card">
+                                    <div className="quiz-result-metric-label">Số câu đúng</div>
+                                    <div className="quiz-result-metric-value">{boardgameCorrectCount}</div>
+                                </div>
+                                <div className="quiz-result-metric-card">
+                                    <div className="quiz-result-metric-label">Tổng điểm</div>
+                                    <div className="quiz-result-metric-value">{boardgameScore}</div>
+                                </div>
+                            </div>
+
+                            <div className="result-actions quiz-result-actions">
+                                <button className="start-button" onClick={startBoardGame}>Chơi lại BoardGame</button>
+                                <button className="start-button start-button-secondary" onClick={() => navigate('/leaderboard')}>Bảng xếp hạng</button>
+                            </div>
+
+                            <div className="boardgame-result-back-wrap">
+                                <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
+                                    ← Quay lại
+                                </button>
                             </div>
                         </div>
                     )}
@@ -602,8 +721,8 @@ const QuizGame = () => {
             ) : showScore ? (
                 <div className="score-panel quiz-result-panel">
                     <button type="button" className="quiz-back-link" onClick={resetToQuizHome}>
-                                    ← Quay lại
-                                </button>
+                        ← Quay lại
+                    </button>
                     <div className="quiz-result-header">
                         <div className="quiz-result-badge">Kết quả lượt chơi</div>
                         <div className="score-section quiz-result-score">
@@ -629,8 +748,8 @@ const QuizGame = () => {
                     </div>
 
                     <div className="result-actions quiz-result-actions">
-                       
-                         
+
+
                         <button className="start-button" onClick={() => startGame(selectedQuestionCount)}>Chơi lại</button>
                         <button className="start-button start-button-secondary" onClick={() => navigate('/leaderboard')}>Bảng xếp hạng</button>
                     </div>
